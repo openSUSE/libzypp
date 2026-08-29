@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.uk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-28 23:13+0000\n"
+"PO-Revision-Date: 2026-08-29 21:13+0000\n"
 "Last-Translator: Eugene Krater <lachend@gmail.com>\n"
 "Language-Team: Ukrainian <https://l10n.opensuse.org/projects/libzypp/master/"
 "uk/>\n"
@@ -390,37 +390,39 @@ msgstr "Доступ до вказаної URL-адреси заборонено
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:278
 msgid "File not found"
-msgstr ""
+msgstr "Файл не знайдено"
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:280
 msgid "Authentication required but not provided."
-msgstr ""
+msgstr "Необхідна автентифікація не виконана."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:282
 msgid "Login failed."
-msgstr ""
+msgstr "Помилка входу."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:284
 msgid "Server returned an error for the given request."
-msgstr ""
+msgstr "Сервер повернув помилку щодо вказаного запиту."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:286
 msgid "Server did not send all requested ranges."
-msgstr ""
+msgstr "Сервер не надіслав усі запитувані діапазони."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:288
 msgid ""
 "Invalid data from server, multipart was requested but there was no range "
 "status code."
 msgstr ""
+"Неправильні дані з сервера: було надіслано запит на multipart, але не було "
+"коду стану діапазону."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:290
 msgid "Server returned a HTTP/2 error."
-msgstr ""
+msgstr "Сервер повернув помилку HTTP/2."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:292
 msgid "Server returned a HTTP/2 stream error."
-msgstr ""
+msgstr "Сервер повернув помилку потоку HTTP/2."
 
 #: zypp-logic/zypp-media/mediaexception.cc:33
 #, c-format, boost-format
@@ -445,7 +447,7 @@ msgstr "Носій не було відкрито під час спроби в�
 #: zypp-logic/zypp-media/mediaexception.cc:59
 #, c-format, boost-format
 msgid "File '%s' not found"
-msgstr ""
+msgstr "Файл «%s» не знайдено"
 
 #: zypp-logic/zypp-media/mediaexception.cc:66
 #, c-format, boost-format
@@ -562,7 +564,7 @@ msgstr ""
 
 #: zypp-logic/zypp-media/mediaexception.cc:223
 msgid "No free ressources available to attach medium."
-msgstr ""
+msgstr "Немає вільних ресурсів для додавання носія."
 
 #: zypp-logic/zypp/CountryCode.cc:51
 msgid "Unknown country: "
@@ -4488,7 +4490,7 @@ msgstr "Буде виконано такі дії:"
 
 #: zypp/zypp/RepoInfo.cc:245
 msgid "Failed to fetch mirrorlist/metalink data."
-msgstr ""
+msgstr "Не вдалося отримати дані зі списку дзеркал/metalink."
 
 #: zypp/zypp/VendorSupportOptions.cc:14
 msgid "unknown"
@@ -4516,7 +4518,7 @@ msgstr "Потрібний додатковий контракт клієнта"
 
 #: zypp/zypp/VendorSupportOptions.cc:31
 msgid "Discontinued and superseded by a different package"
-msgstr ""
+msgstr "Більше не підтримується та замінено іншим пакетом"
 
 #: zypp/zypp/VendorSupportOptions.cc:33
 msgid "invalid"
@@ -4570,7 +4572,7 @@ msgstr "Для отримання підтримки потрібний дода
 msgid ""
 "The package was discontinued and has been superseded by a new package with a "
 "different name."
-msgstr ""
+msgstr "Пакет більше не підтримується і замінено новим пакетом з іншою назвою."
 
 #: zypp/zypp/VendorSupportOptions.cc:60
 msgid "Unknown support option. Description not available"

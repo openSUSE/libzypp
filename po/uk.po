@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.uk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-29 21:13+0000\n"
+"PO-Revision-Date: 2026-08-30 19:13+0000\n"
 "Last-Translator: Eugene Krater <lachend@gmail.com>\n"
 "Language-Team: Ukrainian <https://l10n.opensuse.org/projects/libzypp/master/"
 "uk/>\n"
@@ -4597,12 +4597,12 @@ msgstr "Потрібна автентифікація для «%s»"
 #. just report (NO_ERROR); no interactive request to the user
 #: zypp/zypp/media/MediaCurl.cc:822
 msgid "Will try again..."
-msgstr ""
+msgstr "Спробуємо ще раз..."
 
 #: zypp/zypp/media/MediaCurl.cc:825
 #, boost-format
 msgid "Giving up after %1% attempts."
-msgstr ""
+msgstr "Припинення після %1% спроб."
 
 #: zypp/zypp/media/MediaHandler.cc:339
 msgid ""
@@ -4627,6 +4627,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Замість завантаження ключа підпису через дзеркала рекомендуємо явно вказати "
+"параметр gpgKeyUrl у налаштуваннях репозиторію."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
@@ -4644,11 +4646,11 @@ msgstr "Неможливо створити %s"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:452
 msgid "Failed to retrieve new repository metadata."
-msgstr ""
+msgstr "Не вдалося отримати метадані нового репозиторію."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:546
 msgid "Failed to cache repo ( unable to start repo2solv )."
-msgstr ""
+msgstr "Не вдалося кешувати репозиторій (не вдалося запустити repo2solv)."
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:563
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:602
@@ -4669,7 +4671,7 @@ msgstr "Не вдалося створити кеш %s - немає прав н�
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:775
 #, boost-format
 msgid "Failed to cache repo %1%"
-msgstr ""
+msgstr "Не вдалося кешувати репозиторій %1%"
 
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:792
 msgid "Unhandled repository type"
@@ -4721,28 +4723,28 @@ msgstr "Неможливо прочитати файл сховища '%1%': Д�
 
 #: zypp/zypp/ng/repomanager.cc:381
 msgid "Cleaning metadata"
-msgstr ""
+msgstr "Очищення метаданих"
 
 #: zypp/zypp/ng/repomanager.cc:399
 msgid "Cleaning packages"
-msgstr ""
+msgstr "Очищення пакетів"
 
 #: zypp/zypp/ng/repomanager.cc:451
 msgid "Cleaning up cache dirs"
-msgstr ""
+msgstr "Очищення кеш-тек"
 
 #: zypp/zypp/ng/repomanager.cc:471
 #, boost-format
 msgid "Cleaning up directory: %1%"
-msgstr ""
+msgstr "Очищення теки: %1%"
 
 #: zypp/zypp/ng/repomanager.cc:501
 msgid "Cleaning cache"
-msgstr ""
+msgstr "Очищення кешу"
 
 #: zypp/zypp/ng/repomanager.cc:522
 msgid "Loading from cache"
-msgstr ""
+msgstr "Завантаження з кешу"
 
 #: zypp/zypp/ng/repomanager.cc:613
 #, c-format, boost-format
@@ -4761,11 +4763,11 @@ msgstr "Неможливо вилучити «%s»"
 
 #: zypp/zypp/ng/repomanager.cc:703
 msgid "Modifying repository"
-msgstr ""
+msgstr "Зміна репозиторію"
 
 #: zypp/zypp/ng/repomanager.cc:896
 msgid "Refreshing Repository: "
-msgstr ""
+msgstr "Оновлення репозиторію: "
 
 #: zypp/zypp/ng/repomanager.cc:1081 zypp/zypp/ng/repomanager.cc:1153
 msgid "Can't figure out where the service is stored."
@@ -4790,64 +4792,65 @@ msgstr "Псевдонім служби не може починатися з т
 #: zypp/zypp/ng/reporthelper.cc:26
 #, c-format, boost-format
 msgid "No digest for file %s."
-msgstr ""
+msgstr "Для файлу %s дайджест відсутній."
 
 #: zypp/zypp/ng/reporthelper.cc:38
 #, c-format, boost-format
 msgid "Unknown digest %s for file %s."
-msgstr ""
+msgstr "Невідомий дайджест %s для файлу %s."
 
 #: zypp/zypp/ng/reporthelper.cc:51
 #, c-format, boost-format
 msgid "Digest verification failed for file '%s'"
-msgstr ""
+msgstr "Не вдалося перевірити дайджест файлу «%s»"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/zypp/ng/reporthelper.cc:68
 #, c-format, boost-format
 msgid "File '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Файл «%s» не підписаний. Продовжити?"
 
 #. TranslatorExplanation: speaking of a file
 #: zypp/zypp/ng/reporthelper.cc:72
 #, c-format, boost-format
 msgid "File '%s' from repository '%s' is unsigned, continue?"
-msgstr ""
+msgstr "Файл «%s» із репозиторію «%s» не підписаний. Продовжити?"
 
 #: zypp/zypp/ng/reporthelper.cc:89
 msgid "Do you want to reject the key, trust temporarily, or trust always?"
 msgstr ""
+"Ви хочете відхилити ключ, довіряти йому тимчасово чи довіряти йому завжди?"
 
 #: zypp/zypp/ng/reporthelper.cc:115
 #, boost-format
 msgid "Key Name: %1%"
-msgstr ""
+msgstr "Назва ключа: %1%"
 
 #: zypp/zypp/ng/reporthelper.cc:127
 #, boost-format
 msgid "Received %1% new package signing key from repository \"%2%\":"
 msgid_plural "Received %1% new package signing keys from repository \"%2%\":"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Отримано %1% новий ключ підпису пакета з репозиторію «%2%»:"
+msgstr[1] "Отримано %1% нових ключі підпису пакета з репозиторію «%2%»:"
+msgstr[2] "Отримано %1% нових ключів підпису пакета з репозиторію «%2%»:"
 
 #. translator: %1% is a file name
 #: zypp/zypp/ng/reporthelper.cc:143
 #, boost-format
 msgid "Signature verification failed for file '%1%'."
-msgstr ""
+msgstr "Помилка перевірки підпису для файлу “%1%”."
 
 #. translator: %1% is a file name, %2% a repositories na  me
 #: zypp/zypp/ng/reporthelper.cc:146
 #, boost-format
 msgid "Signature verification failed for file '%1%' from repository '%2%'."
-msgstr ""
+msgstr "Не вдалося перевірити підпис файлу '%1%' із репозиторію '%2%'."
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:167
 #, c-format, boost-format
 msgid "File '%s' is signed with an unknown key '%s'. Continue?"
-msgstr ""
+msgstr "Файл '%s' підписано невідомим ключем '%s'. Продовжити?"
 
 #. translators: the last %s is gpg key ID
 #: zypp/zypp/ng/reporthelper.cc:171
@@ -4855,12 +4858,13 @@ msgstr ""
 msgid ""
 "File '%s' from repository '%s' is signed with an unknown key '%s'. Continue?"
 msgstr ""
+"Файл '%s' з репозиторію '%s' підписано невідомим ключем '%s'. Продовжити?"
 
 #. translator: %1% is a repositories name
 #: zypp/zypp/ng/workflows/keyringwf.cc:59
 #, boost-format
 msgid "Repository %1% does not define 'gpgkey=' URLs."
-msgstr ""
+msgstr "Репозиторій %1% не визначає URL-адрес із параметром «gpgkey=»."
 
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
@@ -4868,7 +4872,7 @@ msgstr ""
 #: zypp/zypp/ng/workflows/repoinfowf.cc:92
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
-msgstr ""
+msgstr "Пошук gpg-ключів у репозиторії %1%."
 
 #: zypp/zypp/parser/RepoindexFileReader.cc:227
 #, c-format, boost-format
@@ -4889,6 +4893,8 @@ msgstr "Потрібний один або двоє атрибутів «%s» т
 msgid ""
 "Neither '%s' nor '%s' nor '%s' attribute is defined for service repo '%s'."
 msgstr ""
+"Для репозиторію служб «%s» не визначено жодного з атрибутів «%s», «%s» та «%s"
+"»."
 
 #: zypp/zypp/repo/PackageProvider.cc:344
 msgid "Signature verification failed"
@@ -4911,7 +4917,7 @@ msgstr "Не вдалося надати пакунок %s. Повторити �
 
 #: zypp/zypp/repo/PackageProvider.cc:615
 msgid "download deltarpm: not found"
-msgstr ""
+msgstr "завантаження deltarpm: не знайдено"
 
 #: zypp/zypp/repo/PackageProvider.cc:629
 msgid "applydeltarpm check failed."
@@ -4923,7 +4929,7 @@ msgstr "застосування дельти rpm зазнало невдачі.
 
 #: zypp/zypp/repo/RepoException.cc:73
 msgid "No permission to write repository cache."
-msgstr ""
+msgstr "Немає дозволу на запис у кеш репозиторію."
 
 #: zypp/zypp/repo/RepoException.cc:130
 msgid "Service plugin does not support changing an attribute."
@@ -4944,6 +4950,7 @@ msgstr "В сховищі немає url."
 #, boost-format
 msgid "Expected medium %1%/%2% identified by file '%3%' with content:"
 msgstr ""
+"Очікується носій %1%/%2%, ідентифікований у файлі «%3%», із таким вмістом:"
 
 #. [lhs][rhs] 0 = installed; 1 = to be installed
 #. TranslatorExplanation %1%(filename) %2%(package1) %3%(package2)

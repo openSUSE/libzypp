@@ -10,6 +10,8 @@
 #define ZYPP_NG_CORE_STRING_H_INCLUDED
 
 #include <optional>
+#include <charconv>
+#include <system_error>
 #include <zypp-core/base/String.h>
 #include <boost/utility/string_view.hpp>
 
@@ -20,15 +22,18 @@ namespace str {
   using zypp::str::Trim;
 
   template <typename T>
-  std::optional<T> safe_strtonum ( const std::string_view &val)
+  std::optional<T> strict_strtonum ( const std::string_view &val )
   {
-    int oerrno = errno;
-    errno = 0;  // strtonum/::strtol has no dedicated error-return-code one could check
-    const T entryVal = zypp::str::strtonum<T>( val.data() );
-    if ( errno == ERANGE )
+    if ( val.empty() )
       return {};
-    errno = oerrno;
-    return entryVal;
+
+    T result{};
+    auto [ptr, ec] = std::from_chars( val.data(), val.data() + val.size(), result );
+
+    if ( ec == std::errc() && ptr == val.data() + val.size() )
+      return result;
+
+    return {};
   }
 
   template< typename StrType, typename T = std::remove_reference_t<StrType> >

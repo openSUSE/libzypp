@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-28 15:13+0000\n"
+"PO-Revision-Date: 2026-08-31 13:13+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
 "Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
 "\n"
@@ -5022,43 +5022,53 @@ msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
 "%3%"
 msgstr ""
+"den %1% som skal installeres, er i konflikt med '%2%', som kommer fra den "
+"installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1224
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
+"den installerede %1% erstatter '%2%' som kommer fra den installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
+"den installerede %1% erstatter '%2%' som kommer fra den installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1230
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
+"den %1% som skal installeres, erstatter '%2%' som kommer fra den "
+"installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
+"den %1%, som skal installeres, erstatter '%2', som kommer fra den "
+"installerede %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
-msgstr ""
+msgstr "den installerede %1% er i konflikt med '%2%', som den selv indeholder"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
+"den %1%, som skal installeres, er i konflikt med '%2', som den selv "
+"indeholder"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
-msgstr ""
+msgstr "den installerede %1% kræver '%2%, men den afhængighed kan ikke løses"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
@@ -5066,6 +5076,8 @@ msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
 msgstr ""
+"den %1% som skal installeres, kræver '%2%', men den afhængighed kan ikke "
+"løses"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
@@ -5087,13 +5099,15 @@ msgstr "ikke-installérbare leverandører: "
 #: zypp/zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
-msgstr ""
+msgstr "%1% er endnu ikke helt integreret i %2%."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1325
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
 msgstr ""
+"Normalt vil du beholde PTF og vælge ikke at installere vedligeholdelses-"
+"patches."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1333
@@ -5102,6 +5116,8 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
+"Fjernelse af den installerede %1% i denne kontekst vil også fjerne (ikke "
+"erstatte!) de inkluderede PTF-pakker."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
@@ -5109,20 +5125,22 @@ msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
+"PTF bør fjernes ved at kalde '%1%'. Det vil opdatere de inkluderede PTF-"
+"pakker i stedet for at fjerne dem."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
-msgstr ""
+msgstr "Normalt vil du vælge at beholde PTF eller vælge at annullere."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
-msgstr ""
+msgstr "Den installerede %1% blokerer den ønskede handling."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
-msgstr ""
+msgstr "Normalt vil du ønske at beholde PTF og vælge at annullere handlingen."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
@@ -5174,22 +5192,22 @@ msgstr "installer ikke seneste version af %1%"
 #: zypp/zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
-msgstr ""
+msgstr "behold %1% på trods af den dårligere arkitektur"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
-msgstr ""
+msgstr "installer %1% på trods af den dårligere arkitektur"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
-msgstr ""
+msgstr "behold den forældede %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
-msgstr ""
+msgstr "installer %1% fra det ekskluderede repo"
 
 #. translator: %1% is a package name
 #: zypp/zypp/solver/detail/SATResolver.cc:1573
@@ -5212,12 +5230,12 @@ msgstr "installér %1%, selvom den er sortlistet"
 #: zypp/zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
-msgstr ""
+msgstr "nedgradering af %1% til %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
-msgstr ""
+msgstr "ændring af arkitektur fra %1% til %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
 #: zypp/zypp/solver/detail/SATResolver.cc:1617
@@ -5226,6 +5244,8 @@ msgid ""
 "install %1% (with vendor change)\n"
 "  %2%  -->  %3%"
 msgstr ""
+"installer %1% (med leverandør-ændring)\n"
+"  %2%  -->  %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
@@ -5233,33 +5253,35 @@ msgid ""
 "install %1% from vendor %2%\n"
 "  replacing %3% from vendor %4%"
 msgstr ""
+"installer %1% fra leverandør %2%\n"
+"  erstatter %3% fra leverandør %4%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
-msgstr ""
+msgstr "erstatning af %1% med %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
-msgstr ""
+msgstr "afinstallation af %1%"
 
 #. Translator: progress bar label
 #: zypp/zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
-msgstr ""
+msgstr "Kører post-transaction scripts"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
-msgstr ""
+msgstr "Kører %1% script"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
-msgstr ""
+msgstr "%1% script output:"
 
 #: zypp/zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
@@ -5302,10 +5324,13 @@ msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
+"Modtog signal :\"%1% (%2%)\", for at sikre konsistensen af systemet er det "
+"ikke mulig at afbryde kørende rpm-transaktion."
 
 #: zypp/zypp/target/TargetImpl.cc:2846
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
+"Udførelsen af transaktionen mislykkedes på grund af de følgende problemer:"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:105
 msgid "no mirror found"

@@ -34,7 +34,7 @@ namespace zypp
   namespace misc
   { /////////////////////////////////////////////////////////////////
 
-    void defaultLoadSystem( const Pathname & sysRoot_r, LoadSystemFlags flags_r )
+    ZYpp::Ptr defaultLoadSystem( const Pathname & sysRoot_r, LoadSystemFlags flags_r )
     {
       if ( not flags_r && geteuid() != 0 ) {
         flags_r |= LS_NOREFRESH;
@@ -50,13 +50,14 @@ namespace zypp
       if ( flags_r.testFlag( LS_READONLY ) )
         zypp_readonly_hack::IWantIt ();
 
+      ZYpp::Ptr zyppPtr = getZYpp();
       sat::Pool satpool( sat::Pool::instance() );
 
       if ( 1 )
       {
         MIL << "*** load target '" << Repository::systemRepoAlias() << "'\t" << endl;
-        getZYpp()->initializeTarget( sysRoot_r );
-        getZYpp()->target()->load();
+        zyppPtr->initializeTarget( sysRoot_r );
+        zyppPtr->target()->load();
         MIL << satpool.systemRepo() << endl;
       }
 
@@ -104,6 +105,8 @@ namespace zypp
         }
       }
       MIL << str::form( "*** Read system at '%s'", sysRoot_r.c_str() ) << endl;
+
+      return zyppPtr;
     }
 
     /////////////////////////////////////////////////////////////////

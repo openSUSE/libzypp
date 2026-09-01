@@ -69,6 +69,75 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const GpgmeErr & obj )
     { return str << "<" << gpgme_strsource(obj) << "> " << gpgme_strerror(obj); }
 
+    bool findKeyById( gpgme_ctx_t ctx, const std::string & id, GpgmeKeyPtr & foundKey )
+    {
+      GpgmeErr err = GPG_ERR_NO_ERROR;
+
+      gpgme_key_t key = nullptr;
+      gpgme_op_keylist_start( ctx, NULL, 0 );
+      while ( !( err = gpgme_op_keylist_next( ctx, &key ) ) ) {
+        if ( key->subkeys && id == str::asString( key->subkeys->keyid ) ) {
+          GpgmeKeyPtr( key, gpgme_key_release ).swap( foundKey );
+          break;
+        }
+        gpgme_key_release( key );
+      }
+      gpgme_op_keylist_end( ctx );
+
+      return foundKey.get() != nullptr;
+    }
+
+    bool exportKeyData( gpgme_ctx_t ctx, const std::string & id, ByteArray & keydata )
+    {
+      GpgmeKeyPtr foundKey( nullptr, gpgme_key_release );
+      if ( ! findKeyById( ctx, id, foundKey ) ) {
+        WAR << "Key " << id << "not found" << endl;
+        return false;
+      }
+
+      gpgme_key_t keyarray[2];
+      keyarray[0] = foundKey.get();
+      keyarray[1] = NULL;
+
+      GpgmeDataPtr out( nullptr, gpgme_data_release );
+      GpgmeErr err = gpgme_data_new( &out.get() );
+      if ( err ) {
+        ERR << err << endl;
+        return false;
+      }
+
+      // bsc#1179222: Remove outdated self signatures when exporting the key.
+      // The keyring does not order the signatures when multiple versions of the
+      // same key are imported. Rpm however uses the 1st to compute the -release
+      // of the gpg-pubkey. So we export only the latest to get a proper-release.
+      gpgme_set_armor( ctx, 1 );
+      err = gpgme_op_export_keys( ctx, keyarray, GPGME_EXPORT_MODE_MINIMAL, out.get() );
+      if ( err ) {
+        ERR << "Error exporting key: "<< err << endl;
+        return false;
+      }
+
+      int ret = gpgme_data_seek( out.get(), 0, SEEK_SET );
+      if ( ret ) {
+        ERR << "Unable to seek in exported key data" << endl;
+        return false;
+      }
+
+      keydata.clear();
+      const int bufsize = 512;
+      char buf[bufsize];
+      while ( ( ret = gpgme_data_read( out.get(), buf, bufsize ) ) > 0 ) {
+        keydata.insert( keydata.end(), buf, buf + ret );
+      }
+
+      if ( ret < 0 ) {
+        ERR << "Unable to read exported key data" << endl;
+        return false;
+      }
+
+      return true;
+    }
+
     /** relates: gpgme_import_result_t Stream output. */
     [[maybe_unused]] std::ostream & operator<<( std::ostream & str, const _gpgme_op_import_result & obj )
     {
@@ -436,71 +505,17 @@ bool KeyManagerCtx::verify(const Pathname &file, const Pathname &signature)
 
 bool KeyManagerCtx::exportKey(const std::string &id, std::ostream &stream)
 {
-  GpgmeErr err = GPG_ERR_NO_ERROR;
-
-  GpgmeKeyPtr foundKey;
-
-  //search for requested key id
-  gpgme_key_t key = nullptr;
-  gpgme_op_keylist_start(_pimpl->_ctx, NULL, 0);
-  while (!(err = gpgme_op_keylist_next(_pimpl->_ctx, &key))) {
-    if (key->subkeys && id == str::asString(key->subkeys->keyid)) {
-      GpgmeKeyPtr(key, gpgme_key_release).swap(foundKey);
-      break;
-    }
-    gpgme_key_release(key);
-  }
-  gpgme_op_keylist_end(_pimpl->_ctx);
-
-  if (!foundKey) {
-    WAR << "Key " << id << "not found" << endl;
+  ByteArray keydata;
+  if ( ! exportKey( id, keydata ) )
     return false;
-  }
 
-  //function needs a array of keys to export
-  gpgme_key_t keyarray[2];
-  keyarray[0] = foundKey.get();
-  keyarray[1] = NULL;
+  stream.write( keydata.data(), keydata.size() );
+  return bool( stream );
+}
 
-  GpgmeDataPtr out(nullptr, gpgme_data_release);
-  err = gpgme_data_new (&out.get());
-  if (err) {
-    ERR << err << endl;
-    return false;
-  }
-
-  //format as ascii armored
-  gpgme_set_armor (_pimpl->_ctx, 1);
-  // bsc#1179222: Remove outdated self signatures when exporting the key.
-  // The keyring does not order the signatures when multiple versions of the
-  // same key are imported. Rpm however uses the 1st to compute the -release
-  // of the gpg-pubkey. So we export only the latest to get a proper-release.
-  err = gpgme_op_export_keys (_pimpl->_ctx, keyarray, GPGME_EXPORT_MODE_MINIMAL, out.get());
-  if (!err) {
-    int ret = gpgme_data_seek (out.get(), 0, SEEK_SET);
-    if (ret) {
-      ERR << "Unable to seek in exported key data" << endl;
-      return false;
-    }
-
-    const int bufsize = 512;
-    char buf[bufsize + 1];
-    while ((ret = gpgme_data_read(out.get(), buf, bufsize)) > 0) {
-      stream.write(buf, ret);
-    }
-
-    //failed to read from buffer
-    if (ret < 0) {
-      ERR << "Unable to read exported key data" << endl;
-      return false;
-    }
-  } else {
-    ERR << "Error exporting key: "<< err << endl;
-    return false;
-  }
-
-  //if we reach this point export was successful
-  return true;
+bool KeyManagerCtx::exportKey(const std::string &id, ByteArray &keydata)
+{
+  return exportKeyData( _pimpl->_ctx, id, keydata );
 }
 
 bool KeyManagerCtx::importKey(const Pathname &keyfile)
@@ -520,6 +535,24 @@ bool KeyManagerCtx::importKey(const Pathname &keyfile)
   }
 
   return _pimpl->importKey( data, [&](){ return PathInfo(keyfile).size(); } );
+}
+
+bool KeyManagerCtx::importKey( std::istream & stream )
+{
+  ByteArray keydata;
+
+  constexpr size_t bufSize = 4096;
+  char buf[bufSize];
+  while ( stream.read( buf, sizeof(buf) ) || stream.gcount() ) {
+    keydata.insert( keydata.end(), buf, buf + stream.gcount() );
+  }
+
+  if ( stream.bad() ) {
+    ERR << "Error importing key: failed to read key stream" << endl;
+    return false;
+  }
+
+  return importKey( keydata );
 }
 
 bool KeyManagerCtx::importKey( const ByteArray &keydata )

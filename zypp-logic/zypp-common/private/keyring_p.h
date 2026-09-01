@@ -179,6 +179,30 @@ namespace zypp {
 
 
     private:
+      /** Helper for in-memory key transfer between two keyrings. */
+      class SendKeys
+      {
+      public:
+        /** Ctor creates the context for reading \a source and writing \a target. */
+        SendKeys( KeyRingImpl & keyRing, const Pathname & source, const Pathname & target );
+        /** \overload */
+        SendKeys( KeyRingImpl & keyRing, const Ring source, const Ring target );
+        SendKeys( const SendKeys & ) = delete;
+        SendKeys( SendKeys && ) = delete;
+        SendKeys & operator=( const SendKeys & ) = delete;
+        SendKeys & operator=( SendKeys && ) = delete;
+
+        /** Transfer key with \a id from source to target keyring.
+         * \throws KeyRingException if \a id was not found or import failed.
+         */
+        void operator()( const std::string & id );
+
+      private:
+        KeyManagerCtx _source;
+        CachedPublicKeyData::Manip _target;
+      };
+
+    private:
       const Pathname keyRingPath( const Ring ring ) const
       { return ring == Ring::General ? _general_tmp_dir.path() : _trusted_tmp_dir.path(); }
 

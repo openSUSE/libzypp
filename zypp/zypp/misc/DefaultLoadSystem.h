@@ -16,6 +16,7 @@
 
 #include <zypp-core/Pathname.h>
 #include <zypp-core/base/Flags.h>
+#include <zypp/ZYppFactory.h>
 
 ///////////////////////////////////////////////////////////////////
 namespace zypp
@@ -49,11 +50,11 @@ namespace zypp
      *
      * \todo properly handle service refreshs
      */
-    void defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() ) ZYPP_API;
+    ZYpp::Ptr defaultLoadSystem( const Pathname & sysRoot_r = "/", LoadSystemFlags flags_r = LoadSystemFlags() ) ZYPP_API;
 
     /** \overload */
-    inline void defaultLoadSystem( LoadSystemFlags flags_r )
-    { defaultLoadSystem( "/", flags_r ); }
+    inline ZYpp::Ptr defaultLoadSystem( LoadSystemFlags flags_r )
+    { return defaultLoadSystem( "/", flags_r ); }
 
     /////////////////////////////////////////////////////////////////
   } // namespace misc

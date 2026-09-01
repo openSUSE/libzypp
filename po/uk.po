@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.uk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-08-30 19:13+0000\n"
+"PO-Revision-Date: 2026-09-01 22:13+0000\n"
 "Last-Translator: Eugene Krater <lachend@gmail.com>\n"
 "Language-Team: Ukrainian <https://l10n.opensuse.org/projects/libzypp/master/"
 "uk/>\n"
@@ -5167,32 +5167,32 @@ msgstr "непідтримуваний запит"
 #: zypp/zypp/solver/detail/SATResolver.cc:1191
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
-msgstr ""
+msgstr "'%1%' надається як частина системи і не може бути видалено"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1194
 #, boost-format
 msgid "%1% is not installable"
-msgstr ""
+msgstr "%1% не можна встановити"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1199
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
-msgstr ""
+msgstr "ніхто не надає “%1”, необхідний для встановленого %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
-msgstr ""
+msgstr "ніхто не надає “%1”, необхідний для встановлення %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1204
 #, boost-format
 msgid "cannot install both %1% and %2%"
-msgstr ""
+msgstr "неможливо встановити одночасно %1% і %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1209
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
-msgstr ""
+msgstr "встановлений %1% конфліктує з “%2%”, наданим %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format

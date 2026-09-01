@@ -109,6 +109,26 @@ namespace zypp
   }
 
 
+  KeyRingImpl::SendKeys::SendKeys( KeyRingImpl & keyRing, const Pathname & source, const Pathname & target )
+    : _source( KeyManagerCtx::createForOpenPGP( source ) )
+    , _target( keyRing.keyRingManip( target ) )
+  {}
+
+  KeyRingImpl::SendKeys::SendKeys( KeyRingImpl & keyRing, const Ring source, const Ring target )
+    : SendKeys( keyRing, keyRing.keyRingPath( source ), keyRing.keyRingPath( target ) )
+  {}
+
+  void KeyRingImpl::SendKeys::operator()( const std::string & id )
+  {
+    ByteArray keydata;
+    if ( ! _source.exportKey( id, keydata ) )
+      ZYPP_THROW(KeyRingException(_("Failed to export key.")));
+
+    if ( ! _target.keyManagerCtx().importKey( keydata ) )
+      ZYPP_THROW(KeyRingException(_("Failed to import key.")));
+  }
+
+
   KeyRingImpl::KeyRingImpl(const filesystem::Pathname &baseTmpDir)
     : _trusted_tmp_dir( baseTmpDir, "zypp-trusted-kr" )
     , _general_tmp_dir( baseTmpDir, "zypp-general-kr" )
@@ -184,9 +204,10 @@ namespace zypp
 
       if ( mustUpdate ) {
         importKey( key.path(), keyRingPath( Ring::General ) );   // this imports all in the file
+        SendKeys toTrusted { *this, Ring::General, Ring::Trusted };
         for ( const PublicKeyData & keyData : trustedToUpdate ) {
-          // export-import the individual keys! Never the complete file.
-          importKey( exportKey( keyData, Ring::General ), Ring::Trusted );
+          // transfer the individual keys only! Never the complete file.
+          toTrusted( keyData.id() );
         }
       }
     }

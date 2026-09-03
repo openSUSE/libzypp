@@ -17,7 +17,6 @@
 #include "Out.h"
 #include <zypp-tui/Table.h>
 #include <zypp-tui/Application>
-#include "Utf8.h"
 
 namespace ztui {
 
@@ -46,14 +45,14 @@ namespace out
 
 std::string TermLine::get( unsigned width_r, SplitFlags flags_r, char exp_r ) const
 {
-  utf8::string l(lhs);	// utf8::string::size() returns visible chars (ignores ansi SGR)!
-  utf8::string r(rhs);
+  const std::string l( lhs );
+  const std::string r( rhs );
 
   if ( width_r == out::termwidthUnlimited )
     return zypp::str::Str() << l << r;	// plain string if zero width
 
-  unsigned llen = l.size();
-  unsigned rlen = r.size();
+  const unsigned llen = mbs_width( l );
+  const unsigned rlen = mbs_width( r );
   int diff = width_r - llen - rlen;
 
   //AutoDispose<int> _delay( 1, ::sleep );
@@ -91,17 +90,17 @@ std::string TermLine::get( unsigned width_r, SplitFlags flags_r, char exp_r ) co
     if ( flags_r.testFlag( SF_CRUSH ) )
     {
       if ( rlen > width_r )
-        return r.substr( 0, width_r ).str();
-      return zypp::str::Str() << l.substr( 0, width_r - rlen ) << r;
+        return mbs_substr_by_width( r, 0, width_r );
+      return zypp::str::Str() << mbs_substr_by_width( l, 0, width_r - rlen ) << r;
     }
     else if ( flags_r.testFlag( SF_SPLIT ) )
     {
       zypp::str::Str out;
       if ( llen > width_r )
-        mbs_write_wrapped( out.stream(), l.str(), 0, width_r );
+        mbs_write_wrapped( out.stream(), l, 0, width_r );
       else
         out << l;
-      return out << "\n" << ( rlen > width_r ? r.substr( 0, width_r ) : std::string( width_r - rlen, ' ' ) + r );
+      return out << "\n" << ( rlen > width_r ? mbs_substr_by_width( r, 0, width_r ) : std::string( width_r - rlen, ' ' ) + r );
     }
     // else:
     return zypp::str::Str() << l << r;

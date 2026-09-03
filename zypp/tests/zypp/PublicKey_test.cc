@@ -7,6 +7,7 @@
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/Exception.h>
 #include <zypp-common/PublicKey.h>
+#include <zypp-common/KeyManager.h>
 #include <zypp/TmpPath.h>
 #include <zypp-core/Date.h>
 
@@ -52,3 +53,25 @@ BOOST_AUTO_TEST_CASE(publickey_test)
   BOOST_CHECK_EQUAL( k2.hiddenKeys().size(), 8 );
 }
 
+BOOST_AUTO_TEST_CASE(keymanager_volatile_context_test)
+{
+  auto ctx1 = KeyManagerCtx::createForOpenPGP();
+  auto ctx2 = KeyManagerCtx::createForOpenPGP();
+
+  BOOST_REQUIRE( ctx1.homedir() != Pathname() );
+  BOOST_REQUIRE( ctx2.homedir() != Pathname() );
+  BOOST_CHECK( ctx1.homedir() != ctx2.homedir() );
+
+  BOOST_CHECK_EQUAL( ctx1.listKeys().size(), 0U );
+  BOOST_CHECK_EQUAL( ctx2.listKeys().size(), 0U );
+
+  auto keys1 = ctx1.readKeyFromFile( DATADIR/"susekey.asc" );
+  BOOST_REQUIRE_EQUAL( keys1.size(), 1U );
+  BOOST_CHECK_EQUAL( ctx1.listKeys().size(), 1U );
+  BOOST_CHECK_EQUAL( ctx2.listKeys().size(), 0U );
+
+  auto keys2 = ctx1.readKeyFromFile( DATADIR/"multikey2.asc" );
+  BOOST_REQUIRE_EQUAL( keys2.size(), 9U );
+  BOOST_CHECK_EQUAL( ctx1.listKeys().size(), 9U );
+  BOOST_CHECK_EQUAL( ctx2.listKeys().size(), 0U );
+}

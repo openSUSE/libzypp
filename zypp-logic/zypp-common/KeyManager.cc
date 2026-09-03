@@ -8,6 +8,7 @@
 \---------------------------------------------------------------------*/
 #include <iostream>
 #include <fstream>
+#include <optional>
 
 #include "KeyManager.h"
 #include "KeyRingException.h"
@@ -255,8 +256,11 @@ namespace zypp
     template< typename Callback >
     bool importKey(GpgmeDataPtr &data, Callback &&calcDataSize );
 
+    bool isVolatile() const
+    { return _tmpDir.has_value(); }
+
     gpgme_ctx_t _ctx { nullptr };
-    bool _volatile { false };	///< readKeyFromFile workaround bsc#1140670
+    std::optional<filesystem::TmpDir> _tmpDir;	///< volatile contexts own their private temp homedir
 
   private:
     /** Return all fingerprints found in \a signature_r and optionally verify the \a file_r on the fly.
@@ -398,11 +402,12 @@ KeyManagerCtx::KeyManagerCtx()
 
 KeyManagerCtx KeyManagerCtx::createForOpenPGP()
 {
-  static Pathname tmppath( zypp::myTmpDir() / "PublicKey" );
-  filesystem::assert_dir( tmppath );
+  filesystem::TmpDir tmppath( zypp::myTmpDir(), "PublicKey." );
+  if ( not tmppath )
+    ZYPP_THROW( KeyRingException( "Failed to create temporary keyring directory." ) );
 
   KeyManagerCtx ret { createForOpenPGP( tmppath ) };
-  ret._pimpl->_volatile = true;	// readKeyFromFile workaround bsc#1140670
+  ret._pimpl->_tmpDir = tmppath;
   return ret;
 }
 
@@ -494,12 +499,12 @@ std::list<PublicKeyData> KeyManagerCtx::readKeyFromFile( const Pathname & keyfil
   // bsc#1140670: GPGME does not support reading keys from a keyfile using
   // gpgme_data_t and gpgme_op_keylist_from_data_start. Despite GPGME_KEYLIST_MODE_SIGS
   // the signatures are missing, but we need them to create proper PublicKeyData objects.
-  // While this is not resolved, we read into a temp. keyring. Impl::_volatile helps
-  // to detect whether we can clear and import into the current context or need to
-  // create a temp. one.
+  // While this is not resolved, we read into a temp. keyring. Volatile contexts own
+  // a private temp. homedir and can therefore clear and reuse their keyring without
+  // affecting other contexts. Non-volatile contexts delegate to a volatile one.
   std::list<PublicKeyData> ret;
 
-  if ( _pimpl->_volatile ) {
+  if ( _pimpl->isVolatile() ) {
     // in a volatile context we can simply clear the keyring...
     base::LogControl::TmpLineWriter shutUp;     // be quiet
     filesystem::dirForEach( homedir(), []( const Pathname & dir, const char *const name ) {

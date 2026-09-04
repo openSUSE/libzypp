@@ -1097,16 +1097,24 @@ PoolItem SATResolver::mapItem ( const PoolItem & item )
 sat::Solvable SATResolver::mapSolvable ( const Id & id )
 { return mapBuddy( sat::Solvable(id) ); }
 
-std::vector<std::string> SATResolver::SATgetCompleteProblemInfoStrings ( Id problem )
+std::vector<std::string> SATResolver::SATgetCompleteProblemInfoStrings ( Id problem, std::string & detail_r, Id & ignoreId_r )
 {
   std::vector<std::string> ret;
   sat::Queue problems;
   solver_findallproblemrules( _satSolver, problem, problems );
 
+  // The most relevant one first!
+  // Also provides detail_r and ignoreId_r
+  Id probr = solver_findproblemrule( _satSolver, problem );
+  ret.push_back( SATproblemRuleInfoString( probr, detail_r, ignoreId_r ) );
+
+
   bool nobad = false;
 
   //filter out generic rule information if more explicit ones are available
   for ( sat::Queue::size_type i = 0; i < problems.size(); i++ ) {
+    if ( problems[i] == probr )
+      continue;
     SolverRuleinfo ruleClass = solver_ruleclass( _satSolver, problems[i]);
     if ( ruleClass != SolverRuleinfo::SOLVER_RULE_UPDATE && ruleClass != SolverRuleinfo::SOLVER_RULE_JOB ) {
       nobad = true;
@@ -1114,6 +1122,8 @@ std::vector<std::string> SATResolver::SATgetCompleteProblemInfoStrings ( Id prob
     }
   }
   for ( sat::Queue::size_type i = 0; i < problems.size(); i++ ) {
+    if ( problems[i] == probr )
+      continue;
     SolverRuleinfo ruleClass = solver_ruleclass( _satSolver, problems[i]);
     if ( nobad && ( ruleClass == SolverRuleinfo::SOLVER_RULE_UPDATE || ruleClass == SolverRuleinfo::SOLVER_RULE_JOB ) ) {
       continue;
@@ -1128,14 +1138,6 @@ std::vector<std::string> SATResolver::SATgetCompleteProblemInfoStrings ( Id prob
       ret.push_back( pInfo );
   }
   return ret;
-}
-
-std::string SATResolver::SATprobleminfoString(Id problem, std::string &detail, Id &ignoreId)
-{
-  // FIXME: solver_findallproblemrules to get all rules for this problem
-  // (the 'most relevabt' one returned by solver_findproblemrule is embedded
-  Id probr = solver_findproblemrule(_satSolver, problem);
-  return SATproblemRuleInfoString( probr, detail, ignoreId );
 }
 
 std::string SATResolver::SATproblemRuleInfoString (Id probr, std::string &detail, Id &ignoreId)
@@ -1372,12 +1374,17 @@ SATResolver::problems ()
         while ((problem = solver_next_problem(_satSolver, problem)) != 0) {
             MIL << "Problem " <<  pcnt++ << ":" << endl;
             MIL << "====================================" << endl;
-            std::string detail;
             Id ignoreId = 0;
-            std::string whatString = SATprobleminfoString (problem,detail,ignoreId);
-            MIL << whatString << endl;
-            MIL << "------------------------------------" << endl;
-            ResolverProblem_Ptr resolverProblem = new ResolverProblem (whatString, detail, SATgetCompleteProblemInfoStrings( problem ));
+            ResolverProblem_Ptr resolverProblem;
+            {
+              std::string detail;
+              std::vector<std::string> allWhatStrings = SATgetCompleteProblemInfoStrings( problem, detail, ignoreId );
+              std::string whatString = allWhatStrings[0]; // At least one (the most relevant one) is here.
+              for ( const auto & problemString : allWhatStrings )
+                MIL << "- " << problemString << endl;
+              MIL << "------------------------------------" << endl;
+              resolverProblem = new ResolverProblem( std::move(whatString), std::move(detail), std::move(allWhatStrings) );
+            }
             PtfPatchHint ptfPatchHint;  // bsc#1194848 hint on ptf<>patch conflicts
             solution = 0;
             while ((solution = solver_next_solution(_satSolver, problem, solution)) != 0) {

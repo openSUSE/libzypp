@@ -112,9 +112,8 @@ class SATResolver : public base::ReferenceCounted, private base::NonCopyable, pr
     bool _protectPTFs:1;		// protect from accidental removal of PTFs if only @System is present (bsc#1203248)
 
     // ---------------------------------- methods
-    std::string SATprobleminfoString (Id problem, std::string &detail, Id &ignoreId);
     std::string SATproblemRuleInfoString (Id rule, std::string &detail, Id &ignoreId);
-    std::vector<std::string> SATgetCompleteProblemInfoStrings ( Id problem );
+    std::vector<std::string> SATgetCompleteProblemInfoStrings ( Id problem, std::string &detail, Id &ignoreId );
     void resetItemTransaction (PoolItem item);
 
     // Create a SAT solver and

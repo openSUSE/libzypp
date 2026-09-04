@@ -27,6 +27,11 @@
 #include <zypp/Product.h>
 #include <zypp/sat/Pool.h>
 
+extern "C"
+{
+#include <solv/solv_xfopen.h>
+}
+
 using std::endl;
 
 ///////////////////////////////////////////////////////////////////
@@ -341,12 +346,7 @@ namespace zypp
     {
       NO_REPOSITORY_THROW( Exception( "Can't add solvables to norepo." ) );
 
-      std::string command( file_r.extension() == ".gz" ? "zcat " : "cat " );
-      command += "'";
-      command += file_r.asString();
-      command += "'";
-
-      AutoDispose<FILE*> file( ::popen( command.c_str(), "re" ), ::pclose );
+      AutoDispose<FILE*> file( ::solv_xfopen( file_r.c_str(), "r" ), ::fclose );
       if ( file == NULL )
       {
         file.resetDispose();
@@ -365,12 +365,7 @@ namespace zypp
     {
       NO_REPOSITORY_THROW( Exception( "Can't add solvables to norepo." ) );
 
-      std::string command( file_r.extension() == ".gz" ? "zcat " : "cat " );
-      command += "'";
-      command += file_r.asString();
-      command += "'";
-
-      AutoDispose<FILE*> file( ::popen( command.c_str(), "re" ), ::pclose );
+      AutoDispose<FILE*> file( ::solv_xfopen( file_r.c_str(), "r" ), ::fclose );
       if ( file == NULL )
       {
         file.resetDispose();

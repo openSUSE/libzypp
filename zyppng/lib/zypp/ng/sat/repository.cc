@@ -23,6 +23,11 @@ module;
 #include <zypp-core/ng/base/ranges.h>
 #include <zypp-core/ng/base/iterators.h>  // make_filter_iterator
 
+extern "C"
+{
+#include <solv/solv_xfopen.h>
+}
+
 module zyppng;
 
 import :sat_pool;
@@ -237,12 +242,7 @@ namespace zyppng
     {
       NO_REPOSITORY_THROW( zypp::Exception( "Can't add solvables to norepo." ) );
 
-      std::string command( file_r.extension() == ".gz" ? "zcat " : "cat " );
-      command += "'";
-      command += file_r.asString();
-      command += "'";
-
-      zypp::AutoDispose<FILE*> file( ::popen( command.c_str(), "re" ), ::pclose );
+      zypp::AutoDispose<FILE*> file( ::solv_xfopen( file_r.c_str(), "r" ), ::fclose );
       if ( file == NULL )
       {
         file.resetDispose();
@@ -261,12 +261,7 @@ namespace zyppng
     {
       NO_REPOSITORY_THROW( zypp::Exception( "Can't add solvables to norepo." ) );
 
-      std::string command( file_r.extension() == ".gz" ? "zcat " : "cat " );
-      command += "'";
-      command += file_r.asString();
-      command += "'";
-
-      zypp::AutoDispose<FILE*> file( ::popen( command.c_str(), "re" ), ::pclose );
+      zypp::AutoDispose<FILE*> file( ::solv_xfopen( file_r.c_str(), "r" ), ::fclose );
       if ( file == NULL )
       {
         file.resetDispose();

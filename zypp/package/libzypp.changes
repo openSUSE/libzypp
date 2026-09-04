@@ -1,4 +1,43 @@
 -------------------------------------------------------------------
+Fri Sep  4 16:27:14 CEST 2026 - ma@suse.de
+
+- Prevent libgpgme from launching gpg-agents; we don't need them.
+- defaultLoadSystem: Hand out the ZYpp::Ptr as return value.
+- Log all solver problem rules (bsc#1277790)
+  The log contains the most relevant problem rule, but sometimes it
+  helps to know all rules associated with this problem. zypper
+  shows them on demand as 'detail'. The log now remembers them as
+  well.
+- Replace popen cat/zcat with solv_xfopen for testcase loaders
+  (fixes #749)
+- repoGpgCheck: Strictly follow the repo_gpgcheck setting
+  (bsc#1274625)
+  There's been a legacy exception for unsigned repositories which
+  were explicitly accepted in the past. After switching the
+  repo_gpgcheck from off to on, they were allowed to stay unsigned
+  until a first signed version was retrieved. From there on the
+  handling was strict.
+  Now the handling is strict as soon as the repo_gpgcheck turned
+  on. The next set of metadata retrieved must be signed.
+- Iniparser: each new file starts in the unnamed section
+  (bsc#1272534)
+- Fix hasCredentials() to require both username AND password to
+  be non-empty (bsc#1273242)
+  This avoids an unnecessary 2nd 401 response sending just the
+  username in case the username but no password is known. Now it
+  immediately fetches the credentials from disk if no password is
+  known.
+- GPG Key hints in repoindex.xml require at least a long id to
+  allow auto-import (bsc#1271730)
+  The short Id (32bit/8byte) is not considered to be a safe
+  identifier for a gpg key. A long id (64bit/16byte) or even better
+  the full fingerprint is needed to identify the key.
+- zypp: Improve Testcase Loading for MCP Tools.
+- spec: Remove useless %bcond visibility_hidden (is always ON in
+  cmake)
+- version 17.38.15 (35)
+
+-------------------------------------------------------------------
 Fri Jun 19 17:50:45 CEST 2026 - ma@suse.de
 
 - zypp.conf: add solver.NoUpdateProvide (default: false) option.

@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.uk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-09-06 21:13+0000\n"
+"PO-Revision-Date: 2026-09-09 13:13+0000\n"
 "Last-Translator: Eugene Krater <lachend@gmail.com>\n"
 "Language-Team: Ukrainian <https://l10n.opensuse.org/projects/libzypp/master/"
 "uk/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2026.9\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -5234,30 +5234,30 @@ msgstr "встановлюваний %1% замінює “%2%”, необхі�
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
-msgstr ""
+msgstr "встановлюваний %1% замінює %2%, необхідний для встановленого %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1237
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
-msgstr ""
+msgstr "встановлений %1% конфліктує з “%2%”, наданим самим собою"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
-msgstr ""
+msgstr "встановлюваний %1% конфліктує з “%2%”, наданий самим собою"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1271
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
-msgstr ""
+msgstr "встановлений %1% потребує «%2%», але цю вимогу неможливо виконати"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
 "provided"
-msgstr ""
+msgstr "Встановлюваний %1% вимагає “%2%”, але ця вимога не може бути виконана"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1275
 msgid "deleted providers: "
@@ -5279,13 +5279,13 @@ msgstr "залежності без можливості встановленн�
 #: zypp/zypp/solver/detail/SATResolver.cc:1324
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
-msgstr ""
+msgstr "%1% ще не повністю інтегровано в %2%."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1325
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
-msgstr ""
+msgstr "Зазвичай Ви зберігаєте PTF та обираєте не встановлювати виправлення."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1333
@@ -5294,6 +5294,8 @@ msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
 "included PTF-packages too."
 msgstr ""
+"Видалення встановленого %1% у цьому контексті призведе до видалення (а не "
+"заміни!) включених PTF-пакетів."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1334
 #, boost-format
@@ -5301,42 +5303,44 @@ msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
 "PTF-packages rather than removing them."
 msgstr ""
+"PTF слід видалити, виконавши команду «%1%». Це призведе до оновлення "
+"включених пакетів PTF, а не до їх видалення."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1335
 msgid "Typically you want to keep the PTF or choose to cancel the action."
-msgstr ""
+msgstr "Зазвичай ви хочете зберегти PTF або вирішуєте скасувати цю дію."
 
 #. translator: %1% is the name of a PTF.
 #: zypp/zypp/solver/detail/SATResolver.cc:1340
 #, boost-format
 msgid "The installed %1% blocks the desired action."
-msgstr ""
+msgstr "Встановлений %1% блокує потрібну дію."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1341
 msgid "Typically you want to keep the PTF and choose to cancel the action."
-msgstr ""
+msgstr "Зазвичай ви зберігаєте PTF і скасовуєте цю дію."
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1398
 #, boost-format
 msgid "remove lock to allow removal of %1%"
-msgstr ""
+msgstr "зняти блокування, щоб дозволити видалення %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1405
 #: zypp/zypp/solver/detail/SATResolver.cc:1443
 #, boost-format
 msgid "do not install %1%"
-msgstr ""
+msgstr "не встановлювати %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1422
 #: zypp/zypp/solver/detail/SATResolver.cc:1464
 #, boost-format
 msgid "keep %1%"
-msgstr ""
+msgstr "залишити %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1427
 #, boost-format
 msgid "remove lock to allow installation of %1%"
-msgstr ""
+msgstr "зняти блокування, щоб дозволити встановлення %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1478
 #: zypp/zypp/solver/detail/SATResolver.cc:1499
@@ -5351,7 +5355,7 @@ msgstr "ігнорувати попередження про пошкоджен�
 #: zypp/zypp/solver/detail/SATResolver.cc:1484
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
-msgstr ""
+msgstr "не питати дозволу на встановлення рішення, що надає %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1506
 #, boost-format

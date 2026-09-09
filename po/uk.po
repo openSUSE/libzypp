@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: zypp.uk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-12 15:45+0200\n"
-"PO-Revision-Date: 2026-09-09 13:13+0000\n"
+"PO-Revision-Date: 2026-09-09 20:13+0000\n"
 "Last-Translator: Eugene Krater <lachend@gmail.com>\n"
 "Language-Team: Ukrainian <https://l10n.opensuse.org/projects/libzypp/master/"
 "uk/>\n"
@@ -5360,32 +5360,32 @@ msgstr "не питати дозволу на встановлення ріше�
 #: zypp/zypp/solver/detail/SATResolver.cc:1506
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
-msgstr ""
+msgstr "не питати дозволу на видалення всіх рішень, що надають %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1519
 #, boost-format
 msgid "do not install most recent version of %1%"
-msgstr ""
+msgstr "не встановлювати найновішу версію %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1540
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
-msgstr ""
+msgstr "зберегти %1%, незважаючи на гіршу архітектуру"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1545
 #, boost-format
 msgid "install %1% despite the inferior architecture"
-msgstr ""
+msgstr "встановити %1%, незважаючи на нижчу архітектуру"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1554
 #, boost-format
 msgid "keep obsolete %1%"
-msgstr ""
+msgstr "залишити застарілий %1%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1559
 #, boost-format
 msgid "install %1% from excluded repository"
-msgstr ""
+msgstr "встановити %1% із виключеного репозиторію"
 
 #. translator: %1% is a package name
 #: zypp/zypp/solver/detail/SATResolver.cc:1573
@@ -5408,12 +5408,12 @@ msgstr "встановити %1% хоч він і був у чорному сп�
 #: zypp/zypp/solver/detail/SATResolver.cc:1599
 #, boost-format
 msgid "downgrade of %1% to %2%"
-msgstr ""
+msgstr "понизити версію %1% до %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "architecture change of %1% to %2%"
-msgstr ""
+msgstr "змінити архітектуру %1% на %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
 #: zypp/zypp/solver/detail/SATResolver.cc:1617
@@ -5422,6 +5422,8 @@ msgid ""
 "install %1% (with vendor change)\n"
 "  %2%  -->  %3%"
 msgstr ""
+"встановити %1% (зі зміною постачальника)\n"
+"  %2%  -->  %3%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1622
 #, boost-format
@@ -5429,33 +5431,35 @@ msgid ""
 "install %1% from vendor %2%\n"
 "  replacing %3% from vendor %4%"
 msgstr ""
+"встановити %1% від постачальника %2%\n"
+"  замість %3% від постачальника %4%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1631
 #, boost-format
 msgid "replacement of %1% with %2%"
-msgstr ""
+msgstr "заміна %1% на %2%"
 
 #: zypp/zypp/solver/detail/SATResolver.cc:1642
 #, boost-format
 msgid "deinstallation of %1%"
-msgstr ""
+msgstr "видалення %1%"
 
 #. Translator: progress bar label
 #: zypp/zypp/target/RpmPostTransCollector.cc:201
 msgid "Running post-transaction scripts"
-msgstr ""
+msgstr "Виконання скриптів після транзакції"
 
 #. Translator: progress bar label; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:203
 #, boost-format
 msgid "Running %1% script"
-msgstr ""
+msgstr "Виконання скрипта %1%"
 
 #. Translator: headline; %1% is a script identifier like '%posttrans(mypackage-2-0.noarch)'
 #: zypp/zypp/target/RpmPostTransCollector.cc:205
 #, boost-format
 msgid "%1% script output:"
-msgstr ""
+msgstr "Вихідні дані скрипта %1%:"
 
 #: zypp/zypp/target/TargetException.cc:27
 msgid "Installation has been aborted as directed."
@@ -5498,42 +5502,44 @@ msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
 "is not possible to cancel a running rpm transaction."
 msgstr ""
+"Отримано сигнал: «%1% (%2%)»; з метою забезпечення узгодженості системи "
+"неможливо скасувати транзакцію rpm, що виконується."
 
 #: zypp/zypp/target/TargetImpl.cc:2846
 msgid "Executing the transaction failed because of the following problems:"
-msgstr ""
+msgstr "Транзакція не відбулася через такі проблеми:"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:105
 msgid "no mirror found"
-msgstr ""
+msgstr "дзеркала не знайдено"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:111
 msgid "could not create target file"
-msgstr ""
+msgstr "не вдалося створити цільовий файл"
 
 #: zypp/zypp/target/commitpackagepreloader.cc:123
 #, boost-format
 msgid "Error: Failed to initialize transfer settings (%1%)."
-msgstr ""
+msgstr "Помилка: Не вдалося ініціалізувати параметри передачі (%1%)."
 
 #. if we have the file already, no need to download again
 #: zypp/zypp/target/commitpackagepreloader.cc:140
 msgid "already in cache"
-msgstr ""
+msgstr "вже наявний в кеші"
 
 #. error
 #: zypp/zypp/target/commitpackagepreloader.cc:287
 msgid "failed to rename temporary file."
-msgstr ""
+msgstr "не вдалося перейменувати тимчасовий файл."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:315
 #, boost-format
 msgid "Error: \"%1%\", trying next mirror."
-msgstr ""
+msgstr "Помилка: «%1%», переходимо до наступного дзеркала."
 
 #: zypp/zypp/target/commitpackagepreloader.cc:652
 msgid "Cancelled by user."
-msgstr ""
+msgstr "Скасовано користувачем."
 
 #. TranslatorExplanation after semicolon is error message
 #. TranslatorExplanation the colon is followed by an error message
@@ -5556,11 +5562,11 @@ msgstr "Не вдалося вилучити відкрити ключ %1%"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1268
 msgid "Package header is not signed!"
-msgstr ""
+msgstr "Заголовок пакета не підписано!"
 
 #: zypp/zypp/target/rpm/RpmDb.cc:1270
 msgid "Package payload is not signed!"
-msgstr ""
+msgstr "Вміст пакета не підписано!"
 
 #. Translator: %s = name of an rpm package. A list of diffs follows
 #. this message.

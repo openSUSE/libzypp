@@ -124,7 +124,11 @@ namespace zyppng {
       setCurlOption( CURLOPT_PIPEWAIT, 1L);
 #endif
 #if CURLVERSION_AT_LEAST(7,66,0)
+    try {
       setCurlOption( CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_3);
+    } catch (...) {
+      /* Entirely optional, may not be supported by curl, openssl etc.. */
+    }
 #endif
 
       std::string urlBuffer( _url.asString() );

@@ -308,7 +308,7 @@ namespace zypp
     {
       const auto &contentLen = getHeaderNT( zypp::PluginFrame::contentLengthHeader(), std::string() );
       if ( !contentLen.empty() ) {
-        cLen = zyppng::str::safe_strtonum<uint64_t>(contentLen);
+        cLen = zyppng::str::strict_strtonum<uint64_t>(contentLen);
         if ( !cLen ) {
           ERR << "Received malformed message from peer: Invalid value for " << zypp::PluginFrame::contentLengthHeader() << ":" << contentLen << std::endl;
           ZYPP_THROW( PluginFrameException( "Invalid value for content-length." ) );

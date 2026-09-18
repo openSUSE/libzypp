@@ -192,7 +192,7 @@ void zyppng::AbstractDirectSpawnEngine::mapExtraFds ( int controlFd )
       if ( entry.type != zypp::filesystem::FT_LINK)
         return true;
 
-      const auto &fdVal = zyppng::str::safe_strtonum<int>( entry.name );
+      const auto &fdVal = zyppng::str::strict_strtonum<int>( entry.name );
       if ( !fdVal || !canCloseFd(*fdVal) )
         return true;
 

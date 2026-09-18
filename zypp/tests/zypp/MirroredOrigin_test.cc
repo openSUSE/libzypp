@@ -146,8 +146,34 @@ BOOST_AUTO_TEST_CASE(clean_mirrors_on_auth_change)
     // should retain original order
     BOOST_CHECK_EQUAL( origin[1], OriginEndpoint{http_mirror1} );
     BOOST_CHECK_EQUAL( origin[2], OriginEndpoint{https_auth} );
+
+    // specifying the authority to be a non downloading scheme should remove all downloading ones as well
+    origin.setAuthority( file_auth );
+    BOOST_CHECK(origin.isValid());
+    BOOST_CHECK(!origin.schemeIsDownloading());
+    BOOST_CHECK(!origin.authority().schemeIsDownloading());
+    BOOST_CHECK_EQUAL( origin.mirrors ().size(), 0 );
 }
 
+BOOST_AUTO_TEST_CASE(non_downloading_different_schemes_incompatible)
+{
+    BOOST_TEST_MESSAGE("Testing MirroredOrigin: Non-downloading schemes with different types should be incompatible...");
+    // dvd and file are both non-downloading, but they are different schemes
+    // They should NOT be compatible - you can't use a file mirror for a dvd authority
+    MirroredOrigin origin(dvd_auth);
+
+    // Adding a file mirror to a dvd authority should fail because they are different non-downloading schemes
+    BOOST_CHECK_EQUAL(
+                origin.addMirror(file_auth),
+                false
+                );
+    BOOST_CHECK_EQUAL( origin.mirrors().size(), 0 );
+
+    // Adding another dvd mirror should work (same scheme)
+    OriginEndpoint dvd_mirror{Url("dvd:///mnt/backup_dvd")};
+    BOOST_CHECK_EQUAL( origin.addMirror(dvd_mirror), true );
+    BOOST_CHECK_EQUAL( origin.mirrors().size(), 1 );
+}
 
 BOOST_AUTO_TEST_CASE(iteration_and_access)
 {

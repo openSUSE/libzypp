@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 21 17:23:26 CEST 2026 - ma@suse.de
+
+- BuildRequires:  %{libsolv_devel_package} >= 0.7.40 (bsc#1279541)
+  This fix resolves issues in online migrations to SLES 16.1.
+- version 17.38.16 (35)
+
+-------------------------------------------------------------------
 Fri Sep  4 16:27:14 CEST 2026 - ma@suse.de
 
 - Prevent libgpgme from launching gpg-agents; we don't need them.

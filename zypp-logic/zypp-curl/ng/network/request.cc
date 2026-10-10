@@ -299,7 +299,7 @@ namespace zyppng {
       if ( locSet.minDownloadSpeed() != 0 )
       {
         setCurlOption(CURLOPT_LOW_SPEED_LIMIT, locSet.minDownloadSpeed());
-        // default to 10 seconds at low speed
+        // abort if the speed stays below the limit for 60 seconds (bnc#877405)
         setCurlOption(CURLOPT_LOW_SPEED_TIME, 60L);
       }
 

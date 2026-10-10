@@ -123,7 +123,7 @@ The concrete list is in fact controlled via *zypper*'s *locales*, *addlocale* an
 
 // --------------------------------------------------------------------------------
 *download.min_download_speed* (_0 B/sec_)::
-    Sets the minimum download speed (in Byte per second) until the connection is dropped. *0* means no limit.
+    Sets the minimum download speed (in Byte per second) until the connection is dropped. The transfer is aborted if the average speed stays below this limit for 60 seconds. *0* means no limit.
 +
 This can be useful to prevent security attacks on hosts by providing updates at very low speeds.
 

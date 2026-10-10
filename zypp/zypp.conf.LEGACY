@@ -181,7 +181,8 @@
 
 ##
 ## Sets the minimum download speed (bytes per second)
-## until the connection is dropped
+## until the connection is dropped. The transfer is aborted
+## if the speed stays below this limit for 60 seconds.
 ## This can be useful to prevent security attacks on hosts by
 ## providing updates at very low speeds.
 ##

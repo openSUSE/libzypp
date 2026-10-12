@@ -274,10 +274,12 @@ zypp_add_sources( zyppng_base_SRCS
 
 zypp_add_sources( zyppng_config_SRCS
   ng/config/config.cc
+  ng/config/configparsers.cc
 )
 
 zypp_add_sources( zyppng_config_HEADERS
   ng/config/config.h
+  ng/config/configparsers.h
 )
 
 zypp_add_sources( zyppng_base_HEADERS

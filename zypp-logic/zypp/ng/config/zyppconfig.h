@@ -27,6 +27,7 @@
 #include <zypp-core/Pathname.h>
 #include <zypp-core/TriBool.h>
 #include <zypp-core/ng/config/config.h>
+#include <zypp-core/ng/config/configparsers.h>
 #include <zypp/Arch.h>
 #include <zypp/DownloadMode.h>
 #include <zypp/Locale.h>
@@ -40,43 +41,23 @@ namespace zyppng::config {
   // Return expected<T> — on failure the error holds a std::exception_ptr.
   // ---------------------------------------------------------------------------
 
-  expected<bool>                      parseBool          ( std::string_view s );
-  expected<long>                      parseLong          ( std::string_view s );
-  expected<unsigned>                  parseUnsigned      ( std::string_view s );
-  expected<std::string>               parseString        ( std::string_view s );
   expected<zypp::Arch>                parseArch          ( std::string_view s );
   expected<zypp::Locale>              parseLocale        ( std::string_view s );
   expected<zypp::LocaleSet>           parseLocaleSet     ( std::string_view s );  ///< splits on ", \t"
-  expected<zypp::TriBool>             parseTriBool       ( std::string_view s );
   expected<zypp::ResolverFocus>       parseResolverFocus ( std::string_view s );
   expected<zypp::DownloadMode>        parseDownloadMode  ( std::string_view s );
-  expected<std::set<std::string>>     parseStringSet     ( std::string_view s );  ///< splits on ", \t"
-  /**
-   * Parse a filesystem path from a config value.
-   * zypp::Pathname normalises on construction; a relative path that still
-   * starts with "./.." (relativeDotDot()) could escape a chroot root when
-   * composed with root() and is rejected.
-   * Absolute paths and paths like "some/../dir" (normalises to "./dir") are accepted.
-   */
-  expected<zypp::Pathname>            parsePath          ( std::string_view s );
 
   // ---------------------------------------------------------------------------
   // Serialize helpers — declared here, implemented in zyppconfig.cc
   // Must round-trip with their corresponding parse helpers.
+  // (Core-type helpers live in zypp-core/ng/config/configparsers.h)
   // ---------------------------------------------------------------------------
 
-  std::string serializeBool       ( const bool & v );
-  std::string serializeLong       ( const long & v );
-  std::string serializeUnsigned   ( const unsigned & v );
-  std::string serializeString     ( const std::string & v );
-  std::string serializePath       ( const zypp::Pathname & v );
   std::string serializeArch       ( const zypp::Arch & v );
   std::string serializeLocale     ( const zypp::Locale & v );
   std::string serializeLocaleSet  ( const zypp::LocaleSet & v );
-  std::string serializeTriBool    ( const zypp::TriBool & v );
   std::string serializeResolverFocus( const zypp::ResolverFocus & v );
   std::string serializeDownloadMode ( const zypp::DownloadMode & v );
-  std::string serializeStringSet  ( const std::set<std::string> & v );
 
   // ---------------------------------------------------------------------------
   // Default helpers — declared here, implemented in zyppconfig.cc

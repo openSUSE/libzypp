@@ -164,6 +164,9 @@ namespace zyppng::config {
 
   void registerZyppKeys( Config & cfg )
   {
+    // Media-tier keys first (credentials, geoip, download transport)
+    registerMediaKeys( cfg );
+
     // ── Architecture ───────────────────────────────────────────────────────
     cfg.registerKey( SystemArchitecture );
 
@@ -183,22 +186,12 @@ namespace zyppng::config {
     cfg.registerKey( VendorPath );
     cfg.registerKey( LocksFile );
     cfg.registerKey( HistoryLogFile );
-    cfg.registerKey( CredentialsDir );
-    cfg.registerKey( CredentialsFile );
 
     // ── Repository behaviour ───────────────────────────────────────────────
     cfg.registerKey( RepoAddProbe );
     cfg.registerKey( RepoRefreshDelay );
-    cfg.registerKey( GeoipEnabled );
 
-    // ── Download transport ─────────────────────────────────────────────────
-    cfg.registerKey( MaxConcurrentConnections );
-    cfg.registerKey( MinDownloadSpeed );
-    cfg.registerKey( MaxDownloadSpeed );
-    cfg.registerKey( MaxSilentTries );
-    cfg.registerKey( TransferTimeout );
-    cfg.registerKey( ConnectTimeout );
-    cfg.registerKey( MediaMountDir );
+    // ── Download behaviour ─────────────────────────────────────────────────
     cfg.registerKey( UseDeltarpm );
     cfg.registerKey( UseDeltarpmAlways );
     cfg.registerKey( MediaPreferDownload );
@@ -255,8 +248,6 @@ namespace zyppng::config {
 
     // ── Geoip ──────────────────────────────────────────────────────────────
     cfg.registerKey( GeoipCachePath );
-    cfg.registerKey( GeoipHostnames );
-
     // ── Distro / repo label ────────────────────────────────────────────────
     cfg.registerKey( Distroverpkg );
     cfg.registerKey( RepoLabelIsAlias );

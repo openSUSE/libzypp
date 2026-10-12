@@ -39,6 +39,9 @@ export namespace zyppng::config {
     // ── ParseError ────────────────────────────────────────────────────────
     using ::zyppng::config::ParseError;
 
+    // ── Media-tier key registration (zypp-media/ng/config/mediakeys.h) ────
+    using ::zyppng::config::registerMediaKeys;
+
     // ── Parse helpers ─────────────────────────────────────────────────────
     using ::zyppng::config::parseBool;
     using ::zyppng::config::parseLong;

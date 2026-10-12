@@ -28,6 +28,7 @@
 #include <zypp-core/TriBool.h>
 #include <zypp-core/ng/config/config.h>
 #include <zypp-core/ng/config/configparsers.h>
+#include <zypp-media/ng/config/mediakeys.h>
 #include <zypp/Arch.h>
 #include <zypp/DownloadMode.h>
 #include <zypp/Locale.h>
@@ -144,21 +145,8 @@ namespace zyppng::config {
     [](const Config&) { return zypp::Pathname("/var/log/zypp/history"); },
     parsePath, serializePath };
 
-  // Credentials
-  inline constexpr Key<zypp::Pathname> CredentialsDir {
-    "media/credentials.dir", "credentials.global.dir",
-    [](const Config&) { return zypp::Pathname("/etc/zypp/credentials.d"); },
-    parsePath, serializePath };
-  inline constexpr Key<zypp::Pathname> CredentialsFile {
-    "media/credentials.file", "credentials.global.file",
-    [](const Config&) { return zypp::Pathname("/etc/zypp/credentials.cat"); },
-    parsePath, serializePath };
-
-  // ── Geo IP behaviour ──────────────────────────────────────────────────────
-  inline constexpr Key<bool> GeoipEnabled {
-    "media/geoip.enabled", "download.use_geoip_mirror",
-    [](const Config&) { return true; },
-    parseBool, serializeBool };
+  // Credentials, Geo IP enabled/hostnames and download transport keys live in
+  // zypp-media/ng/config/mediakeys.h
 
   // Geoip cache — derived from repoCachePath in legacy
   inline constexpr Key<zypp::Pathname> GeoipCachePath {
@@ -177,62 +165,7 @@ namespace zyppng::config {
     [](const Config&) { return 10u; },
     parseUnsigned, serializeUnsigned };
 
-  // ── Download transport (mapped to "media/" section) ───────────────────────
-  inline constexpr Key<long> MaxConcurrentConnections {
-    "media/max_concurrent_connections", "download.max_concurrent_connections",
-    [](const Config&) { return 5L; },
-    parseLong, serializeLong };
-
-  inline constexpr Key<long> MinDownloadSpeed {
-    "media/min_download_speed", "download.min_download_speed",
-    [](const Config&) { return 0L; },
-    parseLong, serializeLong };
-
-  inline constexpr Key<long> MaxDownloadSpeed {
-    "media/max_download_speed", "download.max_download_speed",
-    [](const Config&) { return 0L; },
-    parseLong, serializeLong };
-
-  inline constexpr Key<long> MaxSilentTries {
-    "media/max_silent_tries", "download.max_silent_tries",
-    [](const Config&) { return 1L; },
-    parseLong, serializeLong };
-
-  inline constexpr Key<long> TransferTimeout {
-    "media/transfer_timeout", "download.transfer_timeout",
-    [](const Config&) { return 180L; },
-    // clamped [0, 3600] — matches legacy ZConfig/MediaConfig behaviour
-    [](std::string_view s) -> expected<long> {
-      const auto& expV = parseLong(s);
-      if (!expV) return expV;
-      long v = *expV;
-      if (v < 0)    v = 0;
-      if (v > 3600) v = 3600;
-      return v;
-    },
-    serializeLong };
-
-  inline constexpr Key<long> ConnectTimeout {
-    "media/connect_timeout", "download.connect_timeout",
-    [](const Config&) { return 60L; },
-    // clamped [0, ∞) — negative values silently become 0
-    [](std::string_view s) -> expected<long> {
-      const auto& expV = parseLong(s);
-      if (!expV) return expV;
-      return std::max(0L, *expV);
-    },
-    serializeLong };
-
-  // Host-relative (not root-relative) — the download machinery mounts
-  // physical media on the running host, not inside the managed root.
-  inline constexpr Key<zypp::Pathname> MediaMountDir {
-    "media/media_mountdir", "download.media_mountdir",
-    [](const Config&) { return zypp::Pathname("/var/adm/mount"); },
-    [](std::string_view s) -> expected<zypp::Pathname> {
-      return zypp::Pathname( std::string(s) );
-    },
-    serializePath };
-
+  // ── Download behaviour ────────────────────────────────────────────────────
   inline constexpr Key<bool> UseDeltarpm {
     "media/use_deltarpm", "download.use_deltarpm",
     [](const Config&) { return bool(LIBZYPP_CONFIG_USE_DELTARPM_BY_DEFAULT); },
@@ -409,16 +342,6 @@ namespace zyppng::config {
     "main/distroverpkg", "",
     [](const Config&) { return std::string{"system-release"}; },
     parseString, serializeString };
-
-  // ── Geoip hostnames ───────────────────────────────────────────────────────
-  inline constexpr Key<std::set<std::string>> GeoipHostnames {
-    "main/geoip.hosts", "",
-    [](const Config&) {
-      std::set<std::string> hosts;
-      hosts.insert("download.opensuse.org");
-      return hosts;
-    },
-    parseStringSet, serializeStringSet };
 
   // ── Repository label preference ───────────────────────────────────────────
   inline constexpr Key<bool> RepoLabelIsAlias {

@@ -594,4 +594,22 @@ BOOST_AUTO_TEST_CASE(serialize_parseFromString_errors)
     BOOST_CHECK( found );
 }
 
+// ── Media key tier ───────────────────────────────────────────────────────
+
+BOOST_AUTO_TEST_CASE(media_keys_registered_by_zypp_keys)
+{
+    ContextConfig cfg( zypp::Pathname("/") );
+    registerZyppKeys( cfg );
+    BOOST_CHECK( cfg.hasRegisteredKey("media/transfer_timeout") );
+    BOOST_CHECK( cfg.hasRegisteredKey("media/credentials.dir") );
+}
+
+BOOST_AUTO_TEST_CASE(media_only_registry)
+{
+    ContextConfig cfg( zypp::Pathname("/") );
+    registerMediaKeys( cfg );
+    BOOST_CHECK(  cfg.hasRegisteredKey("media/transfer_timeout") );
+    BOOST_CHECK( !cfg.hasRegisteredKey("main/arch") );
+}
+
 BOOST_AUTO_TEST_SUITE_END()

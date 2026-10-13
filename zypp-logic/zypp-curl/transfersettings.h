@@ -152,6 +152,12 @@ namespace zypp
       /** Minimum download speed (bytes per second) until the connection is dropped */
       long minDownloadSpeed() const;
 
+      /** Set the time in seconds that the transfer speed must remain below \ref minDownloadSpeed before the transfer is aborted. */
+      void setMinDownloadSpeedTime(long v);
+
+      /** The time in seconds that the transfer speed must remain below \ref minDownloadSpeed before the transfer is aborted. */
+      long minDownloadSpeedTime() const;
+
 
       /** Set max download speed (bytes per second) */
       void setMaxDownloadSpeed(long v);

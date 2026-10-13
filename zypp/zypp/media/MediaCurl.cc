@@ -483,7 +483,7 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
   if ( settings.minDownloadSpeed() != 0 )
   {
       SET_OPTION(CURLOPT_LOW_SPEED_LIMIT, settings.minDownloadSpeed());
-      SET_OPTION(CURLOPT_LOW_SPEED_TIME, 60L);
+      SET_OPTION(CURLOPT_LOW_SPEED_TIME, settings.minDownloadSpeedTime());
   }
 
 #if CURLVERSION_AT_LEAST(7,15,5)

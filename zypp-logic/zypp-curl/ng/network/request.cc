@@ -299,7 +299,7 @@ namespace zyppng {
       if ( locSet.minDownloadSpeed() != 0 )
       {
         setCurlOption(CURLOPT_LOW_SPEED_LIMIT, locSet.minDownloadSpeed());
-        setCurlOption(CURLOPT_LOW_SPEED_TIME, 60L);
+        setCurlOption(CURLOPT_LOW_SPEED_TIME, locSet.minDownloadSpeedTime());
       }
 
 #if CURLVERSION_AT_LEAST(7,15,5)

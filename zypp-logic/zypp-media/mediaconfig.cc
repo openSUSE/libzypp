@@ -22,6 +22,7 @@ namespace zypp {
     MediaConfigPrivate()
       : download_max_concurrent_connections( 5 )
       , download_min_download_speed	( 0 )
+      , download_min_download_speed_time( 60 )
       , download_max_download_speed	( 0 )
       , download_max_silent_tries	( 1 )
       , download_transfer_timeout	( 180 )
@@ -33,6 +34,7 @@ namespace zypp {
 
     int download_max_concurrent_connections;
     int download_min_download_speed;
+    int download_min_download_speed_time;
     int download_max_download_speed;
     int download_max_silent_tries;
     int download_transfer_timeout;
@@ -66,6 +68,10 @@ namespace zypp {
 
       } else if ( entry == "download.min_download_speed" ) {
         str::strtonum(value, d->download_min_download_speed);
+        return true;
+
+      } else if ( entry == "download.min_download_speed_time" ) {
+        str::strtonum(value, d->download_min_download_speed_time);
         return true;
 
       } else if ( entry == "download.max_download_speed" ) {
@@ -111,6 +117,9 @@ namespace zypp {
 
   long MediaConfig::download_min_download_speed() const
   { return d_func()->download_min_download_speed; }
+
+  long MediaConfig::download_min_download_speed_time() const
+  { return d_func()->download_min_download_speed_time; }
 
   long MediaConfig::download_max_download_speed() const
   { return d_func()->download_max_download_speed; }

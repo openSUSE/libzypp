@@ -41,6 +41,7 @@ namespace zypp
         _connect_timeout( MediaConfig::instance().download_connect_timeout() ),
         _maxConcurrentConnections( MediaConfig::instance().download_max_concurrent_connections() ),
         _minDownloadSpeed(MediaConfig::instance().download_min_download_speed()),
+        _minDownloadSpeedTime(MediaConfig::instance().download_min_download_speed_time()),
         _maxDownloadSpeed(MediaConfig::instance().download_max_download_speed()),
         _maxSilentTries(MediaConfig::instance().download_max_silent_tries() ),
         _verify_host(false),
@@ -97,6 +98,7 @@ namespace zypp
 
       long _maxConcurrentConnections;
       long _minDownloadSpeed;
+      long _minDownloadSpeedTime;
       long _maxDownloadSpeed;
       long _maxSilentTries;
 
@@ -253,6 +255,13 @@ namespace zypp
 
     long TransferSettings::minDownloadSpeed() const
     { return _impl->_minDownloadSpeed; }
+
+
+    void TransferSettings::setMinDownloadSpeedTime( long v )
+    { _impl->_minDownloadSpeedTime = v; }
+
+    long TransferSettings::minDownloadSpeedTime() const
+    { return _impl->_minDownloadSpeedTime; }
 
 
     void TransferSettings::setMaxDownloadSpeed( long v )

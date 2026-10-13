@@ -56,7 +56,7 @@ namespace zyppng::config {
   std::string serializeString     ( const std::string & v );
   std::string serializePath       ( const zypp::Pathname & v );
   std::string serializeTriBool    ( const zypp::TriBool & v );
-  std::string serializeStringSet  ( const std::set<std::string> & v );
+  std::string serializeStringSet  ( const std::set<std::string> & v );  ///< escapes separators/quotes; round-trips with parseStringSet
 
 } // namespace zyppng::config
 

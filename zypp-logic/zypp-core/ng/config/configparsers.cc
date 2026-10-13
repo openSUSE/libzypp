@@ -71,13 +71,11 @@ namespace zyppng::config {
 
   expected<zypp::TriBool> parseTriBool( std::string_view s )
   {
+    // Exactly legacy ZConfig (repo_gpgcheck / pkg_gpgcheck): true token → true,
+    // false token → false, anything else → indeterminate ("defer to the master
+    // gpgcheck switch"). Unrecognised input is NOT an error.
     try {
-      bool val = false;
-      if ( zypp::str::strToBoolNodefault( std::string(s).c_str(), val ) )
-        return zypp::TriBool(val);
-      // indeterminate is not an error — it is a valid config value meaning
-      // "defer to the master gpgcheck switch".
-      return zypp::TriBool(zypp::indeterminate);
+      return zypp::str::strToTriBool( std::string(s).c_str() );
     } catch (...) {
       return unexpected( std::current_exception() );
     }
@@ -139,10 +137,21 @@ namespace zyppng::config {
 
   std::string serializeStringSet( const std::set<std::string> & v )
   {
+    // Must round-trip through parseStringSet (zypp::str::splitEscaped, separators
+    // ", \t"). Outside quotes a backslash makes the next character literal, so
+    // every separator and quoting character inside an element is backslash-escaped
+    // (str::joinEscaped() is not usable: it only escapes ONE separator character).
+    // An empty element can only be expressed as an empty quote pair ''.
+    // Plain values ("download.opensuse.org") are emitted unchanged.
     std::string result;
+    bool first = true;
     for ( const auto & s : v ) {
-      if ( !result.empty() ) result += ", ";
-      result += s;
+      if ( !first ) result += ", ";
+      first = false;
+      if ( s.empty() )
+        result += "''";
+      else
+        result += zypp::str::bEscape( s, ", \t'\"" );   // also escapes '\\' itself
     }
     return result;
   }

@@ -3,4 +3,5 @@ ADD_DEFINITIONS( -DTESTS_SRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}" )
 ADD_TESTS(
         Config
         ConfigCompat
+        ConfigParsers
 )

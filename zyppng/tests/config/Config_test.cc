@@ -612,4 +612,42 @@ BOOST_AUTO_TEST_CASE(media_only_registry)
     BOOST_CHECK( !cfg.hasRegisteredKey("main/arch") );
 }
 
+// ── serializeEntries / parseEntries ───────────────────────────────────────
+
+BOOST_AUTO_TEST_CASE(serialize_entries_roundtrip)
+{
+    ContextConfig a( zypp::Pathname("/") );
+    registerZyppKeys( a );
+    a.set( GpgCheck, false );
+    a.set( TransferTimeout, 42L );
+    a.set( RepoCachePath, zypp::Pathname("/custom/cache") );
+    a.setRaw( "preview/single_rpmtrans", "true" );
+
+    ContextConfig b( zypp::Pathname("/") );
+    registerZyppKeys( b );
+    auto errs = b.parseEntries( a.serializeEntries() );
+
+    BOOST_CHECK( errs.empty() );
+    BOOST_CHECK_EQUAL( b.get(GpgCheck), false );
+    BOOST_CHECK_EQUAL( b.get(TransferTimeout), 42L );
+    BOOST_CHECK_EQUAL( b.get(RepoCachePath), zypp::Pathname("/custom/cache") );
+    BOOST_CHECK_EQUAL( b.getRaw("preview/single_rpmtrans").value_or(""), "true" );
+}
+
+BOOST_AUTO_TEST_CASE(media_registry_accepts_full_host_entries)
+{
+    ContextConfig host( zypp::Pathname("/") );
+    registerZyppKeys( host );
+    host.set( TransferTimeout, 42L );
+
+    // Worker only knows the media keys; app keys must be kept as raw strings.
+    ContextConfig worker( zypp::Pathname("/") );
+    registerMediaKeys( worker );
+    auto errs = worker.parseEntries( host.serializeEntries() );
+
+    BOOST_CHECK( errs.empty() );
+    BOOST_CHECK_EQUAL( worker.get(TransferTimeout), 42L );
+    BOOST_CHECK( worker.getRaw("main/arch").has_value() );
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -406,6 +406,22 @@ public:
      */
     std::string serialize() const;
 
+    /**
+     * Effective value of every registered key plus every raw/unknown key,
+     * canonical "section/keyname" -> serialized string. Same value rules as
+     * serialize(). Used for transports that cannot carry multi-line INI text
+     * (e.g. one STOMP header per key).
+     */
+    std::map<std::string, std::string> serializeEntries() const;
+
+    /**
+     * Parse canonical-keyed entries (as produced by serializeEntries()).
+     * Same semantics as parse(): registered keys go through parseFn (errors
+     * collected), unknown keys are stored as raw std::string. Keys without a
+     * "section/" prefix are skipped.
+     */
+    std::vector<ParseError> parseEntries(const std::map<std::string, std::string> & entries);
+
 private:
     zypp::Pathname _root;
 
@@ -423,6 +439,13 @@ private:
 
     /** Parse all entries from \a dict into _entries. Returns parse errors. */
     std::vector<ParseError> parseDict(const zypp::parser::IniDict & dict);
+
+    /**
+     * Parse one entry: alias resolution → registry lookup → parseFn (errors
+     * appended to \a errors) or raw string storage for unknown keys.
+     */
+    void parseEntry(const std::string & section, const std::string & key,
+                    const std::string & value, std::vector<ParseError> & errors);
 };
 
 } // namespace zyppng::config

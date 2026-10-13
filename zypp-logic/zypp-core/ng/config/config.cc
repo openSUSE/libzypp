@@ -140,6 +140,48 @@ bool Config::hasRegisteredKey(std::string_view sectionKey) const
 // parseDict() — shared INI-dict-to-entries logic
 // ---------------------------------------------------------------------------
 
+void Config::parseEntry(const std::string & section,
+                        const std::string & rawKey,
+                        const std::string & rawValue,
+                        std::vector<ParseError> & errors)
+{
+    // Assemble canonical name: "section/key"
+    std::string canonical = section + "/" + rawKey;
+
+    // Check legacy alias remapping.
+    // First try the section-qualified form ("main/arch").
+    {
+        auto aIt = _aliasMap.find(canonical);
+        if (aIt != _aliasMap.end()) {
+            canonical = aIt->second;
+        } else {
+            // Fall back to the bare key name for legacy flat aliases
+            // (e.g. "arch" → "main/arch" registered without a section prefix).
+            auto aIt2 = _aliasMap.find(rawKey);
+            if (aIt2 != _aliasMap.end())
+                canonical = aIt2->second;
+        }
+    }
+
+    auto rIt = _registry.find(canonical);
+    if (rIt != _registry.end() && rIt->second.parseFn) {
+        // Known key — convert via registered parseFn.
+        auto result = rIt->second.parseFn(rawValue);
+        if ( result ) {
+            _entries[canonical].fileValue = std::move( result.get() );
+        } else {
+            // Collect error — fileValue left empty, key falls through
+            // to defaultFn at get() time.
+            errors.push_back( ParseError{ canonical, rawValue, result.error() } );
+        }
+    } else {
+        // Unknown key — store as raw string.
+        _entries[canonical].fileValue = std::any(rawValue);
+        DBG << "Config::parse — unknown key '" << canonical
+            << "' stored as raw string" << std::endl;
+    }
+}
+
 std::vector<ParseError> Config::parseDict(const zypp::parser::IniDict & dict)
 {
     std::vector<ParseError> errors;
@@ -150,45 +192,29 @@ std::vector<ParseError> Config::parseDict(const zypp::parser::IniDict & dict)
         for (auto eIt = dict.entriesBegin(section);
              eIt != dict.entriesEnd(section); ++eIt)
         {
-            const std::string & rawKey   = eIt->first;
-            const std::string & rawValue = eIt->second;
-
-            // Assemble canonical name: "section/key"
-            std::string canonical = section + "/" + rawKey;
-
-            // Check legacy alias remapping.
-            // First try the section-qualified form ("main/arch").
-            {
-                auto aIt = _aliasMap.find(canonical);
-                if (aIt != _aliasMap.end()) {
-                    canonical = aIt->second;
-                } else {
-                    // Fall back to the bare key name for legacy flat aliases
-                    // (e.g. "arch" → "main/arch" registered without a section prefix).
-                    auto aIt2 = _aliasMap.find(rawKey);
-                    if (aIt2 != _aliasMap.end())
-                        canonical = aIt2->second;
-                }
-            }
-
-            auto rIt = _registry.find(canonical);
-            if (rIt != _registry.end() && rIt->second.parseFn) {
-                // Known key — convert via registered parseFn.
-                auto result = rIt->second.parseFn(rawValue);
-                if ( result ) {
-                    _entries[canonical].fileValue = std::move( result.get() );
-                } else {
-                    // Collect error — fileValue left empty, key falls through
-                    // to defaultFn at get() time.
-                    errors.push_back( ParseError{ canonical, rawValue, result.error() } );
-                }
-            } else {
-                // Unknown key — store as raw string.
-                _entries[canonical].fileValue = std::any(rawValue);
-                DBG << "Config::parse — unknown key '" << canonical
-                    << "' stored as raw string" << std::endl;
-            }
+            parseEntry(section, eIt->first, eIt->second, errors);
         }
+    }
+
+    return errors;
+}
+
+// ---------------------------------------------------------------------------
+// parseEntries() — canonical "section/key" map (worker transport)
+// ---------------------------------------------------------------------------
+
+std::vector<ParseError> Config::parseEntries(const std::map<std::string, std::string> & entries)
+{
+    std::vector<ParseError> errors;
+
+    for (const auto & [canonical, value] : entries) {
+        const auto slash = canonical.find('/');
+        if (slash == std::string::npos) {
+            WAR << "Config::parseEntries — ignoring key without section: '"
+                << canonical << "'" << std::endl;
+            continue;
+        }
+        parseEntry(canonical.substr(0, slash), canonical.substr(slash + 1), value, errors);
     }
 
     return errors;
@@ -239,25 +265,19 @@ std::vector<ParseError> Config::parseFromString(std::string_view iniContent)
 // serialize()
 // ---------------------------------------------------------------------------
 
-std::string Config::serialize() const
+std::map<std::string, std::string> Config::serializeEntries() const
 {
-    // Build a sorted section → sorted key → value map so that:
-    // - Each section appears exactly once
-    // - Typed and raw keys in the same section are merged together
-    // - Output is deterministic (alphabetically sorted)
-    std::map<std::string, std::map<std::string, std::string>> sections;
+    // Canonical "section/keyname" → serialized value. std::map keeps the
+    // output deterministic (sorted) for serialize().
+    std::map<std::string, std::string> result;
 
     // Pass 1 — all registered keys: emit effective value via serializeFn.
     for (const auto & [canonicalName, meta] : _registry) {
         if (!meta.serializeFn || !meta.defaultFn)
             continue;
 
-        const auto slash = canonicalName.find('/');
-        if (slash == std::string::npos)
+        if (canonicalName.find('/') == std::string::npos)
             continue;
-
-        const std::string section = canonicalName.substr(0, slash);
-        const std::string keyname = canonicalName.substr(slash + 1);
 
         // Effective value: override → file → default
         std::any effectiveValue;
@@ -269,7 +289,7 @@ std::string Config::serialize() const
         else
             effectiveValue = meta.defaultFn(*this);
 
-        sections[section][keyname] = meta.serializeFn(effectiveValue);
+        result[canonicalName] = meta.serializeFn(effectiveValue);
     }
 
     // Pass 2 — raw/unknown keys not in the registry.
@@ -282,12 +302,25 @@ std::string Config::serialize() const
         if (!v.has_value() || v.type() != typeid(std::string))
             continue;
 
-        const auto slash = canonicalName.find('/');
-        if (slash == std::string::npos)
+        if (canonicalName.find('/') == std::string::npos)
             continue;
 
-        sections[canonicalName.substr(0, slash)][canonicalName.substr(slash + 1)]
-            = std::any_cast<const std::string &>(v);
+        result[canonicalName] = std::any_cast<const std::string &>(v);
+    }
+
+    return result;
+}
+
+std::string Config::serialize() const
+{
+    // Group canonical entries into sorted section → sorted key → value so that:
+    // - Each section appears exactly once
+    // - Typed and raw keys in the same section are merged together
+    // - Output is deterministic (alphabetically sorted)
+    std::map<std::string, std::map<std::string, std::string>> sections;
+    for (const auto & [canonicalName, value] : serializeEntries()) {
+        const auto slash = canonicalName.find('/');
+        sections[canonicalName.substr(0, slash)][canonicalName.substr(slash + 1)] = value;
     }
 
     // Render to INI text.

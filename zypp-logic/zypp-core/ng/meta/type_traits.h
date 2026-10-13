@@ -141,4 +141,20 @@ namespace zyppng {
   inline constexpr bool always_false_v = false;
 }
 
+// std::type_identity (C++20). Makes a parameter a non-deduced context, e.g.
+// set(const Key<T>&, zyppng::type_identity_t<T>) takes T from the key only.
+// Same pattern as ng/base/span.h and ng/base/ranges.h: re-export the standard
+// facility when available, otherwise provide a backport in namespace zyppng.
+#if defined(__cpp_lib_type_identity) && !defined(ZYPPNG_FORCE_TYPE_IDENTITY_POLYFILL)
+namespace zyppng {
+  using std::type_identity;
+  using std::type_identity_t;
+}
+#else
+namespace zyppng {
+  template< class T > struct type_identity { using type = T; };
+  template< class T > using type_identity_t = typename type_identity<T>::type;
+}
+#endif
+
 #endif

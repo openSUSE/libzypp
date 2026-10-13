@@ -96,15 +96,65 @@ std::optional<std::string> Config::getRaw(std::string_view sectionKey) const
     return std::nullopt;
 }
 
-void Config::setRaw(std::string_view sectionKey, std::string value)
+std::string Config::resolveCanonical(const std::string & section, const std::string & key) const
 {
-    const std::string k(sectionKey);
-    auto & entry = _entries[k];
-    entry.overrideValue = std::any(std::move(value));
+    std::string canonical = section + "/" + key;
+
+    // First try the section-qualified form ("main/arch").
+    auto aIt = _aliasMap.find(canonical);
+    if (aIt != _aliasMap.end())
+        return aIt->second;
+
+    // Fall back to the bare key name for legacy flat aliases
+    // (e.g. "arch" → "main/arch" registered without a section prefix).
+    auto aIt2 = _aliasMap.find(key);
+    if (aIt2 != _aliasMap.end())
+        return aIt2->second;
+
+    return canonical;
+}
+
+void Config::storeOverride(const std::string & canonical, std::any value)
+{
+    auto & entry = _entries[canonical];
+    entry.overrideValue = std::move(value);
     if (entry.signal) {
+        // Copy before emitting — a slot that inserts a new entry into _entries
+        // would rehash and leave \c entry dangling during emit().
         std::any copy = entry.overrideValue;
         entry.signal->emit(copy);
     }
+}
+
+expected<void> Config::set(std::string_view sectionKey, std::string value)
+{
+    const std::string input(sectionKey);
+
+    // Resolve to the canonical name: "section/key" (possibly an alias) or a
+    // bare legacy alias such as "download.transfer_timeout".
+    std::string canonical;
+    if ( const auto slash = input.find('/'); slash != std::string::npos ) {
+        canonical = resolveCanonical(input.substr(0, slash), input.substr(slash + 1));
+    } else if ( auto aIt = _aliasMap.find(input); aIt != _aliasMap.end() ) {
+        canonical = aIt->second;
+    } else {
+        return unexpected( std::make_exception_ptr( std::invalid_argument(
+            "key must be 'section/key' or a registered legacy alias: '" + input + "'" ) ) );
+    }
+
+    auto rIt = _registry.find(canonical);
+    if ( rIt != _registry.end() && rIt->second.parseFn ) {
+        // Registered key — convert via parseFn so the stored override always has
+        // the registered type (and clamping etc. applies as for zypp.conf values).
+        auto result = rIt->second.parseFn(value);
+        if ( !result )
+            return unexpected( result.error() );
+        storeOverride( canonical, std::move( result.get() ) );
+    } else {
+        // Unregistered key — raw string.
+        storeOverride( canonical, std::any( std::move(value) ) );
+    }
+    return expected<void>();
 }
 
 // ---------------------------------------------------------------------------
@@ -145,23 +195,8 @@ void Config::parseEntry(const std::string & section,
                         const std::string & rawValue,
                         std::vector<ParseError> & errors)
 {
-    // Assemble canonical name: "section/key"
-    std::string canonical = section + "/" + rawKey;
-
-    // Check legacy alias remapping.
-    // First try the section-qualified form ("main/arch").
-    {
-        auto aIt = _aliasMap.find(canonical);
-        if (aIt != _aliasMap.end()) {
-            canonical = aIt->second;
-        } else {
-            // Fall back to the bare key name for legacy flat aliases
-            // (e.g. "arch" → "main/arch" registered without a section prefix).
-            auto aIt2 = _aliasMap.find(rawKey);
-            if (aIt2 != _aliasMap.end())
-                canonical = aIt2->second;
-        }
-    }
+    // Assemble canonical name: "section/key", honouring legacy alias remapping.
+    const std::string canonical = resolveCanonical(section, rawKey);
 
     auto rIt = _registry.find(canonical);
     if (rIt != _registry.end() && rIt->second.parseFn) {

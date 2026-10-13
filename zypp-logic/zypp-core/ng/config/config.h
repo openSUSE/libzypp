@@ -28,6 +28,7 @@
 #include <map>
 #include <optional>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -35,6 +36,7 @@
 #include <vector>
 
 #include <zypp-core/ng/base/signals.h>
+#include <zypp-core/ng/meta/type_traits.h>
 #include <zypp-core/ng/pipelines/expected.h>
 
 namespace zypp::parser { class IniDict; }
@@ -165,8 +167,17 @@ struct Entry {
  * emitted by \c set() and \c reset() with the new effective value.
  *
  * \par Dynamic keys
- * Unknown keys encountered during \c parse(), or keys set via \c setRaw(),
- * are stored as \c std::string values and accessible via \c getRaw().
+ * Unknown keys encountered during \c parse(), or keys set via the textual
+ * \c set(string_view, std::string), are stored as \c std::string values and
+ * accessible via \c getRaw().
+ *
+ * \par Type invariant
+ * Registered keys only ever hold their registered type: they are written
+ * through \c set(Key<T>,...) (checked against the registry), the textual
+ * \c set() (which runs the key's \c parseFn) or \c parse*() (same).
+ * Unregistered keys only ever hold \c std::string.  \c serialize() therefore
+ * cannot hit a type mismatch.  One documented gap: a key parsed \em before it
+ * is registered stays a raw string — always call \c registerKey() first.
  */
 class Config {
 public:
@@ -203,14 +214,24 @@ public:
     // -----------------------------------------------------------------------
 
     /**
-     * Return the effective value for \a key, skipping any programmatic override.
-     * Lookup: fileValue → defaultFn (overrideValue is ignored).
+     * Return the effective value for \a key.
+     * Lookup: overrideValue → fileValue → registered defaultFn(*this).
+     * Throws std::out_of_range if the key is not registered.
      */
     template<typename T>
-    T get(const Key<T> & key) const { return get<T>(key.name); }
+    T get(const Key<T> & key) const { return getTyped<T>(key.name); }
 
+    /**
+     * Set a programmatic override for \a key.
+     * The value parameter is a non-deduced context: \c T comes from the key
+     * only, so \c cfg.set(SomeStringKey,"literal") converts the literal.
+     * Throws std::logic_error if \a key was never registered (programmer
+     * error) — this keeps the invariant that registered keys hold only their
+     * registered type and unregistered keys hold only strings.
+     * Emits sigChanged with the new value if a signal has been connected.
+     */
     template<typename T>
-    void set(const Key<T> & key, T value) { set<T>(key.name, std::move(value)); }
+    void set(const Key<T> & key, type_identity_t<T> value) { setTyped<T>(key.name, std::move(value)); }
 
     template<typename T>
     void reset(const Key<T> & key) { reset(key.name); }
@@ -222,68 +243,7 @@ public:
     * from a user-specified override before performing auto-cleanup.
     */
    template<typename T>
-   T getBaseline(const Key<T> & key) const { return getBaseline<T>(key.name); }
-
-
-    // -----------------------------------------------------------------------
-    // Typed access via string key (dynamic / runtime use)
-    // -----------------------------------------------------------------------
-
-    /**
-     * Return the effective value for \a sectionKey.
-     * Lookup: overrideValue → fileValue → registered defaultFn(*this).
-     * Throws std::bad_any_cast if T does not match the registered type.
-     * Throws std::out_of_range if sectionKey is not registered.
-     */
-    template<typename T>
-    T get(std::string_view sectionKey) const {
-        const std::string key(sectionKey);
-        auto it = _entries.find(key);
-        if (it != _entries.end()) {
-            if (it->second.overrideValue.has_value())
-                return std::any_cast<T>(it->second.overrideValue);
-            if (it->second.fileValue.has_value())
-                return std::any_cast<T>(it->second.fileValue);
-        }
-        // Fall through to registered default.
-        auto rIt = _registry.find(key);
-        if (rIt != _registry.end() && rIt->second.defaultFn)
-            return std::any_cast<T>(rIt->second.defaultFn(*this));
-        throw std::out_of_range(std::string("Config::get — unknown key: ") + key);
-    }
-
-    /**
-     * Set a programmatic override for \a sectionKey.
-     * Emits sigChanged with the new value if a signal has been connected.
-     */
-    template<typename T>
-    void set(std::string_view sectionKey, T value) {
-        const std::string key(sectionKey);
-        auto & entry = _entries[key];
-        entry.overrideValue = std::any(std::move(value));
-        if (entry.signal) {
-            std::any copy = entry.overrideValue;
-            entry.signal->emit(copy);
-        }
-    }
-
-    /**
-    * Equivalent to the legacy ZConfig::builtin*Path() accessors.
-    * Useful when a caller needs to know "what did zypp.conf say?" independently
-    * of any runtime set() call — e.g. to distinguish a standard cache location
-    * from a user-specified override before performing auto-cleanup.
-    */
-    template<typename T>
-    T getBaseline(std::string_view sectionKey) const {
-        const std::string key(sectionKey);
-        auto it = _entries.find(key);
-        if (it != _entries.end() && it->second.fileValue.has_value())
-            return std::any_cast<T>(it->second.fileValue);
-        auto rIt = _registry.find(key);
-        if (rIt != _registry.end() && rIt->second.defaultFn)
-            return std::any_cast<T>(rIt->second.defaultFn(*this));
-        throw std::out_of_range(std::string("Config::getBaseline — unknown key: ") + key);
-    }
+   T getBaseline(const Key<T> & key) const { return getBaselineTyped<T>(key.name); }
 
     /**
      * Clear the programmatic override for \a sectionKey.
@@ -296,7 +256,7 @@ public:
     void resetAll();
 
     // -----------------------------------------------------------------------
-    // Raw string access (preview features, dynamic/unknown keys)
+    // Textual access (preview features, dynamic/unknown keys, CLI overrides)
     // -----------------------------------------------------------------------
 
     /**
@@ -308,8 +268,17 @@ public:
      */
     std::optional<std::string> getRaw(std::string_view sectionKey) const;
 
-    /** Store a raw string value for any key (typed or unknown). */
-    void setRaw(std::string_view sectionKey, std::string value);
+    /**
+     * Set a programmatic override from a textual value.
+     * \a sectionKey is a canonical "section/key" name or a registered legacy alias.
+     *  - Registered key: \a value is converted via the key's parseFn and stored
+     *    as the typed override (clamping etc. applies as for zypp.conf values).
+     *    On a parse failure the error is returned and the value is unchanged.
+     *  - Unregistered key: \a value is stored as a raw string (always succeeds).
+     * Unregistered keys must be of the form "section/key".
+     * Emits sigChanged with the stored value if a signal has been connected.
+     */
+    expected<void> set(std::string_view sectionKey, std::string value);
 
     // -----------------------------------------------------------------------
     // Change signals
@@ -446,6 +415,66 @@ private:
      */
     void parseEntry(const std::string & section, const std::string & key,
                     const std::string & value, std::vector<ParseError> & errors);
+
+    /**
+     * Resolve "section" + "key" to the canonical name: first the section-qualified
+     * form in the alias map, then the bare key as a legacy flat alias, else
+     * the plain "section/key" concatenation.
+     */
+    std::string resolveCanonical(const std::string & section, const std::string & key) const;
+
+    /** Store \a value as the override of \a canonical and emit sigChanged if connected. */
+    void storeOverride(const std::string & canonical, std::any value);
+
+    // -----------------------------------------------------------------------
+    // Typed string-keyed helpers — private: the public typed API is Key<T>
+    // only, so a caller cannot store a value of the wrong type. Named
+    // differently from the public set()/get() so overload resolution can never
+    // select them for e.g. cfg.set("main/x", "literal").
+    // -----------------------------------------------------------------------
+
+    /**
+     * Effective value: overrideValue → fileValue → registered defaultFn(*this).
+     * Throws std::bad_any_cast on a type mismatch, std::out_of_range if unregistered.
+     */
+    template<typename T>
+    T getTyped(std::string_view sectionKey) const {
+        const std::string key(sectionKey);
+        auto it = _entries.find(key);
+        if (it != _entries.end()) {
+            if (it->second.overrideValue.has_value())
+                return std::any_cast<T>(it->second.overrideValue);
+            if (it->second.fileValue.has_value())
+                return std::any_cast<T>(it->second.fileValue);
+        }
+        // Fall through to registered default.
+        auto rIt = _registry.find(key);
+        if (rIt != _registry.end() && rIt->second.defaultFn)
+            return std::any_cast<T>(rIt->second.defaultFn(*this));
+        throw std::out_of_range(std::string("Config::get — unknown key: ") + key);
+    }
+
+    /** Override value; throws std::logic_error if \a sectionKey is not registered. */
+    template<typename T>
+    void setTyped(std::string_view sectionKey, T value) {
+        const std::string key(sectionKey);
+        if (_registry.find(key) == _registry.end())
+            throw std::logic_error(std::string("Config::set — key is not registered: ") + key);
+        storeOverride(key, std::any(std::move(value)));
+    }
+
+    /** fileValue → registered defaultFn(*this); the override is skipped. */
+    template<typename T>
+    T getBaselineTyped(std::string_view sectionKey) const {
+        const std::string key(sectionKey);
+        auto it = _entries.find(key);
+        if (it != _entries.end() && it->second.fileValue.has_value())
+            return std::any_cast<T>(it->second.fileValue);
+        auto rIt = _registry.find(key);
+        if (rIt != _registry.end() && rIt->second.defaultFn)
+            return std::any_cast<T>(rIt->second.defaultFn(*this));
+        throw std::out_of_range(std::string("Config::getBaseline — unknown key: ") + key);
+    }
 };
 
 } // namespace zyppng::config

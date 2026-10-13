@@ -98,15 +98,16 @@ BOOST_AUTO_TEST_CASE(set_get_reset_typed)
     BOOST_CHECK_EQUAL( cfg.get(GpgCheck), true );
 }
 
-BOOST_AUTO_TEST_CASE(set_get_reset_string_keyed)
+BOOST_AUTO_TEST_CASE(set_string_keyed)
 {
     auto cfg = makeDefaults();
 
-    cfg.set<bool>( GpgCheck.name, false );
-    BOOST_CHECK_EQUAL( cfg.get<bool>(GpgCheck.name), false );
+    // Textual set parses via the registered parseFn and stores the typed value.
+    BOOST_REQUIRE( cfg.set( GpgCheck.name, "false" ) );
+    BOOST_CHECK_EQUAL( cfg.get(GpgCheck), false );
 
     cfg.reset( GpgCheck.name );
-    BOOST_CHECK_EQUAL( cfg.get<bool>(GpgCheck.name), true );
+    BOOST_CHECK_EQUAL( cfg.get(GpgCheck), true );
 }
 
 BOOST_AUTO_TEST_CASE(override_does_not_affect_file_value)
@@ -451,7 +452,7 @@ BOOST_AUTO_TEST_CASE(raw_key_roundtrip)
 
     BOOST_CHECK( !cfg.getRaw("preview/single_rpmtrans").has_value() );
 
-    cfg.setRaw( "preview/single_rpmtrans", "true" );
+    BOOST_REQUIRE( cfg.set( "preview/single_rpmtrans", "true" ) );
     auto val = cfg.getRaw("preview/single_rpmtrans");
 
     BOOST_REQUIRE( val.has_value() );
@@ -482,8 +483,8 @@ BOOST_AUTO_TEST_CASE(legacy_alias_resolved_on_parse)
     auto [cfg, errs] = makeConfig( root.path() );
     BOOST_CHECK( errs.empty() );
     BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 90L );
-    // Canonical key must also be accessible by string
-    BOOST_CHECK_EQUAL( cfg.get<long>(TransferTimeout.name), 90L );
+    // Alias-sourced value is the file baseline too
+    BOOST_CHECK_EQUAL( cfg.getBaseline(TransferTimeout), 90L );
 }
 
 // ── forEach ───────────────────────────────────────────────────────────────
@@ -526,7 +527,7 @@ BOOST_AUTO_TEST_CASE(serialize_roundtrip)
     cfg.set( GpgCheck,        false );
     cfg.set( TransferTimeout, 60L   );
     cfg.set( RepoCachePath,   zypp::Pathname("/custom/cache") );
-    cfg.setRaw( "preview/single_rpmtrans", "true" );
+    BOOST_REQUIRE( cfg.set( "preview/single_rpmtrans", "true" ) );
 
     std::string blob = cfg.serialize();
     BOOST_REQUIRE( !blob.empty() );
@@ -621,7 +622,7 @@ BOOST_AUTO_TEST_CASE(serialize_entries_roundtrip)
     a.set( GpgCheck, false );
     a.set( TransferTimeout, 42L );
     a.set( RepoCachePath, zypp::Pathname("/custom/cache") );
-    a.setRaw( "preview/single_rpmtrans", "true" );
+    BOOST_REQUIRE( a.set( "preview/single_rpmtrans", "true" ) );
 
     ContextConfig b( zypp::Pathname("/") );
     registerZyppKeys( b );
@@ -648,6 +649,68 @@ BOOST_AUTO_TEST_CASE(media_registry_accepts_full_host_entries)
     BOOST_CHECK( errs.empty() );
     BOOST_CHECK_EQUAL( worker.get(TransferTimeout), 42L );
     BOOST_CHECK( worker.getRaw("main/arch").has_value() );
+}
+
+// ── Hardened write API ────────────────────────────────────────────────────
+
+BOOST_AUTO_TEST_CASE(set_string_registered_parses_and_clamps)
+{
+    auto cfg = makeDefaults();
+    // 9999 is clamped to 3600 by TransferTimeout's parseFn — proves it ran.
+    BOOST_REQUIRE( cfg.set( "media/transfer_timeout", "9999" ) );
+    BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 3600L );
+}
+
+BOOST_AUTO_TEST_CASE(set_string_registered_invalid_keeps_value)
+{
+    auto cfg = makeDefaults();
+    cfg.set( GpgCheck, false );
+
+    auto res = cfg.set( "main/gpgcheck", "maybe" );
+    BOOST_CHECK( !res );
+    BOOST_CHECK_EQUAL( cfg.get(GpgCheck), false );   // unchanged
+}
+
+BOOST_AUTO_TEST_CASE(set_string_resolves_legacy_alias)
+{
+    auto cfg = makeDefaults();
+    BOOST_REQUIRE( cfg.set( "download.transfer_timeout", "5" ) );
+    BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 5L );
+}
+
+BOOST_AUTO_TEST_CASE(set_string_unregistered_needs_section)
+{
+    auto cfg = makeDefaults();
+    BOOST_CHECK( !cfg.set( "no_section_and_no_alias", "x" ) );
+    BOOST_CHECK( cfg.set( "preview/x", "1" ) );
+    BOOST_CHECK_EQUAL( cfg.getRaw("preview/x").value_or(""), "1" );
+}
+
+BOOST_AUTO_TEST_CASE(set_string_emits_signal)
+{
+    auto cfg = makeDefaults();
+    int calls = 0;
+    cfg.sigChanged("media/transfer_timeout").connect( [&]( const std::any & v ) {
+        ++calls;
+        BOOST_CHECK_EQUAL( std::any_cast<long>(v), 7L );
+    });
+    BOOST_REQUIRE( cfg.set( "media/transfer_timeout", "7" ) );
+    BOOST_CHECK_EQUAL( calls, 1 );
+}
+
+BOOST_AUTO_TEST_CASE(set_key_unregistered_throws)
+{
+    // No registerZyppKeys — the token is not registered.
+    ContextConfig cfg( zypp::Pathname("/") );
+    BOOST_CHECK_THROW( cfg.set( TransferTimeout, 5L ), std::logic_error );
+}
+
+BOOST_AUTO_TEST_CASE(set_key_literal_deduces)
+{
+    auto cfg = makeDefaults();
+    // type_identity makes the value parameter non-deduced: "literal" converts to std::string.
+    cfg.set( Distroverpkg, "foo-release" );
+    BOOST_CHECK_EQUAL( cfg.get(Distroverpkg), "foo-release" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

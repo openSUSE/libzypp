@@ -483,7 +483,6 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
   if ( settings.minDownloadSpeed() != 0 )
   {
       SET_OPTION(CURLOPT_LOW_SPEED_LIMIT, settings.minDownloadSpeed());
-      // default to 10 seconds at low speed
       SET_OPTION(CURLOPT_LOW_SPEED_TIME, 60L);
   }
 

@@ -61,7 +61,11 @@ namespace zypp::internal {
 
       retry = false; // normally we don't retry
       _nwDispatcher->enqueue ( req );
-      loop->run();
+      // The request might already be finished at this point, e.g. if setting up the
+      // curl handle failed. Calling loop->quit() before loop->run() has no effect,
+      // so only run the loop if the request is still pending or running.
+      if ( _nwDispatcher->count () != 0 )
+        loop->run();
 
       // once the request is done there should be nothing there anymore
       if ( _nwDispatcher->count () != 0 ) {

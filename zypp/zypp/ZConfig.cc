@@ -1074,6 +1074,9 @@ namespace zypp
   long ZConfig::download_min_download_speed() const
   { return _pimpl->_mediaConf.download_min_download_speed(); }
 
+  long ZConfig::download_min_download_speed_time() const
+  { return _pimpl->_mediaConf.download_min_download_speed_time(); }
+
   long ZConfig::download_max_download_speed() const
   { return _pimpl->_mediaConf.download_max_download_speed(); }
 

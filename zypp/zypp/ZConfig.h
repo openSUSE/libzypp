@@ -326,6 +326,12 @@ namespace zypp
       long download_min_download_speed() const;
 
       /**
+       * The time in seconds that the transfer speed must remain below
+       * \ref download_min_download_speed before the transfer is aborted.
+       */
+      long download_min_download_speed_time() const;
+
+      /**
        * Maximum download speed (bytes per second)
        */
       long download_max_download_speed() const;

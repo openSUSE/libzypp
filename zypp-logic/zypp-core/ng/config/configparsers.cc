@@ -8,6 +8,9 @@
 \---------------------------------------------------------------------*/
 #include <zypp-core/ng/config/configparsers.h>
 
+#include <cctype>
+#include <cerrno>
+#include <cstdlib>
 #include <iterator>
 #include <limits>
 #include <stdexcept>
@@ -38,11 +41,25 @@ namespace zyppng::config {
 
   expected<long> parseLong( std::string_view s )
   {
+    // Accepts every form legacy str::strtonum (strtol, base 0) accepts: sign,
+    // leading/trailing whitespace, hex "0x10", octal "010" (= 8).
+    // Unlike legacy, these are errors (the key falls back to its default):
+    // no digits, trailing garbage ("12abc"), out of range.
     try {
-      std::size_t pos = 0;
-      long val = std::stol( std::string(s), &pos );
-      if ( pos != s.size() )
-        throw std::invalid_argument( "trailing characters in long value: '" + std::string(s) + "'" );
+      const std::string str( s );
+      const char * begin = str.c_str();
+      const char * stop  = begin + str.size();   // not '\0': an embedded NUL must not end the check
+      char * end = nullptr;
+      errno = 0;
+      const long val = std::strtol( begin, &end, 0 );
+      if ( end == begin )
+        throw std::invalid_argument( "not a number: '" + str + "'" );
+      if ( errno == ERANGE )
+        throw std::out_of_range( "number out of range: '" + str + "'" );
+      while ( end < stop && std::isspace( static_cast<unsigned char>(*end) ) )
+        ++end;
+      if ( end != stop )
+        throw std::invalid_argument( "trailing characters in number: '" + str + "'" );
       return val;
     } catch (...) {
       return unexpected( std::current_exception() );
@@ -51,13 +68,33 @@ namespace zyppng::config {
 
   expected<unsigned> parseUnsigned( std::string_view s )
   {
+    // Same accepted forms as parseLong (strtoul, base 0), with two additions:
+    // a leading '-' is an error (strtoul would silently wrap "-1" around to a
+    // huge value — legacy has that bug), and values above UINT_MAX are errors.
     try {
-      std::size_t pos = 0;
-      unsigned long val = std::stoul( std::string(s), &pos );
-      if ( pos != s.size() )
-        throw std::invalid_argument( "trailing characters in unsigned value: '" + std::string(s) + "'" );
-      if ( val > std::numeric_limits<unsigned>::max() )
-        throw std::out_of_range( "value out of range for unsigned: '" + std::string(s) + "'" );
+      const std::string str( s );
+      const char * begin = str.c_str();
+      const char * stop  = begin + str.size();
+      // strtol/strtoul skip leading whitespace themselves, so this loop does not
+      // consume anything: it only locates the first significant character to
+      // detect a sign. strtoul() below still parses from 'begin'.
+      const char * first = begin;
+      while ( first < stop && std::isspace( static_cast<unsigned char>(*first) ) )
+        ++first;
+      if ( first < stop && *first == '-' )
+        throw std::invalid_argument( "negative value for unsigned: '" + str + "'" );
+
+      char * end = nullptr;
+      errno = 0;
+      const unsigned long val = std::strtoul( begin, &end, 0 );
+      if ( end == begin )
+        throw std::invalid_argument( "not a number: '" + str + "'" );
+      if ( errno == ERANGE || val > std::numeric_limits<unsigned>::max() )
+        throw std::out_of_range( "value out of range for unsigned: '" + str + "'" );
+      while ( end < stop && std::isspace( static_cast<unsigned char>(*end) ) )
+        ++end;
+      if ( end != stop )
+        throw std::invalid_argument( "trailing characters in number: '" + str + "'" );
       return static_cast<unsigned>(val);
     } catch (...) {
       return unexpected( std::current_exception() );

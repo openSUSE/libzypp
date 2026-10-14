@@ -1,8 +1,10 @@
 #include <boost/test/unit_test.hpp>
 
+#include <limits>
 #include <set>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <zypp-core/Pathname.h>
@@ -116,6 +118,111 @@ BOOST_AUTO_TEST_CASE(tribool_unrecognised_is_indeterminate_not_error)
       BOOST_CHECK( zypp::indeterminate( *r ) );
     }
   }
+}
+
+// ── Long / Unsigned ───────────────────────────────────────────────────────
+// Reference: legacy str::strtonum = strtol/strtoul with base 0.
+
+BOOST_AUTO_TEST_CASE(long_accepted_forms)
+{
+  const std::vector<Row<long>> rows {
+    { "42",   42 },
+    { "-5",   -5 },
+    { "+3",   3 },
+    { " 7",   7 },     // leading whitespace
+    { "7 ",   7 },     // trailing whitespace
+    { "0x10", 16 },    // hex
+    { "010",  8 },     // octal (legacy base 0)
+    { "0",    0 },
+  };
+  for ( const auto & row : rows ) {
+    BOOST_TEST_CONTEXT( "input='" << row.input << "'" ) {
+      auto r = parseLong( row.input );
+      BOOST_REQUIRE( r );
+      BOOST_CHECK_EQUAL( *r, row.expected );
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(long_rejected_forms)
+{
+  // LEGACY-DIFF (all rows): legacy never fails — it yields the numeric prefix or 0.
+  // Here the key gets a ParseError and falls back to its default.
+  const std::vector<std::pair<std::string_view, const char *>> rows {
+    { "",                         "legacy 0" },
+    { " ",                        "legacy 0" },
+    { "abc",                      "legacy 0" },
+    { "12abc",                    "legacy 12" },
+    { "0x",                       "legacy 0" },
+    { "08",                       "legacy 0 (invalid octal digit)" },
+    { "99999999999999999999999",  "legacy LONG_MAX (saturated)" },
+  };
+  for ( const auto & [in, legacy] : rows ) {
+    BOOST_TEST_CONTEXT( "input='" << in << "' (" << legacy << ")" )
+      BOOST_CHECK( !parseLong( in ) );
+  }
+}
+
+BOOST_AUTO_TEST_CASE(unsigned_accepted_forms)
+{
+  const std::vector<Row<unsigned>> rows {
+    { "10",   10u },
+    { "0x10", 16u },
+    { " 5",   5u },
+    { "+5",   5u },
+    { "0",    0u },
+  };
+  for ( const auto & row : rows ) {
+    BOOST_TEST_CONTEXT( "input='" << row.input << "'" ) {
+      auto r = parseUnsigned( row.input );
+      BOOST_REQUIRE( r );
+      BOOST_CHECK_EQUAL( *r, row.expected );
+    }
+  }
+
+  // The full unsigned range is accepted
+  auto max = parseUnsigned( std::to_string( std::numeric_limits<unsigned>::max() ) );
+  BOOST_REQUIRE( max );
+  BOOST_CHECK_EQUAL( *max, std::numeric_limits<unsigned>::max() );
+}
+
+BOOST_AUTO_TEST_CASE(unsigned_rejected_forms)
+{
+  const std::vector<std::pair<std::string_view, const char *>> rows {
+    { "-1",          "LEGACY-DIFF: legacy wraps around to UINT_MAX" },
+    { "abc",         "LEGACY-DIFF: legacy 0" },
+    { "",            "LEGACY-DIFF: legacy 0" },
+    { "99999999999", "LEGACY-DIFF: legacy truncates" },   // > UINT_MAX
+  };
+  for ( const auto & [in, why] : rows ) {
+    BOOST_TEST_CONTEXT( "input='" << in << "' (" << why << ")" )
+      BOOST_CHECK( !parseUnsigned( in ) );
+  }
+
+  // One above UINT_MAX (only representable where unsigned long is wider)
+  if constexpr ( sizeof(unsigned long) > sizeof(unsigned) ) {
+    const unsigned long tooBig = static_cast<unsigned long>( std::numeric_limits<unsigned>::max() ) + 1ul;
+    BOOST_CHECK( !parseUnsigned( std::to_string( tooBig ) ) );
+  }
+}
+
+BOOST_AUTO_TEST_CASE(numbers_clamped_through_config)
+{
+  // The clamping parsers reuse parseLong, so they accept the same forms.
+  ContextConfig cfg( zypp::Pathname("/") );
+  registerZyppKeys( cfg );
+
+  BOOST_REQUIRE( cfg.set( "media/transfer_timeout", "5000" ) );
+  BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 3600L );       // clamped to [0, 3600]
+  BOOST_REQUIRE( cfg.set( "media/transfer_timeout", "-5" ) );
+  BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 0L );
+  BOOST_REQUIRE( cfg.set( "media/transfer_timeout", "0x10" ) );
+  BOOST_CHECK_EQUAL( cfg.get(TransferTimeout), 16L );
+
+  BOOST_REQUIRE( cfg.set( "media/connect_timeout", "-5" ) );
+  BOOST_CHECK_EQUAL( cfg.get(ConnectTimeout), 0L );           // clamped to [0, inf)
+  BOOST_REQUIRE( cfg.set( "media/connect_timeout", "99999" ) );
+  BOOST_CHECK_EQUAL( cfg.get(ConnectTimeout), 99999L );       // no upper bound
 }
 
 // ── String / StringSet / Path ─────────────────────────────────────────────
@@ -241,6 +348,24 @@ BOOST_AUTO_TEST_CASE(roundtrip_core_types)
     auto r = parseString( serializeString( " a b " ) );
     BOOST_REQUIRE( r );
     BOOST_CHECK_EQUAL( *r, " a b " );
+  }
+
+  {
+    // numbers: parse(serialize(v)) == v, including the extremes
+    for ( long v : { 0L, -5L, 42L, std::numeric_limits<long>::max(), std::numeric_limits<long>::min() } ) {
+      BOOST_TEST_CONTEXT( "long=" << v ) {
+        auto r = parseLong( serializeLong( v ) );
+        BOOST_REQUIRE( r );
+        BOOST_CHECK_EQUAL( *r, v );
+      }
+    }
+    for ( unsigned v : { 0u, 42u, std::numeric_limits<unsigned>::max() } ) {
+      BOOST_TEST_CONTEXT( "unsigned=" << v ) {
+        auto r = parseUnsigned( serializeUnsigned( v ) );
+        BOOST_REQUIRE( r );
+        BOOST_CHECK_EQUAL( *r, v );
+      }
+    }
   }
 
   {

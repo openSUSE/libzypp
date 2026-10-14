@@ -32,7 +32,14 @@ namespace zyppng::config {
   // ---------------------------------------------------------------------------
 
   expected<bool>                      parseBool          ( std::string_view s );
+  /**
+   * Parse an integer like legacy str::strtonum (strtol, base 0): optional sign,
+   * surrounding whitespace, decimal, hex ("0x10") and octal ("010" == 8).
+   * Errors (the key falls back to its default): no digits, trailing garbage,
+   * out of range. Legacy would silently use 0 / the numeric prefix instead.
+   */
   expected<long>                      parseLong          ( std::string_view s );
+  /** Like parseLong() (strtoul, base 0), but a leading '-' and values above UINT_MAX are errors. */
   expected<unsigned>                  parseUnsigned      ( std::string_view s );
   expected<std::string>               parseString        ( std::string_view s );
   expected<zypp::TriBool>             parseTriBool       ( std::string_view s );

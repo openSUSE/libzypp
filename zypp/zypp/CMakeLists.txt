@@ -11,7 +11,6 @@ SET( zypp_SRCS
   Changelog.cc
   Digest.cc
   DiskUsageCounter.cc
-  DownloadMode.cc
   PluginScript.cc
   PluginScriptException.cc
   PluginExecutor.cc
@@ -45,7 +44,6 @@ SET( zypp_SRCS
   ResObject.cc
   Resolvable.cc
   Resolver.cc
-  ResolverFocus.cc
   ResolverProblem.cc
   ResPool.cc
   ResPoolProxy.cc
@@ -78,7 +76,6 @@ SET( zypp_HEADERS
   CheckSum.h
   Digest.h
   DiskUsageCounter.h
-  DownloadMode.h
   PluginScript.h
   PluginScriptException.h
   PluginExecutor.h
@@ -123,7 +120,6 @@ SET( zypp_HEADERS
   ResObjects.h
   Resolvable.h
   Resolver.h
-  ResolverFocus.h
   ResolverProblem.h
   ResPool.h
   ResPoolProxy.h

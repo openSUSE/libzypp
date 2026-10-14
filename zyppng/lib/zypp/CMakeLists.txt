@@ -89,6 +89,7 @@ set( ZYPPNG_MODULE_INTERFACE_UNITS
 
       # ── Root-level partitions ─────────────────────────────────────────
       ng/context_private.cppm       # internal (non-exported)
+      ng/contextconfig.cppm
       ng/applicationdata.cppm
       ng/context.cppm
 
@@ -103,6 +104,7 @@ set( ZYPPNG_MODULE_INTERFACE_UNITS
 
 set( ZYPPNG_MODULE_IMPL_UNITS
   ng/applicationdata.cc
+  ng/contextconfig.cc
   ng/context.cc
   ng/sat/cap2str.cc
   ng/sat/capabilities.cc

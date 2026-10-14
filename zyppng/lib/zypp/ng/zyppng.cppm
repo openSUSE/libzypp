@@ -17,6 +17,7 @@ export import :arch;
 export import :bit;
 export import :capmatch;
 export import :context;
+export import :contextconfig;
 export import :countrycode;
 export import :cpeid;
 export import :dep;

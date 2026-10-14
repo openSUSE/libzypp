@@ -275,6 +275,53 @@ BOOST_AUTO_TEST_CASE(path_basic)
   BOOST_CHECK( empty->empty() );
 }
 
+// ── Arch ──────────────────────────────────────────────────────────────────
+// Legacy: Arch(value) never fails; unknown names (and "") become custom archs.
+
+BOOST_AUTO_TEST_CASE(arch_builtin)
+{
+  auto r = parseArch( "x86_64" );
+  BOOST_REQUIRE( r );
+  BOOST_CHECK( r->isBuiltIn() );
+  BOOST_CHECK_EQUAL( r->asString(), "x86_64" );
+}
+
+BOOST_AUTO_TEST_CASE(arch_noarch)
+{
+  auto r = parseArch( "noarch" );
+  BOOST_REQUIRE( r );
+  BOOST_CHECK( *r == zypp::Arch_noarch );
+}
+
+BOOST_AUTO_TEST_CASE(arch_unknown_becomes_custom_arch)
+{
+  auto r = parseArch( "my_custom_arch" );
+  BOOST_REQUIRE( r );
+  BOOST_CHECK( !r->isBuiltIn() );
+  BOOST_CHECK_EQUAL( r->asString(), "my_custom_arch" );
+}
+
+BOOST_AUTO_TEST_CASE(arch_empty_is_accepted_like_legacy)
+{
+  // Legacy builds Arch("") — an empty custom arch. NOT a LEGACY-DIFF.
+  auto r = parseArch( "" );
+  BOOST_REQUIRE( r );
+  BOOST_CHECK( r->asString().empty() );
+}
+
+BOOST_AUTO_TEST_CASE(arch_roundtrip)
+{
+  for ( std::string_view in : { "x86_64", "noarch", "my_custom_arch", "" } ) {
+    BOOST_TEST_CONTEXT( "input='" << in << "'" ) {
+      auto first = parseArch( in );
+      BOOST_REQUIRE( first );
+      auto second = parseArch( serializeArch( *first ) );
+      BOOST_REQUIRE( second );
+      BOOST_CHECK( *second == *first );
+    }
+  }
+}
+
 // ── DownloadMode ──────────────────────────────────────────────────────────
 
 BOOST_AUTO_TEST_CASE(download_mode)

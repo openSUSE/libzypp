@@ -32,11 +32,10 @@ namespace zyppng::config {
 
   expected<Arch> parseArch( std::string_view s )
   {
+    // Exactly legacy ZConfig: Arch(value) never fails; unknown names (including
+    // an empty string) become a custom, non-builtin architecture.
     try {
-      Arch a( (std::string(s)) );
-      if ( a == zypp::Arch_noarch && std::string(s) != "noarch" )
-        throw std::invalid_argument( "unknown architecture: '" + std::string(s) + "'" );
-      return a;
+      return Arch( std::string(s) );
     } catch (...) {
       return unexpected( std::current_exception() );
     }

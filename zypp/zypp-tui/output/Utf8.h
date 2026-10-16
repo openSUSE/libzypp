@@ -14,13 +14,12 @@
 #ifndef ZYPP_TUI_OUTPUT_UTF8_H_
 #define ZYPP_TUI_OUTPUT_UTF8_H_
 
-#include <cstdlib>
-#include <cstring>
-#include <wchar.h>
-
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <utility>
+
+#include <zypp-tui/utils/text.h>
 
 namespace ztui {
 
@@ -45,72 +44,12 @@ namespace utf8
     std::string & str()				{ return _str; }
 
   public:
-    /** utf8 size */
+    /** Terminal column width, ignoring ANSI SGR sequences. */
     size_type size() const
     {
-      // test for locales using dual width fonts:
-      static bool isCJK = []()->bool {
-        const char * lang = ::getenv( "LANG" );
-        return ( lang && ( !strncmp( lang, "zh", 2 )
-                        || !strncmp( lang, "ko", 2 )
-                        || !strncmp( lang, "ja", 2 ) ) );
-      }();
-
-      if ( isCJK )
-      {
-        // this should actually be correct for ALL locales:
-        size_type len = 0;
-        const char *s = _str.c_str();
-        for ( size_type slen = _str.size(); slen > 0; )
-        {
-          if ( *s == '\033' && *(s+1) == '[' )	// skip ansi SGR
-          {
-            slen -= 2; s += 2;
-            while ( slen > 0 && *s != 'm' )
-            { --slen; ++s; }
-            if ( slen > 0 )
-            { --slen; ++s; }
-            continue;
-          }
-
-          wchar_t wc = 0;
-          size_t bytes = mbrtowc( &wc, s, slen, NULL );
-          if ( bytes <= 0 )
-            break;
-          len += wcwidth( wc );
-          slen -= bytes;
-          s += bytes;
-        }
-        return len;
-      }
-
-      // NON CJK: faster and hopefully accurate enough:
-      // simply do not count continuation bytes '10xxxxxx'
-      size_type ret = _str.size();
-      size_type ansi = 0;
-      for ( auto ch : _str )
-      {
-        if ( ansi )
-        {
-          if ( ansi == 1 && ch == '[' )
-          {
-            ansi = 2;
-            continue;
-          }
-          else if ( ansi >= 2 ) // not testing for in [0-9;m]
-          {
-            ++ansi;
-            if ( ch == 'm' ) // SGR end
-            { ret -= ansi; ansi = 0; }
-            continue;
-          }
-        }
-
-        if ( isContinuationByte( ch ) )
-          --ret;
-        else if ( ch == '\033' )
-          ansi = 1;
-      }
+      size_type ret = 0;
+      for ( mbs::MbsIteratorNoSGR it( _str ); !it.atEnd(); ++it )
+        ret += it.columns();
       return ret;
     }
 
@@ -118,51 +57,37 @@ namespace utf8
     size_type length() const
     { return size(); }
 
-    /** utf8 substring */
+    /** Substring by terminal columns, padding clipped wide characters. */
     string substr( size_type pos_r = 0, size_type len_r = npos ) const
     {
-      size_type p = upos( pos_r );
-      size_type l = upos( len_r, p );
-      return string( _str.substr( p, ( l == npos ? npos : l-p ) ) );
-    }
+      std::string ret;
+      if ( !len_r || pos_r == npos )
+        return string( std::move( ret ) );
 
-  private:
-    /** Test for continuation byte \c '10xxxxxx' */
-    bool isContinuationByte( char ch ) const
-    { return( (ch & 0xC0) == 0x80 ); }
+      const size_type colend = ( len_r > npos-pos_r ? npos : pos_r+len_r );
+      mbs::MbsIteratorNoSGR it( _str );
+      // Construction skips leading SGR; a substring from zero includes them.
+      if ( !pos_r )
+        ret.append( _str.data(), it.pos()-_str.data() );
 
-    /** Return start of codepoint \a pos_r starting at position \c start_r. */
-    size_type upos( size_type pos_r, size_type start_r = 0 ) const
-    {
-      if ( pos_r == npos || start_r > _str.size() )
-        return npos;
-
-      size_type upos = start_r;
-      for ( const char * chp = _str.c_str() + upos; *chp; ++chp, ++upos )
+      size_type pos = 0;
+      while ( !it.atEnd() && pos < colend )
       {
-        if ( ! isContinuationByte( *chp ) )
+        const size_type end = pos + it.columns();
+        const char * cpos = it.pos();
+        const char * cend = cpos + it.size();
+        ++it;
+        // The byte span includes SGR skipped while advancing the iterator.
+        if ( pos >= pos_r && end <= colend )
+          ret.append( cpos, it.pos()-cpos );
+        else if ( end > pos_r && pos < colend )
         {
-           if ( pos_r )
-             --pos_r;
-           else
-             return upos;
-
-           while ( *chp == '\033' && *(chp+1) == '[' )	// skip any ansi SGR
-           {
-             chp += 2;
-             upos += 2;
-             while ( *chp && *chp != 'm' )
-             { ++chp; ++upos; }
-             if ( *chp )
-             { ++chp; ++upos; }
-             else
-               break;	// incomplete ansi SGR
-           }
-           if ( ! *chp )
-             break;	// incomplete ansi SGR
+          ret.append( std::min( end, colend )-std::max( pos, pos_r ), ' ' );
+          ret.append( cend, it.pos()-cend );
         }
+        pos = end;
       }
-      return( pos_r ? npos : upos );
+      return string( std::move( ret ) );
     }
 
   private:

@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Oct 26 12:32:16 CET 2026 - bzeller@suse.de
+
+- Fix hanging eventloop in case setupHandle fails.
+  This may happen e.g. due to a failing curlSetupOption call as
+  result of a miss configured option value.
+- zypp.conf: Add download.min_download_speed_time (60 sec) (fixes
+  #751)
+- version 17.38.17 (35)
+
+-------------------------------------------------------------------
 Mon Sep 21 17:23:26 CEST 2026 - ma@suse.de
 
 - BuildRequires:  %{libsolv_devel_package} >= 0.7.40 (bsc#1279541)

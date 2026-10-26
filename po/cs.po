@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 15:45+0200\n"
+"POT-Creation-Date: 2026-10-14 11:35+0200\n"
 "PO-Revision-Date: 2025-10-05 13:59+0000\n"
 "Last-Translator: Vojtěch Zeisek <Vojtech.Zeisek@opensuse.org>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/libzypp/master/cs/"
@@ -72,21 +72,26 @@ msgstr[0] "(vyprší během %d dne)"
 msgstr[1] "(vyprší během %d dnů)"
 msgstr[2] "(vyprší během %d dnů)"
 
+#: zypp-logic/zypp-common/private/keyring_p.cc:125
+msgid "Failed to export key."
+msgstr ""
+
+#: zypp-logic/zypp-common/private/keyring_p.cc:128
+#: zypp-logic/zypp-common/private/keyring_p.cc:257
+msgid "Failed to import key."
+msgstr "Nepodařilo se importovat klíč."
+
 #. TranslatorExplanation first %s is key name, second is keyring name
-#: zypp-logic/zypp-common/private/keyring_p.cc:230
+#: zypp-logic/zypp-common/private/keyring_p.cc:251
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
 msgstr "Pokus o import neexistujícího klíče %s do klíčenky %s"
 
-#: zypp-logic/zypp-common/private/keyring_p.cc:236
-msgid "Failed to import key."
-msgstr "Nepodařilo se importovat klíč."
-
-#: zypp-logic/zypp-common/private/keyring_p.cc:260
+#: zypp-logic/zypp-common/private/keyring_p.cc:281
 msgid "Failed to delete key."
 msgstr "Nepodařilo se smazat klíč."
 
-#: zypp-logic/zypp-common/private/keyring_p.cc:313
+#: zypp-logic/zypp-common/private/keyring_p.cc:334
 #, c-format, boost-format
 msgid "Signature file %s not found"
 msgstr "Soubor s podpisem %s nebyl nalezen"
@@ -307,7 +312,7 @@ msgid "Timeout exceeded when accessing '%s'."
 msgstr "Během přístupu k '%s' byl dosažen časový limit."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:124
-#: zypp/zypp/media/MediaCurl.cc:944
+#: zypp/zypp/media/MediaCurl.cc:943
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -316,7 +321,7 @@ msgstr ""
 "centrum SUSE."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:126
-#: zypp/zypp/media/MediaCurl.cc:946
+#: zypp/zypp/media/MediaCurl.cc:945
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4621,17 +4626,17 @@ msgstr ""
 
 #. !\todo add comma to the message for the next release
 #: zypp/zypp/media/MediaCIFS.cc:427
-#: zypp/zypp/media/MediaNetworkCommonHandler.cc:388
+#: zypp/zypp/media/MediaNetworkCommonHandler.cc:373
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Pro '%s' je vyžadováno ověřování"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/zypp/media/MediaCurl.cc:822
+#: zypp/zypp/media/MediaCurl.cc:821
 msgid "Will try again..."
 msgstr "Zkusím to znovu..."
 
-#: zypp/zypp/media/MediaCurl.cc:825
+#: zypp/zypp/media/MediaCurl.cc:824
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Vzdávám se po %1% pokusech."
@@ -4654,73 +4659,73 @@ msgstr "Nelze vytvořit adresář s mezipamětí metadat."
 
 #. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
-#: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:109
+#: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:108
 msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:97
 #: zypp/zypp/ng/repo/workflows/serviceswf.cc:249
 #, c-format, boost-format
 msgid "Error trying to read from '%s'"
 msgstr "Chyba při čtení z '%s'"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:405
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:632
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:714
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:412
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:639
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:721
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Nelze vytvořit %s"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:452
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:459
 msgid "Failed to retrieve new repository metadata."
 msgstr ""
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:546
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:553
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr ""
 "Nepodařilo se přenést úložiště do mezipaměti (nelze spustit repo2solv)."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:563
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:602
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:570
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:609
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Chyba při načítání úložiště do mezipaměti (%d)."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:620
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:627
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Vytváří se vyrovnávací paměť úložiště '%s'"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:720
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:727
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Nelze vytvořit mezipaměť v %s - chybí oprávnění k zápisu."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:775
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:782
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "Nepodařilo se přenést úložiště %1% do mezipaměti"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:792
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:799
 msgid "Unhandled repository type"
 msgstr "Nepodporovaný typ úložiště"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:860
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:867
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Přidává se úložiště %s"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:947
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:954
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Název souboru úložiště na adrese URL „%s“ je neplatný"
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:963
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:970
 #: zypp/zypp/ng/repomanager.cc:587 zypp/zypp/ng/repomanager.cc:665
 #: zypp/zypp/ng/repomanager.cc:737 zypp/zypp/ng/repomanager.cc:1105
 #: zypp/zypp/ng/repomanager.cc:1231
@@ -4899,7 +4904,7 @@ msgstr ""
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
 #. translator: %1% is a repositories name
-#: zypp/zypp/ng/workflows/repoinfowf.cc:92
+#: zypp/zypp/ng/workflows/repoinfowf.cc:91
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
 msgstr ""
@@ -5134,7 +5139,7 @@ msgstr "porušit %s ignorováním některých z jeho závislostí"
 msgid "generally ignore of some dependencies"
 msgstr "obecně ignorovat některé závislosti"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1160
+#: zypp/zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -5144,91 +5149,91 @@ msgstr ""
 "nahrazeno"
 
 #. just in case
-#: zypp/zypp/solver/detail/SATResolver.cc:1162
+#: zypp/zypp/solver/detail/SATResolver.cc:1164
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr "instalovaný %1% nepochází z distribučního úložiště"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1166
+#: zypp/zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr "nainstalované %1% má starší architekturu"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1168
+#: zypp/zypp/solver/detail/SATResolver.cc:1170
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr "%1% k instalaci má starší architekturu"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1171
+#: zypp/zypp/solver/detail/SATResolver.cc:1173
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr "problém s instalovaným %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1174
+#: zypp/zypp/solver/detail/SATResolver.cc:1176
 msgid "conflicting requests"
 msgstr "protichůdné požadavky"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1177
+#: zypp/zypp/solver/detail/SATResolver.cc:1179
 msgid "some dependency problem"
 msgstr "nějaký problém se závislostmi"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1180
+#: zypp/zypp/solver/detail/SATResolver.cc:1182
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr "nikdo neposkytuje požadované '%1%'"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1181
-#: zypp/zypp/solver/detail/SATResolver.cc:1185
+#: zypp/zypp/solver/detail/SATResolver.cc:1183
+#: zypp/zypp/solver/detail/SATResolver.cc:1187
 msgid "Have you enabled all the required repositories?"
 msgstr "Povolili jste všechna požadovaná úložiště?"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1184
+#: zypp/zypp/solver/detail/SATResolver.cc:1186
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr "požadovaný balíček %1% neexistuje"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1188
+#: zypp/zypp/solver/detail/SATResolver.cc:1190
 msgid "unsupported request"
 msgstr "nepodporovaný požadavek"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1191
+#: zypp/zypp/solver/detail/SATResolver.cc:1193
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr "'%1%' poskytuje systém a nelze jej vymazat"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1194
+#: zypp/zypp/solver/detail/SATResolver.cc:1196
 #, boost-format
 msgid "%1% is not installable"
 msgstr "%1% není instalovatelný"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1199
+#: zypp/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
 msgstr "nikdo neposkytuje '%1%' potřebné nainstalovaným %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1201
+#: zypp/zypp/solver/detail/SATResolver.cc:1203
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr "nikdo neposkytuje '%1%' potřebné k instalaci %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1204
+#: zypp/zypp/solver/detail/SATResolver.cc:1206
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr "nelze nainstalovat %1% i %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1209
+#: zypp/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 "nainstalovaný %1% je v konfliktu s '%2%' poskytnutým nainstalovaným %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1211
+#: zypp/zypp/solver/detail/SATResolver.cc:1213
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
 msgstr "nainstalovaný %1% je v konfliktu s '%2%' potřebným k instalaci %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1215
+#: zypp/zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
@@ -5236,7 +5241,7 @@ msgstr ""
 "%1%, který se má instalovat, je v konfliktu s '%2%' poskytnutým "
 "nainstalovaným %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1217
+#: zypp/zypp/solver/detail/SATResolver.cc:1219
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
@@ -5244,23 +5249,23 @@ msgid ""
 msgstr ""
 "má se instalovat %1%, ale je v konfliktu s '%2%' poskytnutým %3% k instalaci"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1224
+#: zypp/zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr "nainstalované %1% zastarává '%2%' poskytované nainstalovaným %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1226
+#: zypp/zypp/solver/detail/SATResolver.cc:1228
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 "nainstalované %1% zastarává '%2%' poskytované %3%, jež se má instalovat"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1230
+#: zypp/zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr "má se instalovat %1% jež zastarává '%2%' poskytované instalovaným %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1232
+#: zypp/zypp/solver/detail/SATResolver.cc:1234
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
@@ -5268,23 +5273,23 @@ msgstr ""
 "Má se instalovat %1%, jež zastarává '%2%' poskytované %3%, jež se má "
 "instalovat"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1237
+#: zypp/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr "nainstalované %1% je v konfliktu s '%2%' poskytnutým samo sebou"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1239
+#: zypp/zypp/solver/detail/SATResolver.cc:1241
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr "má se instalovat %1%, ale je v konfliktu s '%2%' poskytnutým jím samým"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1271
+#: zypp/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr "nainstalované %1% vyžaduje '%2%', ale tento požadavek nelze splnit"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1273
+#: zypp/zypp/solver/detail/SATResolver.cc:1275
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
@@ -5292,11 +5297,11 @@ msgid ""
 msgstr ""
 "má se instalovat %1% vyžadující '%2%', ale tento požadavek nelze splnit"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1275
+#: zypp/zypp/solver/detail/SATResolver.cc:1277
 msgid "deleted providers: "
 msgstr "odstranění poskytovatelé: "
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1285
+#: zypp/zypp/solver/detail/SATResolver.cc:1287
 msgid ""
 "\n"
 "not installable providers: "
@@ -5304,17 +5309,17 @@ msgstr ""
 "\n"
 "neinstalovatelní poskytovatelé: "
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1287
+#: zypp/zypp/solver/detail/SATResolver.cc:1289
 msgid "not installable providers: "
 msgstr "neinstalovatelní poskytovatelé: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/zypp/solver/detail/SATResolver.cc:1324
+#: zypp/zypp/solver/detail/SATResolver.cc:1326
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr "%1% ještě není plně zaintegrován do %2%."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1325
+#: zypp/zypp/solver/detail/SATResolver.cc:1327
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
@@ -5323,7 +5328,7 @@ msgstr ""
 "záplaty."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/zypp/solver/detail/SATResolver.cc:1333
+#: zypp/zypp/solver/detail/SATResolver.cc:1335
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
@@ -5332,7 +5337,7 @@ msgstr ""
 "Odstranění nainstalovaného %1% v tomto kontextu odstraní (nikoli nahradí!) "
 "také obsažené balíčky PTF."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1334
+#: zypp/zypp/solver/detail/SATResolver.cc:1336
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
@@ -5341,117 +5346,117 @@ msgstr ""
 "Tímto se obsažené balíčky PTF aktualizují a neodstraní. PTF by měly být "
 "odstraněny voláním '%1%'."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1335
+#: zypp/zypp/solver/detail/SATResolver.cc:1337
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr "Obvykle chcete PTF ponechat nebo se rozhodnete akci zrušit."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/zypp/solver/detail/SATResolver.cc:1340
+#: zypp/zypp/solver/detail/SATResolver.cc:1342
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr "Nainstalovaný %1% blokuje vyžadovanou akci."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1341
+#: zypp/zypp/solver/detail/SATResolver.cc:1343
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr "Obvykle budete chtít ponechat PTF a vybrat zrušení této akce."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1398
+#: zypp/zypp/solver/detail/SATResolver.cc:1405
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr "odstraňte zámek, aby šlo odebrat %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1405
-#: zypp/zypp/solver/detail/SATResolver.cc:1443
+#: zypp/zypp/solver/detail/SATResolver.cc:1412
+#: zypp/zypp/solver/detail/SATResolver.cc:1450
 #, boost-format
 msgid "do not install %1%"
 msgstr "neinstalujte %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1422
-#: zypp/zypp/solver/detail/SATResolver.cc:1464
+#: zypp/zypp/solver/detail/SATResolver.cc:1429
+#: zypp/zypp/solver/detail/SATResolver.cc:1471
 #, boost-format
 msgid "keep %1%"
 msgstr "ponechte %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1427
+#: zypp/zypp/solver/detail/SATResolver.cc:1434
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr "odstraňte zámek a tím povolte instalaci %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1478
-#: zypp/zypp/solver/detail/SATResolver.cc:1499
+#: zypp/zypp/solver/detail/SATResolver.cc:1485
+#: zypp/zypp/solver/detail/SATResolver.cc:1506
 msgid "This request will break your system!"
 msgstr "Tento požadavek poškodí váš systém!"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1479
-#: zypp/zypp/solver/detail/SATResolver.cc:1500
+#: zypp/zypp/solver/detail/SATResolver.cc:1486
+#: zypp/zypp/solver/detail/SATResolver.cc:1507
 msgid "ignore the warning of a broken system"
 msgstr "ignorovat varování poškozeného systému"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1484
+#: zypp/zypp/solver/detail/SATResolver.cc:1491
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr "nežádejte instalaci řešení poskytující %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1506
+#: zypp/zypp/solver/detail/SATResolver.cc:1513
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr "nepožadovat smazání všech řešitelných problémů poskytujících% 1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1519
+#: zypp/zypp/solver/detail/SATResolver.cc:1526
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr "neinstalujte nejnovější verzi %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1540
+#: zypp/zypp/solver/detail/SATResolver.cc:1547
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr "ponechte %1% navzdory starší architektuře"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1545
+#: zypp/zypp/solver/detail/SATResolver.cc:1552
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr "instalujte %1% navzdory starší architektuře"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1554
+#: zypp/zypp/solver/detail/SATResolver.cc:1561
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr "zachovejte zastaralou %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1559
+#: zypp/zypp/solver/detail/SATResolver.cc:1566
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr "nainstalujte %1% z vyloučeného úložiště"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1573
+#: zypp/zypp/solver/detail/SATResolver.cc:1580
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr "instalovat %1%, ačkoli byl odvolán"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1576
+#: zypp/zypp/solver/detail/SATResolver.cc:1583
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr "umožnit instalaci PTF %1%"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1579
+#: zypp/zypp/solver/detail/SATResolver.cc:1586
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr "instalovat %1%, ačkoli je na indexu"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1599
+#: zypp/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr "downgrade z %1% na %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1606
+#: zypp/zypp/solver/detail/SATResolver.cc:1613
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr "změna architektury %1% na %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/zypp/solver/detail/SATResolver.cc:1617
+#: zypp/zypp/solver/detail/SATResolver.cc:1624
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
@@ -5460,7 +5465,7 @@ msgstr ""
 "nainstalovat %1% (se změnou dodavatele)\n"
 "  %2%  -->  %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1622
+#: zypp/zypp/solver/detail/SATResolver.cc:1629
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
@@ -5469,12 +5474,12 @@ msgstr ""
 "instalovat %1% od dodavatele %2%\n"
 "  nahradit %3% od dodavatele %4%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1631
+#: zypp/zypp/solver/detail/SATResolver.cc:1638
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr "náhrada %1% %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1642
+#: zypp/zypp/solver/detail/SATResolver.cc:1649
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr "odinstalace %1%"
@@ -5531,7 +5536,7 @@ msgid "New update message"
 msgstr "Nová zpráva o aktualizaci"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/zypp/target/TargetImpl.cc:2238
+#: zypp/zypp/target/TargetImpl.cc:2248
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -5540,7 +5545,7 @@ msgstr ""
 "Přijat signál: \"%1% (%2%)\" - kvůli konzistenci systému nelze zrušit "
 "probíhající transakci RPM."
 
-#: zypp/zypp/target/TargetImpl.cc:2846
+#: zypp/zypp/target/TargetImpl.cc:2856
 msgid "Executing the transaction failed because of the following problems:"
 msgstr "Provedení transakce se nezdařilo kvůli následujícím problémům:"
 

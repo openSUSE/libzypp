@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libzypp\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 15:45+0200\n"
+"POT-Creation-Date: 2026-10-14 11:35+0200\n"
 "PO-Revision-Date: 2026-08-31 13:13+0000\n"
 "Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
-"Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/>"
-"\n"
+"Language-Team: Danish <https://l10n.opensuse.org/projects/libzypp/master/da/"
+">\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,21 +58,26 @@ msgid_plural "(expires in %d days)"
 msgstr[0] "(udløber om %d dag)"
 msgstr[1] "(udløber om %d dage)"
 
+#: zypp-logic/zypp-common/private/keyring_p.cc:125
+msgid "Failed to export key."
+msgstr ""
+
+#: zypp-logic/zypp-common/private/keyring_p.cc:128
+#: zypp-logic/zypp-common/private/keyring_p.cc:257
+msgid "Failed to import key."
+msgstr "Kunne ikke importere nøgle."
+
 #. TranslatorExplanation first %s is key name, second is keyring name
-#: zypp-logic/zypp-common/private/keyring_p.cc:230
+#: zypp-logic/zypp-common/private/keyring_p.cc:251
 #, c-format, boost-format
 msgid "Tried to import not existent key %s into keyring %s"
 msgstr "Prøvede at importere ikke-eksisterende nøgle %s ind i nøgleringen %s"
 
-#: zypp-logic/zypp-common/private/keyring_p.cc:236
-msgid "Failed to import key."
-msgstr "Kunne ikke importere nøgle."
-
-#: zypp-logic/zypp-common/private/keyring_p.cc:260
+#: zypp-logic/zypp-common/private/keyring_p.cc:281
 msgid "Failed to delete key."
 msgstr "Sletning af nøgle mislykkedes."
 
-#: zypp-logic/zypp-common/private/keyring_p.cc:313
+#: zypp-logic/zypp-common/private/keyring_p.cc:334
 #, c-format, boost-format
 msgid "Signature file %s not found"
 msgstr "Signaturfilen %s blev ikke fundet"
@@ -291,7 +296,7 @@ msgid "Timeout exceeded when accessing '%s'."
 msgstr "Tidsfrist udløbet ved tilgang af \"%s\"."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:124
-#: zypp/zypp/media/MediaCurl.cc:944
+#: zypp/zypp/media/MediaCurl.cc:943
 msgid ""
 "Visit the SUSE Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -300,7 +305,7 @@ msgstr ""
 "ikke er udløbet."
 
 #: zypp-logic/zypp-curl/ng/network/networkrequesterror.cc:126
-#: zypp/zypp/media/MediaCurl.cc:946
+#: zypp/zypp/media/MediaCurl.cc:945
 msgid ""
 "Visit the Novell Customer Center to check whether your registration is valid "
 "and has not expired."
@@ -4395,17 +4400,17 @@ msgstr ""
 
 #. !\todo add comma to the message for the next release
 #: zypp/zypp/media/MediaCIFS.cc:427
-#: zypp/zypp/media/MediaNetworkCommonHandler.cc:388
+#: zypp/zypp/media/MediaNetworkCommonHandler.cc:373
 #, c-format, boost-format
 msgid "Authentication required for '%s'"
 msgstr "Autentificering påkrævet for '%s'"
 
 #. just report (NO_ERROR); no interactive request to the user
-#: zypp/zypp/media/MediaCurl.cc:822
+#: zypp/zypp/media/MediaCurl.cc:821
 msgid "Will try again..."
 msgstr "Prøver igen..."
 
-#: zypp/zypp/media/MediaCurl.cc:825
+#: zypp/zypp/media/MediaCurl.cc:824
 #, boost-format
 msgid "Giving up after %1% attempts."
 msgstr "Giver op efter %1% forsøg."
@@ -4428,7 +4433,7 @@ msgstr "Kan ikke oprette mappe med metadata-cache."
 
 #. when dealing with mirrors we notify the user to use gpgKeyUrl instead of
 #. fetching the gpg key from any mirror
-#: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:109
+#: zypp/zypp/ng/repo/workflows/repodownloaderwf.cc:108
 msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
@@ -4437,65 +4442,65 @@ msgstr ""
 "repo-konfigurationen i stedet."
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:96
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:97
 #: zypp/zypp/ng/repo/workflows/serviceswf.cc:249
 #, c-format, boost-format
 msgid "Error trying to read from '%s'"
 msgstr "Fejl under forsøg på at læse fra \"%s\""
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:405
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:632
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:714
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:412
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:639
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:721
 #, c-format, boost-format
 msgid "Can't create %s"
 msgstr "Kan ikke oprette %s"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:452
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:459
 msgid "Failed to retrieve new repository metadata."
 msgstr "Kunne ikke hente nye repo-metadata."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:546
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:553
 msgid "Failed to cache repo ( unable to start repo2solv )."
 msgstr "Kunne ikke mellemlagre repo ( kan ikke starte repo2solv )."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:563
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:602
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:570
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:609
 #, c-format, boost-format
 msgid "Failed to cache repo (%d)."
 msgstr "Caching af softwarekilde (%d) mislykkedes."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:620
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:627
 #, c-format, boost-format
 msgid "Building repository '%s' cache"
 msgstr "Opbygger cache for softwarekilden '%s'"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:720
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:727
 #, c-format, boost-format
 msgid "Can't create cache at %s - no writing permissions."
 msgstr "Kan ikke oprette cache i %s - ingen skriverettigheder."
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:775
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:782
 #, boost-format
 msgid "Failed to cache repo %1%"
 msgstr "Kunne ikke mellemlagre repo %1%"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:792
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:799
 msgid "Unhandled repository type"
 msgstr "Ikke-håndteret softwarekilde-type"
 
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:860
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:867
 #, c-format, boost-format
 msgid "Adding repository '%s'"
 msgstr "Tilføjer softwarekilden '%s'"
 
 #. TranslatorExplanation '%s' is an URL
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:947
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:954
 #, c-format, boost-format
 msgid "Invalid repo file name at '%s'"
 msgstr "Ugyldig softwarekilde-filnavn i \"%s\""
 
 #. TranslatorExplanation '%s' is a filename
-#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:963
+#: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:970
 #: zypp/zypp/ng/repomanager.cc:587 zypp/zypp/ng/repomanager.cc:665
 #: zypp/zypp/ng/repomanager.cc:737 zypp/zypp/ng/repomanager.cc:1105
 #: zypp/zypp/ng/repomanager.cc:1231
@@ -4675,7 +4680,7 @@ msgstr "Repo %1% definerer ikke 'gpgkey=' URL'er."
 #. no key in the cache is what we are looking for, lets download
 #. all keys specified in gpgkey= entries
 #. translator: %1% is a repositories name
-#: zypp/zypp/ng/workflows/repoinfowf.cc:92
+#: zypp/zypp/ng/workflows/repoinfowf.cc:91
 #, boost-format
 msgid "Looking for gpg keys in repository %1%."
 msgstr "Leder efter gpg-nøgler i repo %1%."
@@ -4912,7 +4917,7 @@ msgstr "ødelæg %s ved at ignorere nogle af dens afhængigheder"
 msgid "generally ignore of some dependencies"
 msgstr "ignorér generelt nogle afhængigheder"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1160
+#: zypp/zypp/solver/detail/SATResolver.cc:1162
 #, boost-format
 msgid ""
 "the installed %1% does not belong to a distupgrade repository and must be "
@@ -4921,86 +4926,87 @@ msgstr ""
 "den installerede %1% tilhører ikke et distupgrade-repo og skal erstattes"
 
 #. just in case
-#: zypp/zypp/solver/detail/SATResolver.cc:1162
+#: zypp/zypp/solver/detail/SATResolver.cc:1164
 #, boost-format
 msgid "the to be installed %1% does not belong to a distupgrade repository"
 msgstr "pakken %1% som skal installeres tilhører ikke et distupgrade-repo"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1166
+#: zypp/zypp/solver/detail/SATResolver.cc:1168
 #, boost-format
 msgid "the installed %1% has inferior architecture"
 msgstr "den installerede %1% har en dårligere arkitektur"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1168
+#: zypp/zypp/solver/detail/SATResolver.cc:1170
 #, boost-format
 msgid "the to be installed %1% has inferior architecture"
 msgstr "den %1% som skal installeres har en dårligere arkitektur"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1171
+#: zypp/zypp/solver/detail/SATResolver.cc:1173
 #, boost-format
 msgid "problem with the installed %1%"
 msgstr "problem med den installerede %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1174
+#: zypp/zypp/solver/detail/SATResolver.cc:1176
 msgid "conflicting requests"
 msgstr "modstridende forespørgsler"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1177
+#: zypp/zypp/solver/detail/SATResolver.cc:1179
 msgid "some dependency problem"
 msgstr "et eller andet afhængighedsproblem"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1180
+#: zypp/zypp/solver/detail/SATResolver.cc:1182
 #, boost-format
 msgid "nothing provides the requested '%1%'"
 msgstr "der er ikke noget, der tilbyder den ønskede '%1%'"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1181
-#: zypp/zypp/solver/detail/SATResolver.cc:1185
+#: zypp/zypp/solver/detail/SATResolver.cc:1183
+#: zypp/zypp/solver/detail/SATResolver.cc:1187
 msgid "Have you enabled all the required repositories?"
 msgstr "Har du aktiveret alle de nødvendige repo'er?"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1184
+#: zypp/zypp/solver/detail/SATResolver.cc:1186
 #, boost-format
 msgid "the requested package %1% does not exist"
 msgstr "den ønskede pakke %1% findes ikke"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1188
+#: zypp/zypp/solver/detail/SATResolver.cc:1190
 msgid "unsupported request"
 msgstr "ikke understøttet anmodning"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1191
+#: zypp/zypp/solver/detail/SATResolver.cc:1193
 #, boost-format
 msgid "'%1%' is provided by the system and cannot be erased"
 msgstr "'%1%' leveres af systemet og kan ikke slettes"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1194
+#: zypp/zypp/solver/detail/SATResolver.cc:1196
 #, boost-format
 msgid "%1% is not installable"
 msgstr "%1% er ikke installerbar"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1199
+#: zypp/zypp/solver/detail/SATResolver.cc:1201
 #, boost-format
 msgid "nothing provides '%1%' needed by the installed %2%"
-msgstr "der er ikke noget der tilbyder '%1%' som kræves af den installerede %2%"
+msgstr ""
+"der er ikke noget der tilbyder '%1%' som kræves af den installerede %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1201
+#: zypp/zypp/solver/detail/SATResolver.cc:1203
 #, boost-format
 msgid "nothing provides '%1%' needed by the to be installed %2%"
 msgstr "der er ikke noget der tilbyder '%1%' som kræves for at installere %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1204
+#: zypp/zypp/solver/detail/SATResolver.cc:1206
 #, boost-format
 msgid "cannot install both %1% and %2%"
 msgstr "kan ikke installere både %1% og %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1209
+#: zypp/zypp/solver/detail/SATResolver.cc:1211
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by the installed %3%"
 msgstr ""
 "den installerede %1% er i konflikt med '%2%' som kommer fra den installerede "
 "%3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1211
+#: zypp/zypp/solver/detail/SATResolver.cc:1213
 #, boost-format
 msgid ""
 "the installed %1% conflicts with '%2%' provided by the to be installed %3%"
@@ -5008,7 +5014,7 @@ msgstr ""
 "den installerede %1% er i konflikt med '%2%' som kommer fra %3% som skal "
 "installeres"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1215
+#: zypp/zypp/solver/detail/SATResolver.cc:1217
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the installed %3%"
@@ -5016,7 +5022,7 @@ msgstr ""
 "den %1% som skal installeres er i konflikt med '%2%' som kommer fra den "
 "installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1217
+#: zypp/zypp/solver/detail/SATResolver.cc:1219
 #, boost-format
 msgid ""
 "the to be installed %1% conflicts with '%2%' provided by the to be installed "
@@ -5025,26 +5031,26 @@ msgstr ""
 "den %1% som skal installeres, er i konflikt med '%2%', som kommer fra den "
 "installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1224
+#: zypp/zypp/solver/detail/SATResolver.cc:1226
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 "den installerede %1% erstatter '%2%' som kommer fra den installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1226
+#: zypp/zypp/solver/detail/SATResolver.cc:1228
 #, boost-format
 msgid "the installed %1% obsoletes '%2%' provided by the to be installed %3%"
 msgstr ""
 "den installerede %1% erstatter '%2%' som kommer fra den installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1230
+#: zypp/zypp/solver/detail/SATResolver.cc:1232
 #, boost-format
 msgid "the to be installed %1% obsoletes '%2%' provided by the installed %3%"
 msgstr ""
 "den %1% som skal installeres, erstatter '%2%' som kommer fra den "
 "installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1232
+#: zypp/zypp/solver/detail/SATResolver.cc:1234
 #, boost-format
 msgid ""
 "the to be installed %1% obsoletes '%2%' provided by the to be installed %3%"
@@ -5052,25 +5058,25 @@ msgstr ""
 "den %1%, som skal installeres, erstatter '%2', som kommer fra den "
 "installerede %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1237
+#: zypp/zypp/solver/detail/SATResolver.cc:1239
 #, boost-format
 msgid "the installed %1% conflicts with '%2%' provided by itself"
 msgstr "den installerede %1% er i konflikt med '%2%', som den selv indeholder"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1239
+#: zypp/zypp/solver/detail/SATResolver.cc:1241
 #, boost-format
 msgid "the to be installed %1% conflicts with '%2%' provided by itself"
 msgstr ""
 "den %1%, som skal installeres, er i konflikt med '%2', som den selv "
 "indeholder"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1271
+#: zypp/zypp/solver/detail/SATResolver.cc:1273
 #, boost-format
 msgid ""
 "the installed %1% requires '%2%', but this requirement cannot be provided"
 msgstr "den installerede %1% kræver '%2%, men den afhængighed kan ikke løses"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1273
+#: zypp/zypp/solver/detail/SATResolver.cc:1275
 #, boost-format
 msgid ""
 "the to be installed %1% requires '%2%', but this requirement cannot be "
@@ -5079,11 +5085,11 @@ msgstr ""
 "den %1% som skal installeres, kræver '%2%', men den afhængighed kan ikke "
 "løses"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1275
+#: zypp/zypp/solver/detail/SATResolver.cc:1277
 msgid "deleted providers: "
 msgstr "slettede udbydere: "
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1285
+#: zypp/zypp/solver/detail/SATResolver.cc:1287
 msgid ""
 "\n"
 "not installable providers: "
@@ -5091,17 +5097,17 @@ msgstr ""
 "\n"
 "ikke-installérbare leverandører: "
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1287
+#: zypp/zypp/solver/detail/SATResolver.cc:1289
 msgid "not installable providers: "
 msgstr "ikke-installérbare leverandører: "
 
 #. translator: %1% is the name of a PTF, %2% the name of a patch.
-#: zypp/zypp/solver/detail/SATResolver.cc:1324
+#: zypp/zypp/solver/detail/SATResolver.cc:1326
 #, boost-format
 msgid "%1% is not yet fully integrated into %2%."
 msgstr "%1% er endnu ikke helt integreret i %2%."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1325
+#: zypp/zypp/solver/detail/SATResolver.cc:1327
 msgid ""
 "Typically you want to keep the PTF and choose to not install the maintenance "
 "patches."
@@ -5110,7 +5116,7 @@ msgstr ""
 "patches."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/zypp/solver/detail/SATResolver.cc:1333
+#: zypp/zypp/solver/detail/SATResolver.cc:1335
 #, boost-format
 msgid ""
 "Removing the installed %1% in this context will remove (not replace!) the "
@@ -5119,7 +5125,7 @@ msgstr ""
 "Fjernelse af den installerede %1% i denne kontekst vil også fjerne (ikke "
 "erstatte!) de inkluderede PTF-pakker."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1334
+#: zypp/zypp/solver/detail/SATResolver.cc:1336
 #, boost-format
 msgid ""
 "The PTF should be removed by calling '%1%'. This will update the included "
@@ -5128,117 +5134,117 @@ msgstr ""
 "PTF bør fjernes ved at kalde '%1%'. Det vil opdatere de inkluderede PTF-"
 "pakker i stedet for at fjerne dem."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1335
+#: zypp/zypp/solver/detail/SATResolver.cc:1337
 msgid "Typically you want to keep the PTF or choose to cancel the action."
 msgstr "Normalt vil du vælge at beholde PTF eller vælge at annullere."
 
 #. translator: %1% is the name of a PTF.
-#: zypp/zypp/solver/detail/SATResolver.cc:1340
+#: zypp/zypp/solver/detail/SATResolver.cc:1342
 #, boost-format
 msgid "The installed %1% blocks the desired action."
 msgstr "Den installerede %1% blokerer den ønskede handling."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1341
+#: zypp/zypp/solver/detail/SATResolver.cc:1343
 msgid "Typically you want to keep the PTF and choose to cancel the action."
 msgstr "Normalt vil du ønske at beholde PTF og vælge at annullere handlingen."
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1398
+#: zypp/zypp/solver/detail/SATResolver.cc:1405
 #, boost-format
 msgid "remove lock to allow removal of %1%"
 msgstr "fjern låsen for at tillade sletning af %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1405
-#: zypp/zypp/solver/detail/SATResolver.cc:1443
+#: zypp/zypp/solver/detail/SATResolver.cc:1412
+#: zypp/zypp/solver/detail/SATResolver.cc:1450
 #, boost-format
 msgid "do not install %1%"
 msgstr "installer ikke %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1422
-#: zypp/zypp/solver/detail/SATResolver.cc:1464
+#: zypp/zypp/solver/detail/SATResolver.cc:1429
+#: zypp/zypp/solver/detail/SATResolver.cc:1471
 #, boost-format
 msgid "keep %1%"
 msgstr "behold %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1427
+#: zypp/zypp/solver/detail/SATResolver.cc:1434
 #, boost-format
 msgid "remove lock to allow installation of %1%"
 msgstr "fjern låsen for at tillade installation af %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1478
-#: zypp/zypp/solver/detail/SATResolver.cc:1499
+#: zypp/zypp/solver/detail/SATResolver.cc:1485
+#: zypp/zypp/solver/detail/SATResolver.cc:1506
 msgid "This request will break your system!"
 msgstr "Denne anmodning vil ødelægge dit system!"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1479
-#: zypp/zypp/solver/detail/SATResolver.cc:1500
+#: zypp/zypp/solver/detail/SATResolver.cc:1486
+#: zypp/zypp/solver/detail/SATResolver.cc:1507
 msgid "ignore the warning of a broken system"
 msgstr "ignorér advarslen om et ødelagt system"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1484
+#: zypp/zypp/solver/detail/SATResolver.cc:1491
 #, boost-format
 msgid "do not ask to install a solvable providing %1%"
 msgstr "spørg ikke om at installere en løsning som giver %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1506
+#: zypp/zypp/solver/detail/SATResolver.cc:1513
 #, boost-format
 msgid "do not ask to delete all solvables providing %1%"
 msgstr "spørg ikke om at slette alle løsninger som giver %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1519
+#: zypp/zypp/solver/detail/SATResolver.cc:1526
 #, boost-format
 msgid "do not install most recent version of %1%"
 msgstr "installer ikke seneste version af %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1540
+#: zypp/zypp/solver/detail/SATResolver.cc:1547
 #, boost-format
 msgid "keep %1% despite the inferior architecture"
 msgstr "behold %1% på trods af den dårligere arkitektur"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1545
+#: zypp/zypp/solver/detail/SATResolver.cc:1552
 #, boost-format
 msgid "install %1% despite the inferior architecture"
 msgstr "installer %1% på trods af den dårligere arkitektur"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1554
+#: zypp/zypp/solver/detail/SATResolver.cc:1561
 #, boost-format
 msgid "keep obsolete %1%"
 msgstr "behold den forældede %1%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1559
+#: zypp/zypp/solver/detail/SATResolver.cc:1566
 #, boost-format
 msgid "install %1% from excluded repository"
 msgstr "installer %1% fra det ekskluderede repo"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1573
+#: zypp/zypp/solver/detail/SATResolver.cc:1580
 #, boost-format
 msgid "install %1% although it has been retracted"
 msgstr "installér %1%, selvom den er blevet tilbagetrukket"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1576
+#: zypp/zypp/solver/detail/SATResolver.cc:1583
 #, boost-format
 msgid "allow installing the PTF %1%"
 msgstr "giv tillade til installation af PTF'en %1%"
 
 #. translator: %1% is a package name
-#: zypp/zypp/solver/detail/SATResolver.cc:1579
+#: zypp/zypp/solver/detail/SATResolver.cc:1586
 #, boost-format
 msgid "install %1% although it is blacklisted"
 msgstr "installér %1%, selvom den er sortlistet"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1599
+#: zypp/zypp/solver/detail/SATResolver.cc:1606
 #, boost-format
 msgid "downgrade of %1% to %2%"
 msgstr "nedgradering af %1% til %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1606
+#: zypp/zypp/solver/detail/SATResolver.cc:1613
 #, boost-format
 msgid "architecture change of %1% to %2%"
 msgstr "ændring af arkitektur fra %1% til %2%"
 
 #. FIXME? Actually .ident() must be eq. But the more verbose 'else' isn't bad either.
-#: zypp/zypp/solver/detail/SATResolver.cc:1617
+#: zypp/zypp/solver/detail/SATResolver.cc:1624
 #, boost-format
 msgid ""
 "install %1% (with vendor change)\n"
@@ -5247,7 +5253,7 @@ msgstr ""
 "installer %1% (med leverandør-ændring)\n"
 "  %2%  -->  %3%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1622
+#: zypp/zypp/solver/detail/SATResolver.cc:1629
 #, boost-format
 msgid ""
 "install %1% from vendor %2%\n"
@@ -5256,12 +5262,12 @@ msgstr ""
 "installer %1% fra leverandør %2%\n"
 "  erstatter %3% fra leverandør %4%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1631
+#: zypp/zypp/solver/detail/SATResolver.cc:1638
 #, boost-format
 msgid "replacement of %1% with %2%"
 msgstr "erstatning af %1% med %2%"
 
-#: zypp/zypp/solver/detail/SATResolver.cc:1642
+#: zypp/zypp/solver/detail/SATResolver.cc:1649
 #, boost-format
 msgid "deinstallation of %1%"
 msgstr "afinstallation af %1%"
@@ -5318,7 +5324,7 @@ msgid "New update message"
 msgstr "Besked om ny opdatering"
 
 #. translator: %1% is the received unix signal name, %2% is the numerical value of the received signal
-#: zypp/zypp/target/TargetImpl.cc:2238
+#: zypp/zypp/target/TargetImpl.cc:2248
 #, boost-format
 msgid ""
 "Received signal :\"%1% (%2%)\", to ensure the consistency of the system it "
@@ -5327,7 +5333,7 @@ msgstr ""
 "Modtog signal :\"%1% (%2%)\", for at sikre konsistensen af systemet er det "
 "ikke mulig at afbryde kørende rpm-transaktion."
 
-#: zypp/zypp/target/TargetImpl.cc:2846
+#: zypp/zypp/target/TargetImpl.cc:2856
 msgid "Executing the transaction failed because of the following problems:"
 msgstr ""
 "Udførelsen af transaktionen mislykkedes på grund af de følgende problemer:"

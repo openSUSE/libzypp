@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zypp\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-14 11:35+0200\n"
-"PO-Revision-Date: 2026-05-14 11:12+0000\n"
+"PO-Revision-Date: 2026-10-27 07:13+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/libzypp/master/"
 "ja/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -63,7 +63,7 @@ msgstr[0] "(あと %d 日で期限切れ)"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:125
 msgid "Failed to export key."
-msgstr ""
+msgstr "キーのエクスポートに失敗しました。"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:128
 #: zypp-logic/zypp-common/private/keyring_p.cc:257

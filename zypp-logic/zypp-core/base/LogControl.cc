@@ -110,6 +110,15 @@ namespace zypp
 
     void stop () {
       _stopSignal.notify();
+      if ( _ownerPid != getpid() )
+      {
+        // We are in a forked child: the worker thread only exists in the
+        // parent, join() would block forever (e.g. a fork server calling
+        // exit() hangs in this dtor at __run_exit_handlers). Detach so
+        // ~thread() does not std::terminate().
+        _thread.detach();
+        return;
+      }
       if ( _thread.get_id() != std::this_thread::get_id() )
         _thread.join();
     }
@@ -133,6 +142,8 @@ namespace zypp
         workerMain();
       });
     }
+
+    pid_t _ownerPid = getpid();
 
     void workerMain () {
 

@@ -1,0 +1,81 @@
+=Ver: 3.0
+=Pkg: glibc 1 1 x86_64
++Prv:
+glibc = 1-1
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default 1 1 x86_64
++Prv:
+multiversion(kernel)
+kernel-default-1-1
+kernel = 1-1
+kernel-uname-r = 1-1-default
+kernel-default = 1-1
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default 1 2 x86_64
++Prv:
+multiversion(kernel)
+kernel-default-1-2
+kernel = 1-2
+kernel-uname-r = 1-2-default
+kernel-default = 1-2
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default 1 5 x86_64
++Prv:
+multiversion(kernel)
+kernel-default-1-5
+kernel = 1-5
+kernel-uname-r = 1-5-default
+kernel-default = 1-5
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-virt-1_1-1 1 1 x86_64
++Req:
+kernel-default = 1-1
+-Req:
++Prv:
+kernel-default-uki-virt-1_1-1 = 1-1
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-addon-network-1_1-1 1 1 x86_64
++Req:
+kernel-default = 1-1
+-Req:
++Prv:
+kernel-default-uki-addon-network-1_1-1 = 1-1
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-virt-1_2-2 1 2 x86_64
++Req:
+kernel-default = 1-2
+-Req:
++Prv:
+kernel-default-uki-virt-1_2-2 = 1-2
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-virt-1_5-5 1 5 x86_64
++Req:
+kernel-default = 1-5
+-Req:
++Prv:
+kernel-default-uki-virt-1_5-5 = 1-5
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-virt 1 5 x86_64
++Req:
+kernel-default-uki-virt-1_5-5 = 1-5
+-Req:
++Prv:
+kernel-default-uki-virt = 1-5
+-Prv:
+=Vnd: openSUSE
+=Pkg: kernel-default-uki-addon-network 1 1 x86_64
++Req:
+kernel-default-uki-addon-network-1_1-1 = 1-1
+-Req:
++Prv:
+kernel-default-uki-addon-network = 1-1
+-Prv:
+=Vnd: openSUSE

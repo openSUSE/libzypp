@@ -208,6 +208,8 @@ namespace zypp
         for ( const PublicKeyData & keyData : trustedToUpdate ) {
           // transfer the individual keys only! Never the complete file.
           toTrusted( keyData.id() );
+          // bsc#1284494: Let rpm (RpmDb::importPubkey) update the key too.
+          _sigTrustedKeyAdded.emit( exportKey( keyData, Ring::Trusted ) );
         }
       }
     }

@@ -145,6 +145,34 @@ namespace zypp {
         Missing = 1,  ///< Key is not in Ring
         Update  = 2,  ///< old version of Key is in Ring
       };
+      /** Whether \a keyData changes the lifetime of a subkey of the same key \a ringKeyData.
+       *
+       * Renewing or shortening only a subkey does not touch the creation date of the key, which
+       * is all \ref PublicKeyData::isUpdateFor looks at (bsc#1008325). But rpm checks the expiry
+       * of the subkey, so such a change must be passed on. New subkeys are not considered here.
+       *
+       * This only decides that the key is imported. What wins is decided by gpg when the key is
+       * merged into the ring: the newest signature of each part. So an older version of the key may
+       * trigger an import, but does not bring an older lifetime back. And a key whose user id
+       * self-signature is older than the one in the ring may still carry a newer subkey binding.
+       */
+      static bool changesSubkeyExpiry( const PublicKeyData & keyData, const PublicKeyData & ringKeyData )
+      {
+        if ( keyData.fingerprint() != ringKeyData.fingerprint() )
+          return false;
+
+        for ( const PublicSubkeyData & sub : keyData.subkeys() ) {
+          for ( const PublicSubkeyData & ringSub : ringKeyData.subkeys() ) {
+            if ( sub.id() != ringSub.id() )
+              continue;
+            if ( sub.expires() != ringSub.expires() )	// 0: never expires
+              return true;
+            break;	// subkey ids are unique within a key
+          }
+        }
+        return false;
+      }
+
       /** Helper computing PublicKeyData's status in a Ring. */
       MustUpdate mustUpdateData( const PublicKeyData & keyData, const Ring ring ) const
       {
@@ -152,7 +180,7 @@ namespace zypp {
         if ( not ringKeyData ) {
           return MustUpdate::Missing;
         }
-        if ( keyData.isUpdateFor( ringKeyData ) ) {
+        if ( keyData.isUpdateFor( ringKeyData ) || changesSubkeyExpiry( keyData, ringKeyData ) ) {
           return MustUpdate::Update;
         }
         return MustUpdate::Present;

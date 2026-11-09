@@ -10,6 +10,7 @@
 #include <zypp/KeyRing.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/TmpPath.h>
+#include <zypp/target/private/keyrefresh_p.h>
 
 #include <zypp/ng/context.h>
 #include <zypp/ng/workflows/keyringwf.h>
@@ -486,3 +487,55 @@ BOOST_AUTO_TEST_CASE(keyring_delete)
   }
 }
 
+
+// bsc#1289557: decide when a trusted key is refreshed from its repo before install.
+BOOST_AUTO_TEST_CASE(keyrefresh_needs_refresh)
+{
+  PublicKey oldKey( DATADIR + "renew-old.asc" );   // expired 2025-06-01
+  PublicKey newKey( DATADIR + "renew-new.asc" );   // expires 2027-01-01
+  PublicKey multi( DATADIR + "renew-new-plus-other.asc" );   // main key 'other' never expires
+
+  const Date mid2026 { 1780272000 };   // 2026-06-01 UTC, from: date -ud 2026-06-01 +%s
+  BOOST_CHECK(   target::keyNeedsRefresh( oldKey.keyData(), oldKey.id(), mid2026 ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( newKey.keyData(), newKey.id(), mid2026 ) );
+  BOOST_CHECK(   target::keyNeedsRefresh( newKey.keyData(), newKey.id(), Date( newKey.expires() - 10*Date::day ) ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( newKey.keyData(), newKey.id(), Date( newKey.expires() - 20*Date::day ) ) );
+  BOOST_REQUIRE_EQUAL( multi.expires(), Date() );
+  BOOST_CHECK( ! target::keyNeedsRefresh( multi.keyData(), multi.id(), mid2026 ) );
+}
+
+// bsc#1289557: rpm refuses a signature made by an expired signing subkey even if the primary key
+// never expires. The expiry of the subkey that signed must count.
+BOOST_AUTO_TEST_CASE(keyrefresh_needs_refresh_subkey)
+{
+  PublicKey oldKey( DATADIR + "renew-sub-old.asc" );   // primary key never expires, subkey expires 2025-06-01
+  PublicKey newKey( DATADIR + "renew-sub-new.asc" );   // primary key never expires, subkey expires 2099-12-31
+  BOOST_REQUIRE_EQUAL( oldKey.expires(), Date() );
+  BOOST_REQUIRE( oldKey.hasSubkeys() && newKey.hasSubkeys() );
+  const std::string subId { (*oldKey.subkeys().begin()).id() };
+  const Date subExpires { (*newKey.subkeys().begin()).expires() };
+  BOOST_REQUIRE( subId != oldKey.id() );
+
+  const Date mid2026 { 1780272000 };   // 2026-06-01 UTC, from: date -ud 2026-06-01 +%s
+
+  // Signed by the subkey: the subkey decides.
+  BOOST_CHECK(   target::keyNeedsRefresh( oldKey.keyData(), subId, mid2026 ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( newKey.keyData(), subId, mid2026 ) );
+  BOOST_CHECK(   target::keyNeedsRefresh( newKey.keyData(), subId, Date( subExpires - 10*Date::day ) ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( newKey.keyData(), subId, Date( subExpires - 20*Date::day ) ) );
+  BOOST_CHECK(   target::keyNeedsRefresh( oldKey.keyData(), subId.substr( 8 ), mid2026 ) );	// short key id
+
+  // Signed by the primary key or an unknown id: the subkey does not matter.
+  BOOST_CHECK( ! target::keyNeedsRefresh( oldKey.keyData(), oldKey.id(), mid2026 ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( oldKey.keyData(), "0123456789ABCDEF", mid2026 ) );
+  BOOST_CHECK( ! target::keyNeedsRefresh( oldKey.keyData(), "", mid2026 ) );
+}
+
+BOOST_AUTO_TEST_CASE(keyrefresh_tracker)
+{
+  target::KeyRefreshTracker t;
+  BOOST_CHECK(   t.firstTime( "ABCD", "repoA" ) );
+  BOOST_CHECK( ! t.firstTime( "ABCD", "repoA" ) );   // same pair: only once
+  BOOST_CHECK( ! t.firstTime( "abcd", "repoA" ) );   // case-insensitive key id
+  BOOST_CHECK(   t.firstTime( "ABCD", "repoB" ) );   // same key, other repo: try again
+}

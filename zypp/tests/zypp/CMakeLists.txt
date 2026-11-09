@@ -17,6 +17,9 @@ ADD_TESTS(
   Flags
   GZStream
   InstanceId
+  KeyRenewalHook
+  KeyRenewalRefresh
+  KeyRenewalSubkey
   KeyRing
   Locale
   Locks

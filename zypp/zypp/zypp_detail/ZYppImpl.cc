@@ -46,14 +46,25 @@ namespace {
 
   bool makeShutdownPipe() {
     int pipeFds[]{ -1, -1 };
+      // Both ends are nonblocking:
+      // - clearShutdownSignal() reads the read end until it is empty. The write end stays open
+      //   for the lifetime of the process, so a blocking read would hang on an empty pipe.
+      // - setShutdownSignal() writes from a signal handler, which must never block.
+      // Polling the read end is not affected.
   #ifdef HAVE_PIPE2
-      if ( ::pipe2( pipeFds, O_CLOEXEC ) != 0 )
+      if ( ::pipe2( pipeFds, O_CLOEXEC | O_NONBLOCK ) != 0 )
         return false;
   #else
       if ( ::pipe( pipeFds ) != 0 )
         return false;
-      ::fcntl( pipeFds[0], F_SETFD, O_CLOEXEC );
-      ::fcntl( pipeFds[1], F_SETFD, O_CLOEXEC );
+      for ( int fd : pipeFds ) {
+        const int flags = ::fcntl( fd, F_GETFL );
+        if ( flags == -1 || ::fcntl( fd, F_SETFL, flags | O_NONBLOCK ) == -1 || ::fcntl( fd, F_SETFD, FD_CLOEXEC ) == -1 ) {
+          ::close( pipeFds[0] );
+          ::close( pipeFds[1] );
+          return false;
+        }
+      }
   #endif
       shutdownPipeRead = pipeFds[0];
       shutdownPipeWrite = pipeFds[1];
@@ -299,7 +310,7 @@ namespace zypp
     {
       // ONLY signal safe code here, that means no logging or anything else that is more than using atomics
       // or writing a fd
-      int sigFd = shutdownPipeWriteFd();
+      int sigFd = shutdownPipeReadFd();
       if ( sigFd == -1 ) {
         // we have no fd so nothing to clear
         return;

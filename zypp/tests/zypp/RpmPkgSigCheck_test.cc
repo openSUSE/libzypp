@@ -275,3 +275,32 @@ BOOST_AUTO_TEST_CASE(signed_broken_header_pkg_withkey)
   } };
   BOOST_CHECK_EQUAL( xpct, cs );
 }
+
+///////////////////////////////////////////////////////////////////
+// A package signed with a renewed key, while the copy of the key in the rpm database
+// has expired. rpm refuses it, and its verdict is "key not trusted", not a generic error. The word
+// rpm prints is NOTTRUSTED (rpm < 4.14: NOTRUSTED).
+BOOST_AUTO_TEST_CASE(signed_pkg_expired_key)
+{
+  const Pathname keyDir { Pathname(TESTS_SRC_DIR)/"zypp/data/KeyRenewal" };
+
+  // The key as it was imported while it was valid (it expired 2025-06-01); the package is signed
+  // with the renewed version of the key.
+  try {
+    test.target().rpmDb().importPubkey( PublicKey( keyDir/"key-v0.asc" ) );
+  } catch ( const Exception & excpt ) {
+    BOOST_TEST_MESSAGE( "This rpm can not import an expired key, skipping: " << excpt.asString() );
+    return;
+  }
+
+  CheckResult cs { gcheckPackageSignature( keyDir/"repo/x86_64/pkg.rpm" ) };
+
+  const bool refused = std::any_of( cs.detail.begin(), cs.detail.end(), []( const auto & detail_r ) {
+    return str::contains( detail_r.second, "NOTTRUSTED" ) || str::contains( detail_r.second, "NOTRUSTED" );
+  } );
+  if ( not refused ) {
+    BOOST_TEST_MESSAGE( "This rpm does not refuse signatures of expired keys, skipping." );
+    return;
+  }
+  BOOST_CHECK_EQUAL( cs.result, RpmDb::CHK_NOTTRUSTED );
+}

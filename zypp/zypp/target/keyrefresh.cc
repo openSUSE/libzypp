@@ -49,55 +49,69 @@ namespace zypp::target
   bool KeyRefreshTracker::firstTime( const std::string & keyId_r, const std::string & repoAlias_r )
   { return _seen.insert( { str::toUpper( keyId_r ), repoAlias_r } ).second; }
 
-  /** bsc#1289557: Renew an expiring trusted key before rpm installs a package signed with it.
-   *
-   * For repos with validated metadata zypp does not check the package signature itself
-   * (checksum from the signed metadata), but rpm does when installing. If the key in the
-   * rpm database expired and the repo meanwhile provides a renewed key, fetch the repo keys;
-   * a renewed trusted key imported into the general keyring is passed on to rpm.
-   * Never throws: this must not break the commit.
-   */
-  void refreshExpiringKey( const PoolItem & pi_r, const ManagedFile & file_r, KeyRefreshTracker & tracker_r )
+  namespace
   {
-    try
+    /** Renew an expiring trusted key from \a repo_r, if the package \a file_r is signed with it.
+     *
+     * Reads the signing key id from the package, and if the trusted key (or the signing subkey)
+     * is expired or about to expire, fetches the repo keys. A renewed trusted key imported into
+     * the general keyring is passed on to rpm. If \a tracker_r is given, this is tried only once
+     * per (key id, repo).
+     *
+     * \return Whether the key was expiring and a fetch of the repo keys was tried, i.e. checking the
+     * signature again is worthwhile. It does not tell whether a renewed key was found.
+     * Never throws: this must not break the commit or the package check.
+     */
+    bool renewExpiringKey( const RepoInfo & repo_r, const Pathname & file_r, KeyRefreshTracker * tracker_r )
     {
-      if ( file_r->empty() )
-        return;
-
-      // No verification: it must not fail on exactly the expired key.
-      rpm::RpmHeader::constPtr hdr { rpm::RpmHeader::readPackage( file_r.value(), rpm::RpmHeader::NOVERIFY ) };
-      if ( ! hdr )
-        return;
-
-      const std::string keyId { hdr->signatureKeyID() };
-      if ( keyId.empty() )
-        return;
-
-      // Unknown keys are the job of the CHK_NOKEY handling in PackageProvider.
-      const PublicKeyData keyData { getZYpp()->keyRing()->trustedPublicKeyData( keyId ) };
-      if ( ! keyData || ! keyNeedsRefresh( keyData, keyId ) )
-        return;
-
-      const RepoInfo repo { pi_r.repoInfo() };
-      if ( ! tracker_r.firstTime( keyData.id(), repo.alias() ) )
-        return;
-
-      MIL << "Trusted key " << keyData << " signing " << pi_r
-          << " is expired or about to expire. Looking for a renewed key in repo '" << repo.alias() << "'" << endl;
-
-      const auto res { zyppng::RepoInfoWorkflow::fetchGpgKeys( zyppng::Context::defaultContext(), repo ) };
-      if ( ! res )
+      try
       {
-        try { std::rethrow_exception( res.error() ); }
-        catch ( const Exception & excpt )
-        { ZYPP_CAUGHT( excpt ); WAR << "Failed to fetch keys from repo '" << repo.alias() << "': " << excpt.asString() << endl; }
-        catch ( ... )
-        { WAR << "Failed to fetch keys from repo '" << repo.alias() << "'" << endl; }
+        if ( file_r.empty() )
+          return false;
+
+        // No verification: it must not fail on exactly the expired key.
+        rpm::RpmHeader::constPtr hdr { rpm::RpmHeader::readPackage( file_r, rpm::RpmHeader::NOVERIFY ) };
+        if ( ! hdr )
+          return false;
+
+        const std::string keyId { hdr->signatureKeyID() };
+        if ( keyId.empty() )
+          return false;
+
+        // Unknown keys are the job of the CHK_NOKEY handling in PackageProvider.
+        const PublicKeyData keyData { getZYpp()->keyRing()->trustedPublicKeyData( keyId ) };
+        if ( ! keyData || ! keyNeedsRefresh( keyData, keyId ) )
+          return false;
+
+        if ( tracker_r && ! tracker_r->firstTime( keyData.id(), repo_r.alias() ) )
+          return false;
+
+        MIL << "Trusted key " << keyData << " signing " << file_r
+            << " is expired or about to expire. Looking for a renewed key in repo '" << repo_r.alias() << "'" << endl;
+
+        const auto res { zyppng::RepoInfoWorkflow::fetchGpgKeys( zyppng::Context::defaultContext(), repo_r ) };
+        if ( ! res )
+        {
+          try { std::rethrow_exception( res.error() ); }
+          catch ( const Exception & excpt )
+          { ZYPP_CAUGHT( excpt ); WAR << "Failed to fetch keys from repo '" << repo_r.alias() << "': " << excpt.asString() << endl; }
+          catch ( ... )
+          { WAR << "Failed to fetch keys from repo '" << repo_r.alias() << "'" << endl; }
+          return false;
+        }
+        return true;
       }
+      catch ( const Exception & excpt )
+      { ZYPP_CAUGHT( excpt ); WAR << "Failed to refresh key for " << file_r << ": " << excpt.asString() << endl; }
+      catch ( ... )
+      { WAR << "Failed to refresh key for " << file_r << endl; }
+      return false;
     }
-    catch ( const Exception & excpt )
-    { ZYPP_CAUGHT( excpt ); WAR << "Failed to refresh key for " << pi_r << ": " << excpt.asString() << endl; }
-    catch ( ... )
-    { WAR << "Failed to refresh key for " << pi_r << endl; }
-  }
+  } // namespace
+
+  void refreshExpiringKey( const PoolItem & pi_r, const ManagedFile & file_r, KeyRefreshTracker & tracker_r )
+  { renewExpiringKey( pi_r.repoInfo(), file_r.value(), &tracker_r ); }
+
+  bool renewExpiringSigningKey( const RepoInfo & repo_r, const Pathname & file_r )
+  { return renewExpiringKey( repo_r, file_r, nullptr ); }
 } // namespace zypp::target

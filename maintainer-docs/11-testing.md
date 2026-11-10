@@ -921,7 +921,7 @@ zypp/tests/
 
 | File | What | Notes |
 |---|---|---|
-| `zypp/data/KeyRing/{public,private}.asc` | test key pair; `readme.txt`: "passphrase for the key pair is zypp-devel" | `repomd.xml.asc` is signed with it; `repomd.xml.corrupted` = content changed after signing; `installkey.gpg` used for import tests |
+| `zypp/data/KeyRing/{public,private}.asc` | test key pair; `readme.md`: "The passphrase for the key pair is `zypp-devel`" | `repomd.xml.asc` is signed with it; `repomd.xml.corrupted` = content changed after signing; `installkey.gpg` used for import tests |
 | `zypp/data/PublicKey/{susekey,multikey,multikey2}.asc` | real SUSE key, files with several keys | `PublicKey_test` |
 | `zypp/data/RpmPkgSigCheck/*.rpm`, `signed.key` | (un)signed, payload-broken and header-broken rpms + the signing key | `RpmPkgSigCheck_test` |
 | `repo/RepoSigcheck/*_repo/repodata` | repos with no sig, sig by unknown key, wrong sig, valid sig | `RepoSigcheck_test` |

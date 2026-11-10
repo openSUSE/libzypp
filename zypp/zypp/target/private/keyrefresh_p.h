@@ -15,8 +15,10 @@
 
 #include <zypp-core/Date.h>
 #include <zypp-core/ManagedFile.h>
+#include <zypp-core/Pathname.h>
 #include <zypp-common/PublicKey.h>
 #include <zypp/PoolItem.h>
+#include <zypp/RepoInfo.h>
 
 namespace zypp::target
 {
@@ -52,6 +54,17 @@ namespace zypp::target
    * key imported into the general keyring is passed on to rpm. Never throws.
    */
   void refreshExpiringKey( const PoolItem & pi_r, const ManagedFile & file_r, KeyRefreshTracker & tracker_r );
+
+  /** bsc#1289557: Renew the key an expiring signature of \a file_r was made with, from \a repo_r.
+   *
+   * For the package signature check: rpm refuses the signature of a package signed with a renewed
+   * key if its copy of the key expired. Like \ref refreshExpiringKey, but without once-per-commit
+   * tracking, and it tells the caller whether a fetch was tried, so the check is worth repeating.
+   * Never throws.
+   *
+   * \return Whether the trusted key was expiring and a fetch of the repo keys was tried.
+   */
+  bool renewExpiringSigningKey( const RepoInfo & repo_r, const Pathname & file_r );
 } // namespace zypp::target
 
 #endif // ZYPP_TARGET_PRIVATE_KEYREFRESH_P_H

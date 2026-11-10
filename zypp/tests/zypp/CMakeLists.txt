@@ -19,6 +19,7 @@ ADD_TESTS(
   InstanceId
   KeyRenewalHook
   KeyRenewalRefresh
+  KeyRenewalSigcheck
   KeyRenewalSubkey
   KeyRing
   Locale

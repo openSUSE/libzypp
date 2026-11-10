@@ -33,6 +33,7 @@
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/FileChecker.h>
 #include <zypp/target/rpm/RpmHeader.h>
+#include <zypp/target/private/keyrefresh_p.h>
 
 #include <zypp/ng/context.h>
 #include <zypp/ng/workflows/keyringwf.h>
@@ -226,8 +227,20 @@ namespace zypp
           userData.set( "Localpath", file_r );
 
           RpmDb::CheckPackageResult res = RpmDb::CHK_NOKEY;
+          bool renewalTried = false;
           while ( res == RpmDb::CHK_NOKEY ) {
             res = packageSigCheck( file_r, info.pkgGpgCheckIsMandatory(), userData );
+
+            // bsc#1289557: The signing key is trusted, but it is expired (or about to expire) in the
+            // rpm database, and the repo may provide a renewed key. As for a missing key, try to
+            // resolve this with the keys of the repository, and check again before anything is reported.
+            if ( res == RpmDb::CHK_NOTTRUSTED && ! renewalTried ) {
+              renewalTried = true;
+              if ( target::renewExpiringSigningKey( info, file_r ) ) {
+                res = RpmDb::CHK_NOKEY;	// stay in the loop: check again
+                continue;
+              }
+            }
 
             // publish the checkresult, even if it is OK. Apps may want to report something...
             report()->pkgGpgCheck( userData );

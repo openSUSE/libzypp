@@ -1191,7 +1191,8 @@ namespace
       { "NOKEY",      RpmDb::CHK_NOKEY },
       { "BAD",        RpmDb::CHK_FAIL },
       { "UNKNOWN",    RpmDb::CHK_NOTFOUND },
-      { "NOTRUSTED",  RpmDb::CHK_NOTTRUSTED },
+      { "NOTRUSTED",  RpmDb::CHK_NOTTRUSTED },	// older rpm versions
+      { "NOTTRUSTED", RpmDb::CHK_NOTTRUSTED },
       { "NOTFOUND",   RpmDb::CHK_NOTFOUND },
     };
     auto getresult = []( const ResultMap & resultMap, ResultMap::key_type key )->ResultMap::mapped_type {

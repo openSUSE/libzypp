@@ -148,7 +148,7 @@ PRs or triage bugs, and **read section 1 before every review**.
 ## 9. Security
 
 * **There is no persistent zypp keyring** — [06 §2.1](06-security-gpg-keyring.md#21-two-keyrings-both-temporary) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)
-* **`created()` = newest self-sig (bsc#1179222); subkey keys always re-imported (bsc#1008325)** — [06 §2.2](06-security-gpg-keyring.md#22-key-identity-ids-fingerprints-subkeys) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)
+* **`created()` = newest self-sig (bsc#1179222); not rpm's release for renewed subkeys (bsc#1008325)** — [06 §2.2](06-security-gpg-keyring.md#22-key-identity-ids-fingerprints-subkeys) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)
 * **Expired-key signatures validate; unknown-key sigs ignored if one is good (bsc#1180721)** — [06 §5.3](06-security-gpg-keyring.md#53-decision-tree-verifyfilesignaturelogicexecute--findkey) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)
 * **Accepted ≠ validated (`.repo_gpgcheck`)** — [06 §7](06-security-gpg-keyring.md#7-gpgcheck-semantics-repoinfo--zconfig) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)
 * **Repo `gpgcheck=` masks zypp.conf defaults; `repo_gpgcheck` strict (bsc#1274625)** — [06 §7](06-security-gpg-keyring.md#7-gpgcheck-semantics-repoinfo--zconfig) · [pitfalls](06-security-gpg-keyring.md#pitfalls--special-cases)

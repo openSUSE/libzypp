@@ -38,6 +38,8 @@ repo download workflow runs), [Media & downloads](07-media-and-downloads.md) (cu
 - [7. gpgcheck semantics (RepoInfo / ZConfig)](#7-gpgcheck-semantics-repoinfo--zconfig)
   - [7.1 Repo metadata download & check (`DownloadMasterIndexLogic`, `repodownloaderwf.cc`)](#71-repo-metadata-download--check-downloadmasterindexlogic-repodownloaderwfcc)
   - [7.2 Package check (`PackageProvider.cc`)](#72-package-check-packageprovidercc)
+  - [7.3 Trust chain: from the trusted key to the installed package](#73-trust-chain-from-the-trusted-key-to-the-installed-package)
+  - [7.4 Renewing an expiring key before it is needed (bsc#1289557)](#74-renewing-an-expiring-key-before-it-is-needed-bsc1289557)
 - [8. Checksums and DigestReport](#8-checksums-and-digestreport)
 - [9. Media-level security](#9-media-level-security)
   - [9.1 HTTPS (`zypp-logic/zypp-curl/curlhelper.cc`)](#91-https-zypp-logiczypp-curlcurlhelpercc)
@@ -125,14 +127,16 @@ public API (`using Ring = KeyRingImpl::Ring; // While "bool trusted" is in the p
 
 - `id()` — 16 hex-char long id of the primary key; `fingerprint()` full fpr.
 - `created()` — **not** the key creation time: the timestamp of the *latest self-signature on the first uid*
-  (bsc#1179222). This is what rpm uses as the release of `gpg-pubkey`, so a key whose expiry was
-  extended gets a new "release". See `PublicKeyData::Impl::fromGpgmeKey`.
+  (bsc#1179222). zypp uses it as the release of `gpg-pubkey`, so a key whose expiry was extended gets a new
+  "release". rpm may differ for subkey renewals (§15). See `PublicKeyData::Impl::fromGpgmeKey`.
 - `gpgPubkeyVersion()` = lowercase last 8 hex digits of id; `gpgPubkeyRelease()` = hex of `created()`
   (`date2release`); `rpmName()` = `gpg-pubkey-%v-%r`; `gpgPubkeyEdition()`.
 - `providesKey(id)` matches id/fpr suffix of the primary key **or any subkey**; short 8-char ids only match the
   primary id (convenience for rpm versions). `isSafeKeyId(id)` = `id.size() >= 16`.
 - `isUpdateFor(rhs)`: same fingerprint and newer `created()` (or rhs empty). Comment cites bnc#393160 (compare
   fpr, not just id) and bsc#1008325 (subkey additions do not change `created()`; not detected as update).
+  `KeyRingImpl` also treats a key that extends the expiry of a subkey the ring already has as an update
+  (`extendsSubkey()` in `private/keyring_p.h`).
 - `operator==` compares fingerprint + created.
 - `expired()`, `daysToLive()` (INT_MAX if no expiry), `expiresAsString()` (annotates ≤90 days).
 
@@ -186,16 +190,20 @@ Ring::General:
      else if it is an Update of a key in Trusted -> remember in trustedToUpdate ("U" in log)
   if any not Present:
      gpg-import whole file into general ring
-     SendKeys(General->Trusted) for each trustedToUpdate id   (individual keys only, never the file!)
+     for each trustedToUpdate id                   (individual keys only, never the file!)
+        SendKeys(General->Trusted)
+        emit sigTrustedKeyAdded(exportKey(kd, Trusted))   (bsc#1284494: lets rpm update the key)
 ```
 
 bsc#1259706 (17.38.6): "Check for trusted key updates when updating the general keyring" — previously
 renewed trusted keys were updated only when used to sign repo metadata.
 
-Note the `SendKeys` path transfers keys directly via gpgme export/import into the trusted ring
-(`CachedPublicKeyData::Manip`) **without emitting `sigTrustedKeyAdded`**, i.e. the rpm database is not updated
-at that moment. The rpm db picks those up on the next `syncTrustedKeys(SYNC_FROM_KEYRING)` (e.g. next target
-init / lock acquisition). Verify this if you touch the code: it is inferred from the code paths, not documented.
+`SendKeys` itself only transfers keys via gpgme export/import into the trusted ring
+(`CachedPublicKeyData::Manip`) and emits nothing. The explicit `sigTrustedKeyAdded` per renewed key is what makes
+`RpmDb::importPubkey` update the key in rpm. Without it the update is
+lost: the trusted ring is a temp dir rebuilt from rpm on every start, so a later `syncTrustedKeys` never sees the
+renewed key. That was bsc#1284494: commit 4a1341e37 (first released in 17.38.15) introduced `SendKeys` and dropped
+the signal; the fix restored it. Only the renewed keys are announced, never other (untrusted) keys from the same file.
 
 `multiKeyImport(file, ring)` is the silent raw import used by `RpmDb` (no signal, no update logic).
 
@@ -362,9 +370,11 @@ ng wrappers for these reports: `KeyRingReportHelper`, `DigestReportHelper` in `z
      `multiKeyImport(tmp, trusted)` (signals temporarily disconnected). Keys not trusted afterwards → ERR "(V3 key?)"
      and `reportNonImportedKeys` (bsc#1096217).
   5. FROM_KEYRING: `importPubkey(exportTrustedPublicKey(k))` per key, `RpmException` swallowed.
-- `importPubkey(key)`: skipped in readonly mode (bnc#828672, `zypp_readonly_hack::IGotIt()`); skipped if the same
-  edition is present **unless the key has subkeys** (bsc#1008325 — subkey additions don't bump release, so always
-  re-import); skipped if an older edition is requested; older editions of the same id are replaced.
+- `importPubkey(key)` (`RpmDb.cc`, merge logic in `target/pubkeyupdate.cc`): skipped in readonly mode (bnc#828672,
+  `zypp_readonly_hack::IGotIt()`). If rpm already holds the same key (same **fingerprint**, the `gpg-pubkey` version
+  is only the short id), gpg merges rpm's copy with the new key. Only if that adds something are rpm's copies erased
+  (by exact name) and the merged key imported. So an older key or a repeated import does nothing, and there is no
+  release comparison. Same short id but another fingerprint: never touched.
 - `pubkeys()` / `pubkeyEditions()` list `gpg-pubkey` packages.
 
 ### rpm package signature check
@@ -374,7 +384,9 @@ ng wrappers for these reports: `KeyRingReportHelper`, `DigestReportHelper` in `z
 `rpmVerifySignatures` via librpm with `RPMVSF_DEFAULT`, captures rpm's log (`RpmlogCapture`) with
 `LC_ALL=C` (bsc#1076415, output is parsed) and maps each indented result line:
 
-`OK→CHK_OK, NOKEY→CHK_NOKEY, BAD→CHK_FAIL, UNKNOWN/NOTFOUND→CHK_NOTFOUND, NOTRUSTED→CHK_NOTTRUSTED, other→CHK_ERROR`.
+`OK→CHK_OK, NOKEY→CHK_NOKEY, BAD→CHK_FAIL, UNKNOWN/NOTFOUND→CHK_NOTFOUND, NOTRUSTED/NOTTRUSTED→CHK_NOTTRUSTED, other→CHK_ERROR`.
+rpm < 4.14 prints `NOTRUSTED` (a typo), later versions `NOTTRUSTED`; both are mapped. Only the old spelling used to be,
+so newer rpm gave `CHK_ERROR` for untrusted signatures, e.g. by an expired key.
 
 Combination priority: FAIL > NOTFOUND > NOKEY > NOTTRUSTED > OK. If OK, bsc#1184501: a package counts as signed only
 with a **header signature** and (a **payload digest** or a legacy whole-package signature). Otherwise a `CHK_NOSIG`
@@ -468,8 +480,48 @@ If `info.pkgGpgCheck()`: `packageSigCheck` → `RpmDb::checkPackageSignature`; `
 mandatory ("Relax CHK_NOSIG"). Result is always published via `DownloadResolvableReport::pkgGpgCheck(userData)` with
 keys `ResObject`, `Package` (legacy), `Localpath`, `CheckPackageResult`, `CheckPackageDetail`. On `CHK_NOKEY` the key id
 is read from the rpm header and `provideAndImportKeyFromRepository` is tried; loop repeats while NOKEY and import
-succeeded. Remaining errors: if the receiver set `"Action"` use it; if it set the key without value → default problem
+succeeded. On `CHK_NOTTRUSTED` (key expired in rpm) zypp once per package tries to renew the key from the repo and
+checks again before reporting anything (§7.4). Remaining errors: if the receiver set `"Action"` use it; if it set the key without value → default problem
 report; else `defaultReportSignatureError`. bsc#1045735: invalid files must not remain in the package cache.
+
+### 7.3 Trust chain: from the trusted key to the installed package
+
+For a repo whose metadata signature was validated (`validRepoSignature() == true`) and default
+gpgcheck settings, package integrity is derived from the metadata signature, not from the
+package's own rpm signature:
+
+1. The master index (`repomd.xml`, susetags `content`) is signed. Its signature is verified
+   against the zypp trusted ring (§5, §7.1).
+2. The master index lists the checksums of the other metadata files (`primary.xml`, …).
+   They are verified when downloaded.
+3. The package metadata states a checksum per package (`OnMediaLocation::checksum()`).
+4. The downloaded package is verified against that checksum by the `Fetcher`
+   (`ChecksumFileChecker`, §8).
+
+Because of this, `pkgGpgCheck()` is false for such repos and `rpmSigFileChecker` does not ask
+rpm to verify the package signature at download time (§7.2, §14). The package's rpm signature
+is required at download time only if the chain does not exist (unsigned repo, failed or
+indeterminate metadata validation) or if `pkg_gpgcheck` is explicitly on (§7 matrix).
+
+Consequence: for signed repos, the only check of the package's rpm signature is rpm's own
+check at install time, on the classic per-package backend (§14 "At rpm install time"). The
+single-transaction backend skips it. That check uses the keys in the rpm database, which is
+why an expired or outdated `gpg-pubkey` in rpm surfaces only at install time, while download
+and zypp's checks succeed (bsc#1284494, bsc#1289557).
+
+### 7.4 Renewing an expiring key before it is needed (bsc#1289557)
+
+For signed repos zypp trusts the metadata checksum, and only rpm checks the package signature at install time, with its
+own copy of the key. If that copy expired and the vendor renewed the key, the install fails although zypp knows the new
+key. So a trusted key that is expired or expires within 15 days (the signing subkey counts too) is renewed from the repo
+of the package: zypp fetches the repo's keys, and a renewed key then reaches rpm like any other (§3.1). This happens in
+two places, both using `zypp/zypp/target/keyrefresh.cc`: before a package of a real commit is installed (`TargetImpl.cc`;
+not for dry-run or download-only; once per key and repo), and when zypp checks the package signature itself and gets
+`CHK_NOTTRUSTED` (`PackageProvider.cc`; once per package, then it checks again). No user prompt: same fingerprint, so it
+can only come from the key owner.
+
+Known gap: a renewed key that is already in the general ring does not update the trusted ring (§3.1, `Present` wins), so
+fetching it again changes nothing.
 
 ---
 
@@ -750,6 +802,7 @@ Commit / download ─► PackageProvider::providePackage (zypp/zypp/repo/Package
            RpmDb::checkPackageSignature(file, detail)          (strict: unsigned → CHK_NOSIG)
            CHK_NOSIG && !mandatory ─► CHK_OK   ("Relax CHK_NOSIG")   ← pkg_gpgcheck=0 ("b")
            userData: CheckPackageResult, CheckPackageDetail
+       CHK_NOTTRUSTED (once per package): renew the key from the repo, check again   (§7.4, bsc#1289557)
        report()->pkgGpgCheck(userData)                          (also on OK)
        CHK_NOKEY: id = RpmHeader::readPackage(file)->signatureKeyID()
                   KeyRingWorkflow::provideAndImportKeyFromRepository(defaultContext, id, repoInfo)
@@ -788,6 +841,17 @@ always passes `RPMINST_NODIGEST | RPMINST_NOSIGNATURE | RPMINST_ALLOWUNTRUSTED` 
 per-package `rpm -U` path (~l.1842) adds `--nosignature` only if `ZYppCommitPolicy::rpmNoSignature()`. Otherwise rpm verifies
 again with its own `%_pkgverify_level`. A package the user accepted as unsigned/NOKEY may then still be refused by rpm when
 that macro is set to `signature`/`all` (unverified on current distros).
+rpm refuses packages whose signing key is expired in the rpm database: `error: Key … expired on …` followed by
+`… Signature, key ID …: NOTTRUSTED` and `package … does not verify`, then `rpm -U` exits with status 1 or 2. Packages
+from signed repos were never rpm-signature-checked by zypp before this point (§7.3).
+Reproduced with rpm 4.20.1 (libgcrypt, no rpm-sequoia; Tumbleweed 2026-03), as a normal user with a scratch database:
+`rpm --dbpath DB --import key-expired.asc; rpmkeys --dbpath DB -Kv pkg.rpm` and `rpm --dbpath DB -i --test pkg.rpm`.
+rpm evaluates the key as of the *signature creation time*: a package signed while the old key version was valid still
+verifies after it expired. The failure only occurs if the package was signed *after* the old expiry, i.e. with the
+renewed key version, while rpm still holds the old one. That is why only renewals matter, and why a package from a repo
+that did not change its metadata fails once the vendor renewed the key. The same holds for an expired **subkey** that
+signed the package, even if the primary key never expires. zypp now renews such keys before installing (§7.4).
+Replacing a key in rpm needs root when a `--root` is used: rpm chroots for the erase.
 
 ### 14.1 zypper options → libzypp mechanism
 
@@ -814,21 +878,25 @@ allowed either, it returns `KEY_DONT_TRUST`.
 | Target init / lock | `RpmDb::syncTrustedKeys(SYNC_BOTH)` (§6) | rpm `gpg-pubkey`s → trusted ring; trusted-only keys → `rpm --import` |
 | First general-ring access | `preloadCachedKeys()` from pubkey cache + `/usr/lib/rpm/gnupg/keys` (§2.4) | none directly (renewed trusted keys via `SendKeys`, picked up at next sync) |
 | Repo refresh | `fetchGpgKeys` → general ring (every refresh, every gpgkey URL) | same as above: a renewed key is refreshed this way. This is how "zypper ref" refreshes expiring keys |
-| User trusts key (`a`) | `importKey(key, true)` → `sigTrustedKeyAdded` → `RpmDb::importPubkey` | `rpm -e --allmatches gpg-pubkey-<ver>` if an older release exists, then `rpm --import -- <armored file>` |
+| User trusts key (`a`) | `importKey(key, true)` → `sigTrustedKeyAdded` → `RpmDb::importPubkey` | copies of the key in rpm replaced if the new one adds something (§6), then `rpm --import` |
 | Buddy key auto-import | VF after a trusted validation → `importKey(buddy, true)` + `reportAutoImportKey` | `rpm --import` |
 | Package NOKEY | §14 | `rpm --import` |
+| Package signed by an expired trusted key | §7.4: `fetchGpgKeys` → general ring → `sigTrustedKeyAdded` | renewed key replaces the old one |
 | `KeyRing::deleteKey(id, true)` | `KeyRingImpl::deleteKey` → trusted-ring signal (§3.2) | rpmdb sync |
 | `RpmDb::removePubkey(key)` | direct API | `rpm -e -- gpg-pubkey-<ver>-<rel>`, removing only the **first** edition found with that version |
 | rpm keys deleted outside zypp | next `syncTrustedKeys` without `SYNC_FROM_KEYRING` deletes them from the zypp trusted ring (bsc#1064380) | – |
 
 `gpg-pubkey` naming: `version` = last 8 hex digits of the key id (lowercase), `release` = hex of `PublicKeyData::created()`
-(newest self-signature, bsc#1179222). An extended key therefore becomes a *new release* of the same version, and
-`importPubkey` replaces all older releases. Equal edition with subkeys → re-import anyway (bsc#1008325).
+(newest self-signature, bsc#1179222). An extended key therefore becomes a *new release* of the same version. rpm itself
+uses the newest signature of any kind, including subkey bindings, so for a renewed subkey rpm's release can be newer
+than `gpgPubkeyRelease()`: never decide on it whether a key is newer. `importPubkey` lets gpg merge instead (§6).
 
 **Expired keys:** libzypp has no `reportKeyExpired` callback and no proactive expiry warning. `PublicKeyData::expired()`,
 `daysToLive()` and `expiresAsString()` (marks ≤90 days) exist for front ends, e.g. zypper's key dump and `zypp-pubkey`.
 gpg verification still **accepts** signatures from expired keys (§4). The only handling is renewal: a newer copy arriving
 through gpgkey URLs, `.key`, the keyhint cache or `/usr/lib/rpm/gnupg/keys` updates the trusted ring (bsc#1259706).
+Since bsc#1289557 zypp also looks for a renewed key when a package to install is signed by an expired trusted key (§7.4),
+because rpm itself **refuses** such signatures.
 
 **rpm ≥ 4.20 / rpm-sequoia:** the code has no special handling (no `sequoia`/`rpmkeys` references in `zypp/zypp`).
 Key import/removal shells out to `rpm --import` / `rpm -e gpg-pubkey-…` (`run_rpm`), and listing iterates rpmdb headers
@@ -885,7 +953,7 @@ repo_gpgcheck, 17.38.15), bsc#1259706 (trusted key renewal, 17.38.6), gpg-agent 
 
 - There is no persistent zypp keyring: both rings are tmp dirs; the rpm db is the persistent trusted store; the general ring is rebuilt from `/var/cache/zypp/pubkeys` + `/usr/lib/rpm/gnupg/keys` on first use.
 - `PublicKeyData::created()` is the newest self-signature time, not the key creation time (bsc#1179222); it determines the `gpg-pubkey` release. Changing it breaks rpm db sync.
-- Subkey changes do not bump `created()` (bsc#1008325): `isUpdateFor` misses them, so `RpmDb::importPubkey` always re-imports keys that have subkeys.
+- Subkey changes do not bump `created()` (bsc#1008325) and rpm names a key by its newest signature of any kind, so `gpgPubkeyRelease()` need not match rpm's release. Don't decide on it: `importPubkey` merges with gpg (§6); `KeyRingImpl` also treats an extended subkey expiry as an update (§2.2).
 - Signatures may be made by subkeys; always look keys up with `providesKey`, never by comparing ids. `KeyManagerCtx::deleteKey`/`findKeyById` match only the primary key id.
 - Signatures from **expired keys still validate** (`GPG_ERR_KEY_EXPIRED` is treated as good); unknown-key signatures are ignored as long as one good one exists (bsc#1180721).
 - `readSignatureKeyId` returns only the *last* signature's id when there are several.
@@ -909,8 +977,8 @@ repo_gpgcheck, 17.38.15), bsc#1259706 (trusted key renewal, 17.38.6), gpg-agent 
 - `repo_sigcheck_plugin` names are confined to `plugins/sigcheck` via `Pathname::assertprefix` (CVE-2026-44933). Never build plugin paths with plain `operator/`.
 - `--no-gpg-checks` changes only zypper's callback answers. libzypp still runs every check, `fileValidated` stays false, so `validRepoSignature=false` and package checks stay enforced (and get auto-ignored by zypper).
 - zypp-rpm (single transaction) installs with `--nosignature --nodigest` + allow-untrusted, because libzypp has already checked the packages. The classic `rpm -U` path lets rpm re-verify unless `rpmNoSignature()` is set.
-- `RpmDb::removePubkey` removes only the first `gpg-pubkey-<ver>-*` release found, while `importPubkey` removes all of them (`--allmatches`).
-- There is no expiry callback. Expired keys keep validating, and renewal relies on gpgkey URLs/caches refreshing the trusted ring.
+- `RpmDb::removePubkey` removes only the first `gpg-pubkey-<ver>-*` release found, while `importPubkey` replaces all copies of the same key.
+- There is no expiry callback. Expired keys keep validating in zypp (not in rpm), and renewal relies on gpgkey URLs/caches refreshing the trusted ring, plus §7.4.
 - No rpm-sequoia / non-rpmdb keystore support: key sync assumes `gpg-pubkey` headers in the rpmdb and the `rpm --import`/`rpm -e` CLI.
 
 ## Where to start when debugging

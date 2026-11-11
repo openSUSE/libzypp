@@ -63,15 +63,27 @@ BOOST_AUTO_TEST_CASE(hook_renews_expired_subkey)
   test.loadRepo( repo );
   BOOST_REQUIRE( rpmKeys().empty() );
 
-  // The vendor renews the subkey without touching the metadata. No refresh happens.
-  BOOST_REQUIRE_EQUAL( filesystem::copy( dataDir()/"sub-v1.asc", repoDir.path()/"repodata/repomd.xml.key" ), 0 );
-
   PoolItem pi;
   for ( const auto & p : test.pool().byName( "pkg-test42" ) )
     if ( ! p.isSystem() ) pi = p;
   BOOST_REQUIRE( pi );
 
-  // Install time: the package (signed by the subkey) is provided, the hook looks at its signing key.
+  // A broken renewal: the repo offers the key with an invalid subkey binding signature. The hook
+  // fetches it, but gpg drops the invalid signature, so neither the trusted ring nor rpm may change.
+  BOOST_REQUIRE_EQUAL( filesystem::copy( dataDir()/"sub-r2-badbinding.asc", repoDir.path()/"repodata/repomd.xml.key" ), 0 );
+  {
+    target::KeyRefreshTracker tracker;
+    target::refreshExpiringKey( pi, ManagedFile( repoDir.path()/"x86_64/pkg.rpm" ), tracker );
+    BOOST_CHECK( ! tracker.firstTime( v0.id(), "renewal" ) );	// it was tried
+    BOOST_CHECK( rpmKeys().empty() );
+    BOOST_CHECK_EQUAL( subkeyExpires( ring->trustedPublicKeyData( subkeyId ) ), subkeyExpires( v0.keyData() ) );
+  }
+
+  // The vendor renews the subkey without touching the metadata. No refresh happens.
+  BOOST_REQUIRE_EQUAL( filesystem::copy( dataDir()/"sub-v1.asc", repoDir.path()/"repodata/repomd.xml.key" ), 0 );
+
+  // Install time (a new commit, so a new tracker): the package (signed by the subkey) is provided,
+  // the hook looks at its signing key.
   target::KeyRefreshTracker tracker;
   target::refreshExpiringKey( pi, ManagedFile( repoDir.path()/"x86_64/pkg.rpm" ), tracker );
 

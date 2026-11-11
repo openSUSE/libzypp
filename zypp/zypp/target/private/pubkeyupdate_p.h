@@ -9,8 +9,10 @@
 #ifndef ZYPP_TARGET_PRIVATE_PUBKEYUPDATE_P_H
 #define ZYPP_TARGET_PRIVATE_PUBKEYUPDATE_P_H
 
+#include <optional>
 #include <vector>
 
+#include <zypp-core/ByteArray.h>
 #include <zypp/Edition.h>
 #include <zypp-common/PublicKey.h>
 
@@ -36,6 +38,17 @@ namespace zypp::target
    * Packages with another version are not listed at all.
    */
   PubkeyCopies findPubkeyCopies( const std::vector<InstalledPubkey> & installed_r, const PublicKey & key_r );
+
+  /** The key to import into rpm to update its copies \a copies_r of the key \a key_r, or nothing if
+   * \a key_r adds nothing to them.
+   *
+   * gpg merges all of them in a temporary keyring and the merged key is returned. Like in the zypp
+   * keyrings, gpg only keeps data the primary key validly signed, and an older version of a key adds
+   * nothing. Only keys with the fingerprint of \a key_r are considered.
+   *
+   * If gpg fails the error is logged and nothing is returned: rpm is left alone.
+   */
+  std::optional<ByteArray> mergedKeyUpdate( const std::vector<InstalledPubkey> & copies_r, const PublicKey & key_r );
 }
 
 #endif

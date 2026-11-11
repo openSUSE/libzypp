@@ -24,6 +24,7 @@ extern "C"
 #include <sstream>
 #include <list>
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -729,37 +730,36 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
     return;
   }
 
-  // check if the key is already in the rpm database
-  Edition keyEd( pubkey_r.gpgPubkeyVersion(), pubkey_r.gpgPubkeyRelease() );
   // Only copies of this very key (same fingerprint) are replaced, the version of a gpg-pubkey is just the short id.
   const target::PubkeyCopies copies { target::findPubkeyCopies( installedPubkeys( *this ), pubkey_r ) };
   for ( const target::InstalledPubkey & other : copies.others )
     ERR << "Key " << pubkey_r << ": gpg-pubkey-" << other.edition << " has the same version but is a different key. (not touched)" << endl;
-  bool hasOldkeys = false;
+  const bool hasOldkeys { not copies.sameKey.empty() };
 
-  for ( const target::InstalledPubkey & copy : copies.sameKey )
+  // rpm names a key by its newest signature of any kind, including subkey bindings, which is
+  // not what zypp's release is made of. So releases can't tell whether the key is an update:
+  // let gpg merge the key in rpm with the new one and see whether that adds anything.
+  PublicKey keyToImport { pubkey_r };
+  if ( hasOldkeys )
   {
-    const Edition & rpmEd { copy.edition };
-    // bsc#1008325: Keys using subkeys for signing don't get a higher release
-    // if new subkeys are added, because the primary key remains unchanged.
-    // For now always re-import keys with subkeys. Here we don't want to export the
-    // keys in the rpm database to check whether the subkeys are the same. The calling
-    // code should take care, we don't re-import the same kesy over and over again.
-    if ( keyEd == rpmEd && !pubkey_r.hasSubkeys() ) // quick test (Edition is IdStringType!)
+    std::optional<ByteArray> merged { target::mergedKeyUpdate( copies.sameKey, pubkey_r ) };
+    if ( not merged )
     {
       MIL << "Key " << pubkey_r << " is already in the rpm trusted keyring. (skip import)" << endl;
       return;
     }
-
-    if ( keyEd.release() < rpmEd.release() )
+    TmpFile mergedFile( getZYpp()->tmpPath() );
     {
-      MIL << "Key " << pubkey_r << " is older than one in the rpm trusted keyring. (skip import)" << endl;
-      return;
+      std::ofstream os( mergedFile.path().c_str() );
+      os.write( merged->data(), merged->size() );
+      os.close();
+      if ( not os )
+      {
+        ERR << "Key " << pubkey_r << ": failed to write the merged key to " << mergedFile.path() << ". (skip import)" << endl;
+        return;
+      }
     }
-    else
-    {
-      hasOldkeys = true;
-    }
+    keyToImport = PublicKey( mergedFile );
   }
   MIL << "Key " << pubkey_r << " will be imported into the rpm trusted keyring." << (hasOldkeys?"(update)":"(new)") << endl;
 
@@ -797,7 +797,7 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
   RpmArgVec opts;
   opts.push_back ( "--import" );
   opts.push_back ( "--" );
-  std::string pubkeypath( pubkey_r.path().asString() );
+  std::string pubkeypath( keyToImport.path().asString() );
   opts.push_back ( pubkeypath.c_str() );
   run_rpm( opts, ExternalProgram::Stderr_To_Stdout );
 

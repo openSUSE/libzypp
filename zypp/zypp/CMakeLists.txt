@@ -441,6 +441,7 @@ SET( zypp_target_SRCS
   target/TargetImpl.cc
   target/TargetImpl.commitFindFileConflicts.cc
   target/keyrefresh.cc
+  target/pubkeyupdate.cc
 
 )
 
@@ -461,6 +462,7 @@ SET( zypp_target_HEADERS
 SET( zypp_target_detail_HEADERS
   target/private/commitpackagepreloader_p.h
   target/private/keyrefresh_p.h
+  target/private/pubkeyupdate_p.h
 )
 
 INSTALL(  FILES

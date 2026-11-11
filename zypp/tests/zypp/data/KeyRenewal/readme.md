@@ -29,6 +29,21 @@ so the user id self-signature (and zypp's creation date of the key) is the same 
 | `sub-private.asc` | the secret key |
 | `repo-sub/` | like `repo/`, but package and metadata are signed by the subkey |
 
+### Renewed twice, and broken variants
+
+Made from `sub-private.asc` by `./make-fixture.py --sub-chain-only` (needs `gpgsplit`, part of
+gpg), which leaves all other files alone.
+
+| File | Content |
+|---|---|
+| `sub-r1.asc` | the subkey renewed, expires 2025-10-01 (binding signature 2025-06-01) |
+| `sub-r2.asc` | renewed again, expires 2099-12-31 (binding signature 2025-09-01) |
+| `sub-r2-badbinding.asc` | `sub-r2.asc` with an invalid subkey binding signature |
+| `sub-foreign.asc` | the key of `sub-v1.asc` with a subkey (and binding) of an unrelated key |
+
+The binding signatures are newer than the user id self-signature, so rpm names these keys by a newer
+release than zypp computes.
+
 ## Notes
 
 - The repos have no `repodata/repomd.xml.key`. The tests copy a repo and add the key version they need.

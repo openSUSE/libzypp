@@ -22,6 +22,7 @@
 #include <zypp/ZConfig.h>
 #include <zypp/PathInfo.h>
 #include <zypp-core/base/Exception.h>
+#include <zypp-core/base/UserRequestException>
 
 #include <zypp-core/fs/TmpPath.h>
 #include <zypp-curl/ng/network/networkrequestdispatcher.h>
@@ -403,6 +404,10 @@ namespace zypp
             // the new metadata dir.
           }
         }
+      } catch ( const UserRequestException & ) {
+        // A user abort (e.g. Ctrl-C) is terminal: it must not be disguised as a
+        // "failed to parse" error, which upper layers would treat as retryable.
+        throw;
       } catch ( const zypp::Exception &e ) {
         // Make a more user readable exception
         ZYPP_CAUGHT(e);

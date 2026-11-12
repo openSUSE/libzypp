@@ -40,6 +40,7 @@ ADD_TESTS(
   Selectable
   SetRelationMixin
   SetTracker
+  ShutdownSignal
   StrMatcher
   StringV
   Target

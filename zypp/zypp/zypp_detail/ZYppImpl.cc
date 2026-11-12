@@ -47,13 +47,25 @@ namespace {
   bool makeShutdownPipe() {
     int pipeFds[]{ -1, -1 };
   #ifdef HAVE_PIPE2
-      if ( ::pipe2( pipeFds, O_CLOEXEC ) != 0 )
+      // O_CLOEXEC: the fds must not leak into children we spawn (rpm/scripts).
+      // O_NONBLOCK: the read end is drained without blocking, and the write end is
+      // written from async signal handlers and must never block. A dropped write is
+      // harmless because a byte is already pending in the pipe.
+      if ( ::pipe2( pipeFds, O_CLOEXEC | O_NONBLOCK ) != 0 )
         return false;
   #else
       if ( ::pipe( pipeFds ) != 0 )
         return false;
-      ::fcntl( pipeFds[0], F_SETFD, O_CLOEXEC );
-      ::fcntl( pipeFds[1], F_SETFD, O_CLOEXEC );
+      // NOTE: F_SETFD takes FD_CLOEXEC, not O_CLOEXEC; both are nonzero but only the
+      // former actually sets close-on-exec.
+      if ( ::fcntl( pipeFds[0], F_SETFD, FD_CLOEXEC ) != 0
+        || ::fcntl( pipeFds[1], F_SETFD, FD_CLOEXEC ) != 0
+        || ::fcntl( pipeFds[0], F_SETFL, O_NONBLOCK ) != 0
+        || ::fcntl( pipeFds[1], F_SETFL, O_NONBLOCK ) != 0 ) {
+        ::close( pipeFds[0] );
+        ::close( pipeFds[1] );
+        return false;
+      }
   #endif
       shutdownPipeRead = pipeFds[0];
       shutdownPipeWrite = pipeFds[1];
@@ -298,13 +310,15 @@ namespace zypp
     void ZYppImpl::clearShutdownSignal()
     {
       // ONLY signal safe code here, that means no logging or anything else that is more than using atomics
-      // or writing a fd
-      int sigFd = shutdownPipeWriteFd();
+      // or reading a fd
+      int sigFd = shutdownPipeReadFd();
       if ( sigFd == -1 ) {
         // we have no fd so nothing to clear
         return;
       }
 
+      // Drain the READ end (the write end is not readable). It is O_NONBLOCK, so this
+      // can not block; a pending EOF/EAGAIN ends the loop.
       char buf = 0;
       while( zyppng::eintrSafeCall( read, sigFd, &buf, 1 ) > 0 )
         continue;
@@ -319,6 +333,9 @@ namespace zypp
     {
       return str << "ZYppImpl";
     }
+
+    int shutdownSignalFd()
+    { return shutdownPipeReadFd(); }
 
     int zypp_poll( std::vector<GPollFD> &fds, int timeout)
     {

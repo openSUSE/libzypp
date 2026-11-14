@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaST (@memory@)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-14 11:35+0200\n"
-"PO-Revision-Date: 2026-01-12 00:04+0000\n"
+"PO-Revision-Date: 2026-11-14 02:13+0000\n"
 "Last-Translator: Jure Repinc <jlp@holodeck1.com>\n"
 "Language-Team: Slovenian <https://l10n.opensuse.org/projects/libzypp/master/"
 "sl/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #. translators: an annotation to a gpg keys expiry date
 #: zypp-logic/zypp-common/PublicKey.cc:65
@@ -62,7 +62,7 @@ msgstr[1] "(poteče čez %d dni)"
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:125
 msgid "Failed to export key."
-msgstr ""
+msgstr "Izvažanje ključa je spodletelo."
 
 #: zypp-logic/zypp-common/private/keyring_p.cc:128
 #: zypp-logic/zypp-common/private/keyring_p.cc:257
@@ -4896,6 +4896,8 @@ msgid ""
 "Downloading signature key via mirrors, consider explicitly setting gpgKeyUrl "
 "via the repository configuration instead."
 msgstr ""
+"Prejemanje podpisnega ključa z zrcalnih strežnikov. Namesto tega razmislite "
+"o izrecni navedbi gpgKeyUrl v nastavitvah vira."
 
 #. TranslatorExplanation '%s' is an URL
 #: zypp/zypp/ng/repo/workflows/repomanagerwf.cc:97

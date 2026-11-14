@@ -145,6 +145,33 @@ namespace zypp {
         Missing = 1,  ///< Key is not in Ring
         Update  = 2,  ///< old version of Key is in Ring
       };
+      /** Whether \a keyData extends the lifetime of a subkey of the same key \a ringKeyData.
+       *
+       * Renewing only a subkey does not touch the creation date of the key, which is all
+       * \ref PublicKeyData::isUpdateFor looks at (bsc#1008325). But rpm refuses packages signed
+       * by an expired subkey, so such a renewal must be passed on. New subkeys are not
+       * considered here.
+       */
+      static bool extendsSubkey( const PublicKeyData & keyData, const PublicKeyData & ringKeyData )
+      {
+        if ( keyData.fingerprint() != ringKeyData.fingerprint() || keyData.created() < ringKeyData.created() )
+          return false;
+
+        for ( const PublicSubkeyData & sub : keyData.subkeys() ) {
+          // expires() == 0: never expires
+          const Date::ValueType expires { sub.expires() };
+          for ( const PublicSubkeyData & ringSub : ringKeyData.subkeys() ) {
+            if ( sub.id() != ringSub.id() )
+              continue;
+            const Date::ValueType ringExpires { ringSub.expires() };
+            if ( ringExpires != 0 && ( expires == 0 || expires > ringExpires ) )
+              return true;
+            break;	// subkey ids are unique within a key
+          }
+        }
+        return false;
+      }
+
       /** Helper computing PublicKeyData's status in a Ring. */
       MustUpdate mustUpdateData( const PublicKeyData & keyData, const Ring ring ) const
       {
@@ -152,7 +179,7 @@ namespace zypp {
         if ( not ringKeyData ) {
           return MustUpdate::Missing;
         }
-        if ( keyData.isUpdateFor( ringKeyData ) ) {
+        if ( keyData.isUpdateFor( ringKeyData ) || extendsSubkey( keyData, ringKeyData ) ) {
           return MustUpdate::Update;
         }
         return MustUpdate::Present;

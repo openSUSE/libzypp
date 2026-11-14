@@ -51,6 +51,7 @@
 #include <zypp/target/CommitPackageCache.h>
 #include <zypp/target/RpmPostTransCollector.h>
 #include <zypp/target/private/commitpackagepreloader_p.h>
+#include <zypp/target/private/keyrefresh_p.h>
 
 #include <zypp/parser/ProductFileReader.h>
 #include <zypp/repo/SrcPackageProvider.h>
@@ -126,6 +127,37 @@ namespace zypp
 
     inline RepoStatus rpmDbRepoStatus( const Pathname & root_r )
     { return RepoStatus( rpmDbStateHash( root_r ), Date() ); }
+
+    namespace
+    {
+      /** The package provider of a commit: \ref RepoProvidePackage plus \ref refreshExpiringKey.
+       *
+       * Only commits that actually install refresh keys. A dry-run (this includes
+       * \ref DownloadOnly) must not change anything on the system except the package
+       * cache (see \ref ZYppCommitPolicy::dryRun), and renewing a key changes the rpm
+       * database. Other users of \ref RepoProvidePackage (e.g. \c zypper download)
+       * stay unaffected. The tracker is shared by all copies of the functor and lives
+       * as long as the commit's \ref CommitPackageCache.
+       */
+      struct KeyRefreshingPackageProvider
+      {
+        explicit KeyRefreshingPackageProvider( bool refreshKeys_r )
+        : _refreshKeys( refreshKeys_r )
+        {}
+
+        ManagedFile operator()( const PoolItem & pi_r, bool fromCache_r )
+        {
+          ManagedFile ret( _provider( pi_r, fromCache_r ) );
+          if ( _refreshKeys )
+            refreshExpiringKey( pi_r, ret, *_tracker );
+          return ret;
+        }
+
+        RepoProvidePackage _provider;
+        std::shared_ptr<KeyRefreshTracker> _tracker { std::make_shared<KeyRefreshTracker>() };
+        bool _refreshKeys;
+      };
+    } // namespace
 
   } // namespace target
 } // namespace
@@ -1522,7 +1554,8 @@ namespace zypp
       if ( ! policy_r.dryRun() || policy_r.downloadMode() == DownloadOnly )
       {
         // Prepare the package cache. Pass all items requiring download.
-        CommitPackageCache packageCache;
+        // Only an installing commit may renew keys in the rpm database (download-only implies dry-run).
+        CommitPackageCache packageCache { KeyRefreshingPackageProvider{ ! policy_r.dryRun() } };
         packageCache.setCommitList( steps.begin(), steps.end() );
 
         bool miss = false;

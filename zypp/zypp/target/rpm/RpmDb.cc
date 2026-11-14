@@ -24,6 +24,7 @@ extern "C"
 #include <sstream>
 #include <list>
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <utility>
@@ -46,6 +47,7 @@ extern "C"
 #include <zypp/target/rpm/RpmDb.h>
 #include <zypp/target/rpm/RpmCallbacks.h>
 #include <zypp/target/RpmPostTransCollector.h>
+#include <zypp/target/private/pubkeyupdate_p.h>
 
 #include <zypp/HistoryLog.h>
 #include <zypp/target/rpm/librpmDb.h>
@@ -676,6 +678,41 @@ void RpmDb::importZyppKeyRingTrustedKeys()
 void RpmDb::exportTrustedKeysInZyppKeyRing()
 { syncTrustedKeys( SYNC_TO_KEYRING ); }
 
+namespace
+{
+  /** The gpg-pubkey packages in the rpm database, with the key each one holds. */
+  std::vector<target::InstalledPubkey> installedPubkeys( const RpmDb & rpmdb_r )
+  {
+    std::vector<target::InstalledPubkey> ret;
+
+    auto it = rpmdb_r.dbConstIterator();
+    for ( it.findByName( "gpg-pubkey" ); *it; ++it )
+    {
+      Edition edition = it->tag_edition();
+      if (edition != Edition::noedition)
+      {
+        // we export the rpm key into a file
+        TmpFile file(getZYpp()->tmpPath());
+        try
+        {
+          // dump rpm key into the tmp file
+          std::ofstream os( file.path().asString().c_str() );
+          os << it->tag_description();
+          os.close();
+          // read the public key from the dumped file
+          ret.push_back( target::InstalledPubkey { edition, PublicKey( file ) } );
+        }
+        catch ( std::exception & e )
+        {
+          ERR << "Could not dump key " << edition.asString() << " in tmp file " << file.path() << endl;
+          // just ignore the key
+        }
+      }
+    }
+    return ret;
+  }
+} // namespace
+
 ///////////////////////////////////////////////////////////////////
 //
 //
@@ -693,49 +730,51 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
     return;
   }
 
-  // check if the key is already in the rpm database
-  Edition keyEd( pubkey_r.gpgPubkeyVersion(), pubkey_r.gpgPubkeyRelease() );
-  std::set<Edition> rpmKeys = pubkeyEditions();
-  bool hasOldkeys = false;
+  // Only copies of this very key (same fingerprint) are replaced, the version of a gpg-pubkey is just the short id.
+  const target::PubkeyCopies copies { target::findPubkeyCopies( installedPubkeys( *this ), pubkey_r ) };
+  for ( const target::InstalledPubkey & other : copies.others )
+    ERR << "Key " << pubkey_r << ": gpg-pubkey-" << other.edition << " has the same version but is a different key. (not touched)" << endl;
+  const bool hasOldkeys { not copies.sameKey.empty() };
 
-  for_( it, rpmKeys.begin(), rpmKeys.end() )
+  // rpm names a key by its newest signature of any kind, including subkey bindings, which is
+  // not what zypp's release is made of. So releases can't tell whether the key is an update:
+  // let gpg merge the key in rpm with the new one and see whether that adds anything.
+  PublicKey keyToImport { pubkey_r };
+  if ( hasOldkeys )
   {
-    // bsc#1008325: Keys using subkeys for signing don't get a higher release
-    // if new subkeys are added, because the primary key remains unchanged.
-    // For now always re-import keys with subkeys. Here we don't want to export the
-    // keys in the rpm database to check whether the subkeys are the same. The calling
-    // code should take care, we don't re-import the same kesy over and over again.
-    if ( keyEd == *it && !pubkey_r.hasSubkeys() ) // quick test (Edition is IdStringType!)
+    std::optional<ByteArray> merged { target::mergedKeyUpdate( copies.sameKey, pubkey_r ) };
+    if ( not merged )
     {
       MIL << "Key " << pubkey_r << " is already in the rpm trusted keyring. (skip import)" << endl;
       return;
     }
-
-    if ( keyEd.version() != (*it).version() )
-      continue; // different key ID (version)
-
-    if ( keyEd.release() < (*it).release() )
+    TmpFile mergedFile( getZYpp()->tmpPath() );
     {
-      MIL << "Key " << pubkey_r << " is older than one in the rpm trusted keyring. (skip import)" << endl;
-      return;
+      std::ofstream os( mergedFile.path().c_str() );
+      os.write( merged->data(), merged->size() );
+      os.close();
+      if ( not os )
+      {
+        ERR << "Key " << pubkey_r << ": failed to write the merged key to " << mergedFile.path() << ". (skip import)" << endl;
+        return;
+      }
     }
-    else
-    {
-      hasOldkeys = true;
-    }
+    keyToImport = PublicKey( mergedFile );
   }
   MIL << "Key " << pubkey_r << " will be imported into the rpm trusted keyring." << (hasOldkeys?"(update)":"(new)") << endl;
 
   if ( hasOldkeys )
   {
-    // We must explicitly delete old key IDs first (all releases,
-    // that's why we don't call removePubkey here).
-    std::string keyName( "gpg-pubkey-" + keyEd.version() );
+    // We must explicitly delete the old releases of this key first
+    // (that's why we don't call removePubkey here).
+    std::vector<std::string> keyNames;
+    for ( const target::InstalledPubkey & copy : copies.sameKey )
+      keyNames.push_back( "gpg-pubkey-" + copy.edition.version() + "-" + copy.edition.release() );
     RpmArgVec opts;
     opts.push_back ( "-e" );
-    opts.push_back ( "--allmatches" );
     opts.push_back ( "--" );
-    opts.push_back ( keyName.c_str() );
+    for ( const std::string & keyName : keyNames )
+      opts.push_back ( keyName.c_str() );
     run_rpm( opts, ExternalProgram::Stderr_To_Stdout );
 
     std::string line;
@@ -758,7 +797,7 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
   RpmArgVec opts;
   opts.push_back ( "--import" );
   opts.push_back ( "--" );
-  std::string pubkeypath( pubkey_r.path().asString() );
+  std::string pubkeypath( keyToImport.path().asString() );
   opts.push_back ( pubkeypath.c_str() );
   run_rpm( opts, ExternalProgram::Stderr_To_Stdout );
 
@@ -865,38 +904,8 @@ void RpmDb::removePubkey( const PublicKey & pubkey_r )
 std::list<PublicKey> RpmDb::pubkeys() const
 {
   std::list<PublicKey> ret;
-
-  auto it = dbConstIterator();
-  for ( it.findByName( "gpg-pubkey" ); *it; ++it )
-  {
-    Edition edition = it->tag_edition();
-    if (edition != Edition::noedition)
-    {
-      // we export the rpm key into a file
-      RpmHeader::constPtr result;
-      getData( "gpg-pubkey", edition, result );
-      TmpFile file(getZYpp()->tmpPath());
-      std::ofstream os;
-      try
-      {
-        os.open(file.path().asString().c_str());
-        // dump rpm key into the tmp file
-        os << result->tag_description();
-        //MIL << "-----------------------------------------------" << endl;
-        //MIL << result->tag_description() <<endl;
-        //MIL << "-----------------------------------------------" << endl;
-        os.close();
-        // read the public key from the dumped file
-        PublicKey key(file);
-        ret.push_back(key);
-      }
-      catch ( std::exception & e )
-      {
-        ERR << "Could not dump key " << edition.asString() << " in tmp file " << file.path() << endl;
-        // just ignore the key
-      }
-    }
-  }
+  for ( const target::InstalledPubkey & installed : installedPubkeys( *this ) )
+    ret.push_back( installed.key );
   return ret;
 }
 
@@ -1191,7 +1200,8 @@ namespace
       { "NOKEY",      RpmDb::CHK_NOKEY },
       { "BAD",        RpmDb::CHK_FAIL },
       { "UNKNOWN",    RpmDb::CHK_NOTFOUND },
-      { "NOTRUSTED",  RpmDb::CHK_NOTTRUSTED },
+      { "NOTRUSTED",  RpmDb::CHK_NOTTRUSTED },	// older rpm versions
+      { "NOTTRUSTED", RpmDb::CHK_NOTTRUSTED },
       { "NOTFOUND",   RpmDb::CHK_NOTFOUND },
     };
     auto getresult = []( const ResultMap & resultMap, ResultMap::key_type key )->ResultMap::mapped_type {

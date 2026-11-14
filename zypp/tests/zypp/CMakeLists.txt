@@ -17,6 +17,10 @@ ADD_TESTS(
   Flags
   GZStream
   InstanceId
+  KeyRenewalHook
+  KeyRenewalRefresh
+  KeyRenewalSigcheck
+  KeyRenewalSubkey
   KeyRing
   Locale
   Locks
@@ -29,6 +33,7 @@ ADD_TESTS(
   ProgressData
   PtrTypes
   PublicKey
+  PubkeyUpdate
   PurgeKernels
   RWPtr
   RepoManager
@@ -40,6 +45,7 @@ ADD_TESTS(
   Selectable
   SetRelationMixin
   SetTracker
+  ShutdownSignal
   StrMatcher
   StringV
   Target

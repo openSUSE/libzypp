@@ -306,9 +306,9 @@ namespace zypp {
         r._req->setOptions ( zyppng::NetworkRequest::HeadRequest ); // just check for existance
         r._req->transferSettings() = myEndpoint.getConfig<TransferSettings>(MIRR_SETTINGS_KEY.data());
 
-        // as we are not having user interaction, the user can't cancel
-        // the file existence checking, a callback or timeout return code
-        // will be always a timeout.
+        // A shutdown signal (Ctrl-C) still cancels this existence check and propagates
+        // as a UserRequestException; any other non-existence failure (e.g. a timeout)
+        // is reported as a media error.
         try {
           const_cast<MediaCurl2*>(this)->executeRequest ( r );
 

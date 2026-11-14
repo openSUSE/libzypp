@@ -143,6 +143,14 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const ZYppImpl & obj );
 
     /**
+     * Returns the read end of the shutdown pipe used by \ref ZYpp::setShutdownSignal,
+     * or -1 if the pipe could not be created. It is readable while a shutdown was
+     * requested and not yet cleared via \ref ZYpp::clearShutdownSignal. Intended to
+     * integrate the shutdown request into an event loop (e.g. the Curl2 media backend).
+     */
+    ZYPP_LOCAL int shutdownSignalFd();
+
+    /**
      * Small wrapper around g_poll that additionally listens to the shutdown FD
      * returned by \ref ZYpp::shutdownSignalFd.
      *

@@ -195,7 +195,7 @@ namespace zypp
         int res = ::datamatcher_init( _matcher.get(), _search.c_str(), _flags.get() );
         if ( res )
         {
-          _matcher.reset();
+          invalidate();
           ZYPP_THROW( MatchInvalidRegexException( _search, res ) );
         }
       }
@@ -232,8 +232,8 @@ namespace zypp
     { invalidate(); _flags = flags_r; }
 
   private:
-    /** Has to be called if _search or _flags change. */
-    void invalidate()
+    /** Release the compiled matcher; has to be called if _search or _flags change. */
+    void invalidate() const
     {
       if ( _matcher )
         ::datamatcher_free( _matcher.get() );

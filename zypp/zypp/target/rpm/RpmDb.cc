@@ -680,8 +680,13 @@ void RpmDb::exportTrustedKeysInZyppKeyRing()
 
 namespace
 {
-  /** The gpg-pubkey packages in the rpm database, with the key each one holds. */
-  std::vector<target::InstalledPubkey> installedPubkeys( const RpmDb & rpmdb_r )
+  /** The gpg-pubkey packages in the rpm database, with the key each one holds.
+   * If \a version_r is not empty, only the ones with this version (the short key id). Reading a key
+   * is not cheap, so filter before.
+   * \note rpm 6 uses the full fingerprint as version of a gpg-pubkey, not the short key id. When
+   * moving to rpm 6, filter by fingerprint here (see target::findPubkeyCopies).
+   */
+  std::vector<target::InstalledPubkey> installedPubkeys( const RpmDb & rpmdb_r, const std::string & version_r = std::string() )
   {
     std::vector<target::InstalledPubkey> ret;
 
@@ -689,7 +694,7 @@ namespace
     for ( it.findByName( "gpg-pubkey" ); *it; ++it )
     {
       Edition edition = it->tag_edition();
-      if (edition != Edition::noedition)
+      if (edition != Edition::noedition && ( version_r.empty() || edition.version() == version_r ))
       {
         // we export the rpm key into a file
         TmpFile file(getZYpp()->tmpPath());
@@ -731,7 +736,7 @@ void RpmDb::importPubkey( const PublicKey & pubkey_r )
   }
 
   // Only copies of this very key (same fingerprint) are replaced, the version of a gpg-pubkey is just the short id.
-  const target::PubkeyCopies copies { target::findPubkeyCopies( installedPubkeys( *this ), pubkey_r ) };
+  const target::PubkeyCopies copies { target::findPubkeyCopies( installedPubkeys( *this, pubkey_r.gpgPubkeyVersion() ), pubkey_r ) };
   for ( const target::InstalledPubkey & other : copies.others )
     ERR << "Key " << pubkey_r << ": gpg-pubkey-" << other.edition << " has the same version but is a different key. (not touched)" << endl;
   const bool hasOldkeys { not copies.sameKey.empty() };

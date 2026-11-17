@@ -220,10 +220,10 @@ namespace zypp {
         SendKeys & operator=( const SendKeys & ) = delete;
         SendKeys & operator=( SendKeys && ) = delete;
 
-        /** Transfer key with \a id from source to target keyring.
-         * \throws KeyRingException if \a id was not found or import failed.
+        /** Transfer the key with fingerprint \a fpr from source to target keyring.
+         * \throws KeyRingException if \a fpr was not found or import failed.
          */
-        void operator()( const std::string & id );
+        void operator()( const std::string & fpr );
 
       private:
         KeyManagerCtx _source;
@@ -255,8 +255,10 @@ namespace zypp {
 
       std::list<PublicKey> publicKeys( const Pathname & keyring ) const;
 
+      /** Dump the key with \a id (may be ambiguous, see \ref dumpPublicKeyToTmp). */
       void dumpPublicKey( const std::string & id, const Pathname & keyring, std::ostream & stream ) const;
-      filesystem::TmpFile dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring ) const;
+      /** Dump the key \a keyData into a temp. file. It is looked up by fingerprint, not by id. */
+      filesystem::TmpFile dumpPublicKeyToTmp( const PublicKeyData & keyData, const Pathname & keyring ) const;
 
       bool verifyFile( const Pathname & file, const Pathname & signature, const Pathname & keyring );
 

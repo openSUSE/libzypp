@@ -843,34 +843,27 @@ void RpmDb::removePubkey( const PublicKey & pubkey_r )
 {
   FAILIFNOTINITIALIZED;
 
-  // check if the key is in the rpm database and just
-  // return if it does not.
-  std::set<Edition> rpm_keys = pubkeyEditions();
-  std::set<Edition>::const_iterator found_edition = rpm_keys.end();
-  std::string pubkeyVersion( pubkey_r.gpgPubkeyVersion() );
-
-  for_( it, rpm_keys.begin(), rpm_keys.end() )
-  {
-    if ( (*it).version() == pubkeyVersion )
-    {
-        found_edition = it;
-        break;
-    }
-  }
+  // Remove all copies of this very key (same fingerprint), the version of a gpg-pubkey is just the short id.
+  const target::PubkeyCopies copies { target::findPubkeyCopies( installedPubkeys( *this, pubkey_r.gpgPubkeyVersion() ), pubkey_r ) };
+  for ( const target::InstalledPubkey & other : copies.others )
+    ERR << "Key " << pubkey_r << ": gpg-pubkey-" << other.edition << " has the same version but is a different key. (not touched)" << endl;
 
   // the key does not exist, cannot be removed
-  if (found_edition == rpm_keys.end())
+  if ( copies.sameKey.empty() )
   {
       WAR << "Key " << pubkey_r.id() << " is not in rpm db" << endl;
       return;
   }
 
-  std::string rpm_name("gpg-pubkey-" + found_edition->asString());
+  std::vector<std::string> rpmNames;
+  for ( const target::InstalledPubkey & copy : copies.sameKey )
+    rpmNames.push_back( "gpg-pubkey-" + copy.edition.version() + "-" + copy.edition.release() );
 
   RpmArgVec opts;
   opts.push_back ( "-e" );
   opts.push_back ( "--" );
-  opts.push_back ( rpm_name.c_str() );
+  for ( const std::string & rpmName : rpmNames )
+    opts.push_back ( rpmName.c_str() );
   run_rpm( opts, ExternalProgram::Stderr_To_Stdout );
 
   std::string line;

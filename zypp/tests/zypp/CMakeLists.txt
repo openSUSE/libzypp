@@ -17,6 +17,7 @@ ADD_TESTS(
   Flags
   GZStream
   InstanceId
+  KeyManager
   KeyRenewalHook
   KeyRenewalRefresh
   KeyRenewalSigcheck

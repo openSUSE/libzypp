@@ -70,6 +70,13 @@ class KeyManagerCtx
         /** Exports the key with \a id into the given \a buffer, returns true on success */
         bool exportKey(const std::string & id, ByteArray & keydata);
 
+        /** Exports the key with the fingerprint \a fpr into the given \a stream, returns true on success.
+         * Unlike a key id, the fingerprint identifies a key: different keys may have the same id. */
+        bool exportKeyByFpr(const std::string & fpr, std::ostream & stream);
+
+        /** Exports the key with the fingerprint \a fpr into the given \a buffer, returns true on success */
+        bool exportKeyByFpr(const std::string & fpr, ByteArray & keydata);
+
         /** Tries to import a key from \a keyfile, returns true on success */
         bool importKey(const Pathname & keyfile);
 

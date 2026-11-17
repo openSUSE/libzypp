@@ -536,6 +536,9 @@ namespace
     ///////////////////////////////////////////////////////////////////
 
     // collect keys by ID(version) and latest creation(release)
+    // rpm 4 headers only offer the short key id (version), not the fingerprint, and comparing
+    // fingerprints would mean reading every key in rpm. rpm 6 uses the full fingerprint as version:
+    // when moving to rpm 6, compare by fingerprint here (see target::findPubkeyCopies).
     std::map<std::string,Key> _keymap;
 
     for_( it, rpmKeys_r.begin(), rpmKeys_r.end() )

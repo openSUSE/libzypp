@@ -76,6 +76,7 @@ namespace zypp
     std::ostream & operator<<( std::ostream & str, const GpgmeErr & obj )
     { return str << "<" << gpgme_strsource(obj) << "> " << gpgme_strerror(obj); }
 
+    /** Find the key whose primary key has the (long) key \a id. Different keys may have the same id. */
     bool findKeyById( gpgme_ctx_t ctx, const std::string & id, GpgmeKeyPtr & foundKey )
     {
       GpgmeErr err = GPG_ERR_NO_ERROR;
@@ -94,14 +95,28 @@ namespace zypp
       return foundKey.get() != nullptr;
     }
 
-    bool exportKeyData( gpgme_ctx_t ctx, const std::string & id, ByteArray & keydata )
+    /** Find the key whose primary key has the fingerprint \a fpr (compared case-insensitively). */
+    bool findKeyByFpr( gpgme_ctx_t ctx, const std::string & fpr, GpgmeKeyPtr & foundKey )
     {
-      GpgmeKeyPtr foundKey( nullptr, gpgme_key_release );
-      if ( ! findKeyById( ctx, id, foundKey ) ) {
-        WAR << "Key " << id << "not found" << endl;
-        return false;
-      }
+      GpgmeErr err = GPG_ERR_NO_ERROR;
 
+      gpgme_key_t key = nullptr;
+      gpgme_op_keylist_start( ctx, NULL, 0 );
+      while ( !( err = gpgme_op_keylist_next( ctx, &key ) ) ) {
+        if ( key->subkeys && key->subkeys->fpr && str::compareCI( fpr, key->subkeys->fpr ) == 0 ) {
+          GpgmeKeyPtr( key, gpgme_key_release ).swap( foundKey );
+          break;
+        }
+        gpgme_key_release( key );
+      }
+      gpgme_op_keylist_end( ctx );
+
+      return foundKey.get() != nullptr;
+    }
+
+    /** Export \a foundKey, ascii armored. */
+    bool exportFoundKey( gpgme_ctx_t ctx, const GpgmeKeyPtr & foundKey, ByteArray & keydata )
+    {
       gpgme_key_t keyarray[2];
       keyarray[0] = foundKey.get();
       keyarray[1] = NULL;
@@ -143,6 +158,26 @@ namespace zypp
       }
 
       return true;
+    }
+
+    bool exportKeyData( gpgme_ctx_t ctx, const std::string & id, ByteArray & keydata )
+    {
+      GpgmeKeyPtr foundKey( nullptr, gpgme_key_release );
+      if ( ! findKeyById( ctx, id, foundKey ) ) {
+        WAR << "Key " << id << "not found" << endl;
+        return false;
+      }
+      return exportFoundKey( ctx, foundKey, keydata );
+    }
+
+    bool exportKeyDataByFpr( gpgme_ctx_t ctx, const std::string & fpr, ByteArray & keydata )
+    {
+      GpgmeKeyPtr foundKey( nullptr, gpgme_key_release );
+      if ( ! findKeyByFpr( ctx, fpr, foundKey ) ) {
+        WAR << "Key with fingerprint " << fpr << " not found" << endl;
+        return false;
+      }
+      return exportFoundKey( ctx, foundKey, keydata );
     }
 
     /** relates: gpgme_import_result_t Stream output. */
@@ -541,6 +576,21 @@ bool KeyManagerCtx::exportKey(const std::string &id, std::ostream &stream)
 bool KeyManagerCtx::exportKey(const std::string &id, ByteArray &keydata)
 {
   return exportKeyData( _pimpl->_ctx, id, keydata );
+}
+
+bool KeyManagerCtx::exportKeyByFpr(const std::string &fpr, std::ostream &stream)
+{
+  ByteArray keydata;
+  if ( ! exportKeyByFpr( fpr, keydata ) )
+    return false;
+
+  stream.write( keydata.data(), keydata.size() );
+  return bool( stream );
+}
+
+bool KeyManagerCtx::exportKeyByFpr(const std::string &fpr, ByteArray &keydata)
+{
+  return exportKeyDataByFpr( _pimpl->_ctx, fpr, keydata );
 }
 
 bool KeyManagerCtx::importKey(const Pathname &keyfile)

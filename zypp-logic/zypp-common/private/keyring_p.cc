@@ -118,10 +118,10 @@ namespace zypp
     : SendKeys( keyRing, keyRing.keyRingPath( source ), keyRing.keyRingPath( target ) )
   {}
 
-  void KeyRingImpl::SendKeys::operator()( const std::string & id )
+  void KeyRingImpl::SendKeys::operator()( const std::string & fpr )
   {
     ByteArray keydata;
-    if ( ! _source.exportKey( id, keydata ) )
+    if ( ! _source.exportKeyByFpr( fpr, keydata ) )
       ZYPP_THROW(KeyRingException(_("Failed to export key.")));
 
     if ( ! _target.keyManagerCtx().importKey( keydata ) )
@@ -207,10 +207,10 @@ namespace zypp
         SendKeys toTrusted { *this, Ring::General, Ring::Trusted };
         for ( const PublicKeyData & keyData : trustedToUpdate ) {
           // transfer the individual keys only! Never the complete file.
-          toTrusted( keyData.id() );
+          toTrusted( keyData.fingerprint() );
           // bsc#1284494: Let rpm (RpmDb::importPubkey) update the key too. Pass the key as it is
           // now in the trusted ring (merged by gpg), not the data of the file we found.
-          _sigTrustedKeyAdded.emit( exportKey( keyData.id(), Ring::Trusted ) );
+          _sigTrustedKeyAdded.emit( exportKey( keyData.fingerprint(), Ring::Trusted ) );
         }
       }
     }
@@ -262,7 +262,7 @@ namespace zypp
 
   PublicKey KeyRingImpl::exportKey( const PublicKeyData & keyData, const Pathname & keyring ) const
   {
-    return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
+    return PublicKey( dumpPublicKeyToTmp( keyData, keyring ), keyData );
   }
 
   // TODO: (ma) not obvious why "exportKey id" checks validity, but "exportKey keyData" does not
@@ -270,7 +270,7 @@ namespace zypp
   {
     PublicKeyData keyData( publicKeyData( id, keyring ) );
     if ( keyData )
-      return PublicKey( dumpPublicKeyToTmp( keyData.id(), keyring ), keyData );
+      return PublicKey( dumpPublicKeyToTmp( keyData, keyring ), keyData );
 
     // Here: key not found
     WAR << "No key [" << id << "] to export from " << keyring << endl;
@@ -320,13 +320,13 @@ namespace zypp
     KeyManagerCtx::createForOpenPGP( keyring ).exportKey(id, stream);
   }
 
-  filesystem::TmpFile KeyRingImpl::dumpPublicKeyToTmp( const std::string & id, const Pathname & keyring ) const
+  filesystem::TmpFile KeyRingImpl::dumpPublicKeyToTmp( const PublicKeyData & keyData, const Pathname & keyring ) const
   {
-    filesystem::TmpFile tmpFile( _base_dir, "pubkey-"+id+"-" );
-    MIL << "Going to export key [" << id << "] from " << keyring << " to " << tmpFile.path() << endl;
+    filesystem::TmpFile tmpFile( _base_dir, "pubkey-"+keyData.id()+"-" );
+    MIL << "Going to export key [" << keyData.fingerprint() << "] from " << keyring << " to " << tmpFile.path() << endl;
 
     std::ofstream os( tmpFile.path().c_str() );
-    dumpPublicKey( id, keyring, os );
+    KeyManagerCtx::createForOpenPGP( keyring ).exportKeyByFpr( keyData.fingerprint(), os );
     os.close();
     return tmpFile;
   }

@@ -324,6 +324,8 @@ void MediaCurl::setupEasy(RequestData &rData, TransferSettings &settings )
   if ( ret != 0 ) {
     ZYPP_THROW(MediaCurlSetOptException( _origin.at(rData.mirror).url(), "Error setting error buffer"));
   }
+  // record server certificate details for error reports; also needed for http->https redirects
+  ::internal::setupSslVerifyInfo( curl, _sslVerifyInfo );
 
   SET_OPTION(CURLOPT_FAILONERROR, 1L);
   SET_OPTION(CURLOPT_NOSIGNAL, 1L);
@@ -888,6 +890,10 @@ void MediaCurl::evaluateCurlCode(RequestData &rData,
       url = getFileUrl(rData.mirror, filename);
 
     std::string err;
+    if ( ::internal::isSslVerifyFailure( code ) ) {
+      ZYPP_THROW(MediaCurlException(url, "Curl error " + str::numstring( code ),
+                                    ::internal::sslVerifyFailedMessage( rData.curl, _curlError, *_sslVerifyInfo )));
+    }
     {
       switch ( code )
       {

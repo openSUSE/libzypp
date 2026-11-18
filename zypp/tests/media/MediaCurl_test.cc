@@ -579,4 +579,83 @@ BOOST_DATA_TEST_CASE( test_mirror_fallback_persistence, bdata::make( backend ), 
     "Failed mirror was NOT reordered! (failServerRequests=" << failServerRequests << ")" );
 }
 
+// TLS verification failures must report the server certificate (subject/issuer) in the message
+std::vector<std::string> sslDetailsBackends = { "curl" };
+
+BOOST_DATA_TEST_CASE( ssl_verify_failure_details, bdata::make( sslDetailsBackends ), backend )
+{
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
+  WebServer web( testRoot.c_str(), 10001, true );
+  BOOST_REQUIRE( web.start() );
+
+  // Empty CA dir: the test CA is not trusted, verification must fail (unable to get local issuer)
+  zypp::filesystem::TmpDir emptyCaDir;
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setQueryParam( "mediahandler", backend );
+  mediaUrl.setQueryParam( "ssl_capath", emptyCaDir.path().asString() );
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+  BOOST_REQUIRE_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_REQUIRE_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  try {
+    mm.provideFile( id, zypp::OnMediaLocation("/test.txt") );
+    BOOST_FAIL( "provideFile must fail with a TLS verification error" );
+  } catch ( const zypp::media::MediaCurlException &e ) {
+    const std::string msg = e.asString();
+    BOOST_TEST_MESSAGE( msg );
+    BOOST_CHECK( msg.find( "Server certificate subject: CN=localhost,OU=Development,ST=BY,C=DE" ) != std::string::npos );
+    BOOST_CHECK( msg.find( "Server certificate issuer: CN=127.0.0.1 CA,OU=Development,O=OpenSUSE,ST=Some-State,C=DE" ) != std::string::npos );
+    BOOST_CHECK( msg.find( "Certificate verify error: " ) != std::string::npos );
+  } catch ( const zypp::Exception &e ) {
+    BOOST_FAIL( "unexpected exception: " + e.asString() );
+  }
+}
+
+BOOST_DATA_TEST_CASE( ssl_hostname_mismatch_details, bdata::make( sslDetailsBackends ), backend )
+{
+  zypp::filesystem::TmpDir repoManagerRoot;
+  zypp::ZConfig::instance().setRepoManagerRoot( repoManagerRoot.path() );
+
+  zypp::Pathname testRoot = zypp::Pathname(TESTS_SHARED_DIR)/"data/http";
+  WebServer web( testRoot.c_str(), 10001, true );
+  BOOST_REQUIRE( web.start() );
+
+  // CA is trusted, but the certificate is for "localhost" (no SAN), we connect to 127.0.0.1
+  zypp::Url mediaUrl = web.url();
+  mediaUrl.setHost( "127.0.0.1" );
+  mediaUrl.setQueryParam( "mediahandler", backend );
+  mediaUrl.setQueryParam( "ssl_capath", web.caPath().asString() );
+
+  zypp::media::MediaManager   mm;
+  zypp::media::MediaAccessId  id;
+  BOOST_REQUIRE_NO_THROW( id = mm.open( mediaUrl ) );
+  BOOST_REQUIRE_NO_THROW( mm.attach(id) );
+  zypp_defer {
+    mm.releaseAll ();
+    mm.close (id);
+  };
+
+  try {
+    mm.provideFile( id, zypp::OnMediaLocation("/test.txt") );
+    BOOST_FAIL( "provideFile must fail with a TLS host name error" );
+  } catch ( const zypp::media::MediaCurlException &e ) {
+    const std::string msg = e.asString();
+    BOOST_TEST_MESSAGE( msg );
+    BOOST_CHECK( msg.find( "Server certificate subject: CN=localhost,OU=Development,ST=BY,C=DE" ) != std::string::npos );
+    // the chain itself is valid: no X509 error line
+    BOOST_CHECK( msg.find( "Certificate verify error: " ) == std::string::npos );
+  } catch ( const zypp::Exception &e ) {
+    BOOST_FAIL( "unexpected exception: " + e.asString() );
+  }
+}
+
 

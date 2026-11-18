@@ -18,7 +18,9 @@
 #include <zypp-core/Url.h>
 #include <zypp-curl/TransferSettings>
 
+#include <memory>
 #include <optional>
+#include <string>
 
 #define EXPLICITLY_NO_PROXY "_none_"
 
@@ -26,6 +28,7 @@
 #define CURLVERSION_AT_LEAST(M,N,O) LIBCURL_VERSION_NUM >= ((((M)<<8)+(N))<<8)+(O)
 
 using GPollFD = struct _GPollFD;
+struct x509_store_ctx_st; // OpenSSL's X509_STORE_CTX
 
 namespace zypp
 {
@@ -70,6 +73,43 @@ zypp::Url clearQueryString(const zypp::Url &url);
 zypp::Url propagateQueryParams( zypp::Url url_r, const zypp::Url & template_r );
 
 CURLcode setCurlRedirProtocols(CURL *curl);
+
+/*!
+ * Data recorded by the OpenSSL verify callback during the last TLS handshake
+ * of a curl easy handle. Only used to report verification failures.
+ */
+struct SslVerifyInfo
+{
+  void reset() { *this = SslVerifyInfo(); }
+
+  bool haveLeaf = false;    ///< leafSubject/leafIssuer are valid
+  std::string leafSubject;  ///< RFC2253 subject of the server (leaf) certificate
+  std::string leafIssuer;   ///< RFC2253 issuer of the server (leaf) certificate
+  long x509Error = 0;       ///< first X509_V_ERR_* reported in the chain, 0 if none
+  int  x509ErrorDepth = -1; ///< chain depth of x509Error
+  int (*prevVerifyCb)( int, ::x509_store_ctx_st * ) = nullptr; ///< verify callback set before ours (normally none)
+};
+using SslVerifyInfoPtr = std::shared_ptr<SslVerifyInfo>;
+
+/*!
+ * Install a CURLOPT_SSL_CTX_FUNCTION which records the server certificate
+ * subject/issuer and the X509 verify error into \a info_r. It does not change
+ * the verification result. Resets \a info_r. Never fails: if curl does not use
+ * the same OpenSSL as libzypp, nothing is installed.
+ * \a info_r must stay alive as long as transfers run on \a curl
+ * (its address is passed to curl as CURLOPT_SSL_CTX_DATA).
+ */
+void setupSslVerifyInfo( CURL *curl, SslVerifyInfoPtr &info_r );
+
+/*! Whether \a code means the server certificate or host name could not be verified. */
+bool isSslVerifyFailure( CURLcode code );
+
+/*!
+ * Write one ERR log line about a TLS verification failure (URL, curl error,
+ * certificate subject/issuer, X509 error, caller) and return \a curlError_r
+ * extended by the certificate details for the exception message.
+ */
+std::string sslVerifyFailedMessage( CURL *curl, const std::string &curlError_r, const SslVerifyInfo &info_r );
 
 /*!
  * Helper class to simplify using the curl multi API, takes

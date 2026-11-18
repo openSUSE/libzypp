@@ -17,6 +17,7 @@
 #include <zypp-core/CheckSum.h>
 #include <zypp-core/ng/base/private/base_p.h>
 #include <zypp-curl/ng/network/request.h>
+#include <zypp-curl/private/curlhelper_p.h>
 #include <zypp-media/MediaException>
 #include <zypp-core/ng/base/Timer>
 #include <zypp-core/base/Regex.h>
@@ -93,6 +94,7 @@ namespace zyppng {
 
 
     std::array<char, CURL_ERROR_SIZE+1> _errorBuf; //provide a buffer for a nicely formatted error for CURL
+    ::internal::SslVerifyInfoPtr _sslVerifyInfo = std::make_shared<::internal::SslVerifyInfo>(); //< TLS verify details of the last handshake
 
     template<typename T>
     void setCurlOption ( CURLoption opt, T data )

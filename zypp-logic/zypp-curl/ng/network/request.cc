@@ -106,6 +106,7 @@ namespace zyppng {
   {
     ::internal::setupZYPP_MEDIA_CURL_DEBUG( _easyHandle );
     curl_easy_setopt( _easyHandle, CURLOPT_ERRORBUFFER, this->_errorBuf.data() );
+    ::internal::setupSslVerifyInfo( _easyHandle, _sslVerifyInfo );
     MIL << _easyHandle << " " << "URL: " << _url << std::endl;
 
     const std::string urlScheme = _url.getScheme();

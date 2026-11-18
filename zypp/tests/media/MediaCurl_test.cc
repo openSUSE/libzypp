@@ -580,7 +580,7 @@ BOOST_DATA_TEST_CASE( test_mirror_fallback_persistence, bdata::make( backend ), 
 }
 
 // TLS verification failures must report the server certificate (subject/issuer) in the message
-std::vector<std::string> sslDetailsBackends = { "curl" };
+std::vector<std::string> sslDetailsBackends = { "curl", "curl2" };
 
 BOOST_DATA_TEST_CASE( ssl_verify_failure_details, bdata::make( sslDetailsBackends ), backend )
 {

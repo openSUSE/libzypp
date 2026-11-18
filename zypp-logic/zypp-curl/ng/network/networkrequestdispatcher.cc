@@ -252,7 +252,10 @@ void NetworkRequestDispatcherPrivate::handleMultiSocketAction(curl_socket_t nati
         // trigger notification about file downloaded
         // we create a error from the CURL code, there might be a already cached Result which will be used instead
         // in cases like a RangeFail where we could not recover but there also is no real error code
-        NetworkRequestError e = NetworkRequestErrorPrivate::fromCurlError( *request->z_func(), res, request->errorMessage() );
+        std::string nativeErr = request->errorMessage();
+        if ( ::internal::isSslVerifyFailure( res ) )
+          nativeErr = ::internal::sslVerifyFailedMessage( request->_easyHandle, nativeErr, *request->_sslVerifyInfo );
+        NetworkRequestError e = NetworkRequestErrorPrivate::fromCurlError( *request->z_func(), res, nativeErr );
         setFinished( *request->z_func(), e );
       }
       //attention request could be deleted from here on

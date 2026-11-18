@@ -587,6 +587,18 @@ There is one class per failure mode, all derived from `MediaException`: `MediaMo
 subclass of e.g. `MediaFileNotFoundException` would therefore *not* be recognised as "not found". Always throw the exact class.
 `FileCheckException` (`filecheckexception.h`) is used for checksum and signature failures upstream.
 
+**TLS verification failures.** On `CURLE_PEER_FAILED_VERIFICATION` (curl error 60) both backends (MediaCurl and
+MediaCurl2/NG) append `Server certificate subject: …`, `Server certificate issuer: …` and, if the chain failed,
+`Certificate verify error: <text> (<code>) at depth <n>` to the curl message of `MediaCurlException` (the `Curl error 60`
+part is unchanged). They also log one `ERR` line
+`TLS certificate verification failed: url=… curl_error=… ssl_verify_result=… subject=… issuer=… x509_error=… caller: pid=… ppid=… ppid_comm=… uid=… euid=… loginuid=… sudo_user=…`.
+The implementation is `internal::setupSslVerifyInfo` / `internal::sslVerifyFailedMessage` in
+`zypp-logic/zypp-curl/curlhelper.cc`: a `CURLOPT_SSL_CTX_FUNCTION` installs an OpenSSL verify callback that only records
+the leaf certificate and the first X509 error and returns the verification result unchanged. It is disabled (one `WAR`
+line) if curl's TLS backend is not the same OpenSSL major.minor as libzypp's. Host name mismatches show subject/issuer
+but no `Certificate verify error` line, because the chain itself is valid. libzypp does not check certificate
+revocation (no CRL file, no OCSP stapling).
+
 ---
 
 ## 7.15 NG network internals in depth

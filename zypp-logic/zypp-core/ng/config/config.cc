@@ -1,0 +1,373 @@
+/*---------------------------------------------------------------------\
+|                          ____ _   __ __ ___                          |
+|                         |__  / \ / / . \ . \                         |
+|                           / / \ V /|  _/  _/                         |
+|                          / /__ | | | | | |                           |
+|                         /_____||_| |_| |_|                           |
+|                                                                      |
+\---------------------------------------------------------------------*/
+#include <zypp-core/ng/config/config.h>
+
+#include <cstdlib>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+
+#include <zypp-core/base/LogControl.h>
+#include <zypp-core/base/inputstream.h>
+#include <zypp-core/Pathname.h>
+#include <zypp-core/fs/PathInfo.h>
+#include <zypp-core/parser/IniDict>
+#include <zypp-core/parser/EconfDict>
+
+namespace zyppng::config {
+
+// ---------------------------------------------------------------------------
+// Constructor
+// ---------------------------------------------------------------------------
+
+Config::Config( zypp::Pathname root )
+    : _root(std::move(root))
+{}
+
+// ---------------------------------------------------------------------------
+// reset / resetAll
+// ---------------------------------------------------------------------------
+
+void Config::reset(std::string_view sectionKey)
+{
+    const std::string k(sectionKey);
+    auto it = _entries.find(k);
+    if (it == _entries.end())
+        return;
+
+    it->second.overrideValue.reset();
+
+    if (!it->second.signal)
+        return;
+
+    // Compute the new effective value and copy it before emitting — a slot
+    // that inserts a new entry into _entries would trigger a rehash and leave
+    // a reference into the map dangling for the duration of emit().
+    std::any newValue;
+    if (it->second.fileValue.has_value()) {
+        newValue = it->second.fileValue;
+    } else {
+        auto rIt = _registry.find(k);
+        if (rIt != _registry.end() && rIt->second.defaultFn)
+            newValue = rIt->second.defaultFn(*this);
+    }
+    it->second.signal->emit(newValue);
+}
+
+void Config::resetAll()
+{
+    // Snapshot keys first: reset() emits signals whose slots may insert new
+    // entries into _entries, invalidating a range-for iterator over it.
+    std::vector<std::string> keys;
+    keys.reserve(_entries.size());
+    for (const auto & [name, _] : _entries)
+        keys.push_back(name);
+    for (const auto & name : keys)
+        reset(name);
+}
+
+// ---------------------------------------------------------------------------
+// Raw string access
+// ---------------------------------------------------------------------------
+
+std::optional<std::string> Config::getRaw(std::string_view sectionKey) const
+{
+    const std::string k(sectionKey);
+    auto it = _entries.find(k);
+    if (it == _entries.end())
+        return std::nullopt;
+
+    // Check override first, then file value.
+    for (const std::any * v : { &it->second.overrideValue, &it->second.fileValue }) {
+        if (!v->has_value())
+            continue;
+        // Stored as std::string (raw / unknown key).
+        if (const auto * s = std::any_cast<std::string>(v))
+            return *s;
+        // Stored as a typed value — not accessible as raw string.
+        return std::nullopt;
+    }
+    return std::nullopt;
+}
+
+std::string Config::resolveCanonical(const std::string & section, const std::string & key) const
+{
+    std::string canonical = section + "/" + key;
+
+    // First try the section-qualified form ("main/arch").
+    auto aIt = _aliasMap.find(canonical);
+    if (aIt != _aliasMap.end())
+        return aIt->second;
+
+    // Fall back to the bare key name for legacy flat aliases
+    // (e.g. "arch" → "main/arch" registered without a section prefix).
+    auto aIt2 = _aliasMap.find(key);
+    if (aIt2 != _aliasMap.end())
+        return aIt2->second;
+
+    return canonical;
+}
+
+void Config::storeOverride(const std::string & canonical, std::any value)
+{
+    auto & entry = _entries[canonical];
+    entry.overrideValue = std::move(value);
+    if (entry.signal) {
+        // Copy before emitting — a slot that inserts a new entry into _entries
+        // would rehash and leave \c entry dangling during emit().
+        std::any copy = entry.overrideValue;
+        entry.signal->emit(copy);
+    }
+}
+
+expected<void> Config::set(std::string_view sectionKey, std::string value)
+{
+    const std::string input(sectionKey);
+
+    // Resolve to the canonical name: "section/key" (possibly an alias) or a
+    // bare legacy alias such as "download.transfer_timeout".
+    std::string canonical;
+    if ( const auto slash = input.find('/'); slash != std::string::npos ) {
+        canonical = resolveCanonical(input.substr(0, slash), input.substr(slash + 1));
+    } else if ( auto aIt = _aliasMap.find(input); aIt != _aliasMap.end() ) {
+        canonical = aIt->second;
+    } else {
+        return unexpected( std::make_exception_ptr( std::invalid_argument(
+            "key must be 'section/key' or a registered legacy alias: '" + input + "'" ) ) );
+    }
+
+    auto rIt = _registry.find(canonical);
+    if ( rIt != _registry.end() && rIt->second.parseFn ) {
+        // Registered key — convert via parseFn so the stored override always has
+        // the registered type (and clamping etc. applies as for zypp.conf values).
+        auto result = rIt->second.parseFn(value);
+        if ( !result )
+            return unexpected( result.error() );
+        storeOverride( canonical, std::move( result.get() ) );
+    } else {
+        // Unregistered key — raw string.
+        storeOverride( canonical, std::any( std::move(value) ) );
+    }
+    return expected<void>();
+}
+
+// ---------------------------------------------------------------------------
+// Change signals
+// ---------------------------------------------------------------------------
+
+sigc::signal<void(const std::any &)> & Config::sigChanged(std::string_view sectionKey)
+{
+    auto & entry = _entries[std::string(sectionKey)];
+    if (!entry.signal)
+        entry.signal.emplace();
+    return *entry.signal;
+}
+
+// ---------------------------------------------------------------------------
+// Iteration
+// ---------------------------------------------------------------------------
+
+void Config::forEach(std::function<void(std::string_view, const Entry &)> f) const
+{
+    for (const auto & [name, entry] : _entries) {
+        if (entry.fileValue.has_value() || entry.overrideValue.has_value())
+            f(name, entry);
+    }
+}
+
+bool Config::hasRegisteredKey(std::string_view sectionKey) const
+{
+    return _registry.count(std::string(sectionKey)) != 0;
+}
+//
+// ---------------------------------------------------------------------------
+// parseDict() — shared INI-dict-to-entries logic
+// ---------------------------------------------------------------------------
+
+void Config::parseEntry(const std::string & section,
+                        const std::string & rawKey,
+                        const std::string & rawValue,
+                        std::vector<ParseError> & errors)
+{
+    // Assemble canonical name: "section/key", honouring legacy alias remapping.
+    const std::string canonical = resolveCanonical(section, rawKey);
+
+    auto rIt = _registry.find(canonical);
+    if (rIt != _registry.end() && rIt->second.parseFn) {
+        // Known key — convert via registered parseFn.
+        auto result = rIt->second.parseFn(rawValue);
+        if ( result ) {
+            _entries[canonical].fileValue = std::move( result.get() );
+        } else {
+            // Collect error — fileValue left empty, key falls through
+            // to defaultFn at get() time.
+            errors.push_back( ParseError{ canonical, rawValue, result.error() } );
+        }
+    } else {
+        // Unknown key — store as raw string.
+        _entries[canonical].fileValue = std::any(rawValue);
+        DBG << "Config::parse — unknown key '" << canonical
+            << "' stored as raw string" << std::endl;
+    }
+}
+
+std::vector<ParseError> Config::parseDict(const zypp::parser::IniDict & dict)
+{
+    std::vector<ParseError> errors;
+
+    for (auto sIt = dict.sectionsBegin(); sIt != dict.sectionsEnd(); ++sIt) {
+        const std::string & section = *sIt;
+
+        for (auto eIt = dict.entriesBegin(section);
+             eIt != dict.entriesEnd(section); ++eIt)
+        {
+            parseEntry(section, eIt->first, eIt->second, errors);
+        }
+    }
+
+    return errors;
+}
+
+// ---------------------------------------------------------------------------
+// parseEntries() — canonical "section/key" map (worker transport)
+// ---------------------------------------------------------------------------
+
+std::vector<ParseError> Config::parseEntries(const std::map<std::string, std::string> & entries)
+{
+    std::vector<ParseError> errors;
+
+    for (const auto & [canonical, value] : entries) {
+        const auto slash = canonical.find('/');
+        if (slash == std::string::npos) {
+            WAR << "Config::parseEntries — ignoring key without section: '"
+                << canonical << "'" << std::endl;
+            continue;
+        }
+        parseEntry(canonical.substr(0, slash), canonical.substr(slash + 1), value, errors);
+    }
+
+    return errors;
+}
+
+// ---------------------------------------------------------------------------
+// parse()
+// ---------------------------------------------------------------------------
+
+std::vector<ParseError> Config::parse()
+{
+    // $ZYPP_CONF override — single file, plain IniDict.
+    const char * zyppConf = ::getenv("ZYPP_CONF");
+
+    std::unique_ptr<zypp::parser::IniDict> dict;
+    if (zyppConf && *zyppConf) {
+        const zypp::Pathname confPath = _root / zyppConf;
+        if (zypp::PathInfo(confPath).isFile()) {
+            dict = std::make_unique<zypp::parser::IniDict>();
+            dict->read(confPath);
+        } else {
+            WAR << "ZYPP_CONF set but file not found: " << confPath << std::endl;
+            dict = std::make_unique<zypp::parser::IniDict>();
+        }
+    } else {
+        // Standard UAPI three-layer merge via EconfDict.
+        dict = std::make_unique<zypp::parser::EconfDict>(
+            "zypp/zypp.conf", _root);
+    }
+
+    return parseDict(*dict);
+}
+
+// ---------------------------------------------------------------------------
+// parseFromString()
+// ---------------------------------------------------------------------------
+
+std::vector<ParseError> Config::parseFromString(std::string_view iniContent)
+{
+    // InputStream takes std::istream& — must be a named lvalue, not a temporary.
+    std::istringstream iss( (std::string(iniContent)) );
+    zypp::parser::IniDict dict;
+    dict.read( zypp::InputStream(iss) );
+    return parseDict(dict);
+}
+
+// ---------------------------------------------------------------------------
+// serialize()
+// ---------------------------------------------------------------------------
+
+std::map<std::string, std::string> Config::serializeEntries() const
+{
+    // Canonical "section/keyname" → serialized value. std::map keeps the
+    // output deterministic (sorted) for serialize().
+    std::map<std::string, std::string> result;
+
+    // Pass 1 — all registered keys: emit effective value via serializeFn.
+    for (const auto & [canonicalName, meta] : _registry) {
+        if (!meta.serializeFn || !meta.defaultFn)
+            continue;
+
+        if (canonicalName.find('/') == std::string::npos)
+            continue;
+
+        // Effective value: override → file → default
+        std::any effectiveValue;
+        auto eIt = _entries.find(canonicalName);
+        if (eIt != _entries.end() && eIt->second.overrideValue.has_value())
+            effectiveValue = eIt->second.overrideValue;
+        else if (eIt != _entries.end() && eIt->second.fileValue.has_value())
+            effectiveValue = eIt->second.fileValue;
+        else
+            effectiveValue = meta.defaultFn(*this);
+
+        result[canonicalName] = meta.serializeFn(effectiveValue);
+    }
+
+    // Pass 2 — raw/unknown keys not in the registry.
+    for (const auto & [canonicalName, entry] : _entries) {
+        if (_registry.count(canonicalName))
+            continue;  // already handled in pass 1
+
+        const std::any & v = entry.overrideValue.has_value()
+                             ? entry.overrideValue : entry.fileValue;
+        if (!v.has_value() || v.type() != typeid(std::string))
+            continue;
+
+        if (canonicalName.find('/') == std::string::npos)
+            continue;
+
+        result[canonicalName] = std::any_cast<const std::string &>(v);
+    }
+
+    return result;
+}
+
+std::string Config::serialize() const
+{
+    // Group canonical entries into sorted section → sorted key → value so that:
+    // - Each section appears exactly once
+    // - Typed and raw keys in the same section are merged together
+    // - Output is deterministic (alphabetically sorted)
+    std::map<std::string, std::map<std::string, std::string>> sections;
+    for (const auto & [canonicalName, value] : serializeEntries()) {
+        const auto slash = canonicalName.find('/');
+        sections[canonicalName.substr(0, slash)][canonicalName.substr(slash + 1)] = value;
+    }
+
+    // Render to INI text.
+    std::ostringstream out;
+    for (const auto & [section, keys] : sections) {
+        out << '[' << section << "]\n";
+        for (const auto & [keyname, value] : keys)
+            out << keyname << " = " << value << '\n';
+        out << '\n';
+    }
+
+    return out.str();
+}
+
+} // namespace zyppng::config

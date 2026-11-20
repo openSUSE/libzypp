@@ -42,7 +42,7 @@ namespace zyppng {
         m.addValue( i->first, val );
     }
 
-    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, origin, std::move(m))) );
+    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(owner.weak_this<ProvideItem>(), origin, std::move(m))) );
   }
 
   expected<ProvideRequestRef> ProvideRequest::create(ProvideItem &owner, const zypp::MirroredOrigin &origin, ProvideFileSpec &spec )
@@ -73,13 +73,13 @@ namespace zyppng {
         m.addValue( i->first, val );
     }
 
-    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(&owner, origin, std::move(m)) ) );
+    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest(owner.weak_this<ProvideItem>(), origin, std::move(m)) ) );
   }
 
   expected<ProvideRequestRef> ProvideRequest::createDetach( const zypp::Url &url )
   {
     auto m = ProvideMessage::createDetach ( ProvideQueue::InvalidId , url );
-    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest( nullptr, { url }, std::move(m) ) ) );
+    return expected<ProvideRequestRef>::success( ProvideRequestRef( new ProvideRequest( ProvideItemWeakRef(), { url }, std::move(m) ) ) );
   }
 
   ZYPP_IMPL_PRIVATE(ProvideItem);

@@ -131,23 +131,59 @@ public:
       argv.push_back(nullptr);
 
 
-      if ( !canContinue ) {
+      // collects all information we have about a failed start, logs it and reports it to \ref start
+      const auto &failStart = [&]( const std::string &reason, const std::string &output ) {
+        str::Str msg;
+        msg << "Failed to start the proxy server " << PROXYSRV_BINARY << " on port " << port() << ": " << reason;
+        if ( !output.empty() )
+          msg << "\n--- proxy output ---\n" << output;
+
+        // squid reports most startup errors (FATAL: ...) only in its cache log
+        std::string cacheLog = TestTools::readFile( confPath/"cache.log" );
+        if ( !cacheLog.empty() ) {
+          constexpr std::string::size_type maxLogSize = 4096;
+          if ( cacheLog.size() > maxLogSize ) {
+            cacheLog.erase( 0, cacheLog.size() - maxLogSize );
+            cacheLog.erase( 0, cacheLog.find( '\n' ) + 1 );
+            cacheLog.insert( 0, "[...]\n" );
+          }
+          msg << "\n--- " << confPath/"cache.log" << " ---\n" << cacheLog;
+        }
+
+        std::cerr << msg.str() << endl;
+        ERR << msg.str() << endl;
+        _stop = true;
         _stopped = true;
-        _cv.notify_all();
+        notifyStarted( msg.str() );
+      };
+
+      if ( !canContinue ) {
+        failStart( str::Str() << "Unable to write the proxy configuration to " << confPath, std::string() );
         return;
       }
 
         ExternalTrackedProgram prog( argv.data(), env, ExternalProgram::Stderr_To_Stdout, false, -1, true);
         prog.setBlocking( false );
 
-        // read initial lines, since the progress is non blocking a empty line means there
+        // remember everything the proxy prints during startup, we need it if the start fails
+        std::string startupOutput;
+        // read all available lines, since the process is non blocking a empty line means there
         // is nothing to read
-        while(1) {
-          std::string line = prog.receiveLine();
-          if ( line.empty() )
-            break;
-          std::cerr << line << endl;
+        const auto &readOutput = [&]() {
+          if ( !prog.inputFile() )
+            return;
+          while(1) {
+            std::string line = prog.receiveLine();
+            if ( line.empty() )
+              break;
+            std::cerr << line << endl;
+            startupOutput += line;
+            if ( line.back() != '\n' )
+              startupOutput += '\n';
+          };
         };
+
+        readOutput();
 
         // Wait max 10 sec for the socket becoming available
         bool isup { TestTools::checkLocalPort( port() ) };
@@ -156,21 +192,29 @@ public:
           unsigned i = 0;
           do {
             std::this_thread::sleep_for( std::chrono::milliseconds(1000) );
+            readOutput();
             isup = TestTools::checkLocalPort( port() );
-          } while ( !isup && ++i < 10 );
-
-          if ( !isup && prog.running() ) {
-            prog.kill( SIGTERM );
-            prog.close();
-          }
+          } while ( !isup && prog.running() && ++i < 10 );
         }
+
+        readOutput();
 
         if ( !prog.running() ) {
-          _stop = true;
-          _stopped = true;
-        } else {
-          _stopped = false;
+          // the proxy exited by itself
+          const int status = prog.close();
+          failStart( str::Str() << "The proxy exited with status " << status
+                                << ( prog.execError().empty() ? std::string() : ( ": " + prog.execError() ) ), startupOutput );
+          return;
         }
+
+        if ( !isup ) {
+          // the proxy is running, but does not listen on the port
+          prog.kill( SIGTERM );
+          prog.close();
+          failStart( str::Str() << "The proxy did not open port " << port() << " within 10 seconds and was terminated", startupOutput );
+          return;
+        }
+        _stopped = false;
 
         struct pollfd fds[] { {
             _wakeupPipe[0],
@@ -189,9 +233,7 @@ public:
 
           if ( firstLoop ) {
             firstLoop = false;
-            _cv.notify_all();
-            if ( _stopped )
-              return;
+            notifyStarted();
           }
 
           //listen on a pipe for a wakeup event to stop the worker if required
@@ -233,6 +275,19 @@ public:
         }
     }
 
+    /** Signal \ref start that the worker thread finished its startup, successful or not.
+     *  \a error_r describes why the start failed, empty on success.
+     */
+    void notifyStarted( std::string error_r = std::string() )
+    {
+      {
+        std::lock_guard<std::mutex> lock( _mut );
+        _started = true;
+        _startError = std::move( error_r );
+      }
+      _cv.notify_all();
+    }
+
     std::string log() const
     {
       //read logfile
@@ -264,12 +319,16 @@ public:
       _stop = _stopped = false;
 
       std::unique_lock<std::mutex> lock( _mut );
+      _started = false;
+      _startError.clear();
       _thrd.reset( new std::thread( &Impl::worker_thread, this ) );
-      _cv.wait(lock);
+      _cv.wait( lock, [this]{ return _started; } );
 
       if ( _stopped ) {
+        std::string err = _startError.empty() ? std::string("Failed to start the proxyserver") : _startError;
+        lock.unlock();
         _thrd->join();
-        throw zypp::Exception("Failed to start the proxyserver");
+        throw zypp::Exception( err );
       }
     }
 
@@ -284,7 +343,9 @@ public:
     int _wakeupPipe[2];
 
     std::atomic_bool _stop = false;
-    bool _stopped = true;
+    std::atomic_bool _stopped = true;
+    bool _started = false; //< set by the worker thread once startup is done, guarded by _mut
+    std::string _startError; //< why the last start failed, guarded by _mut
     bool _auth = false;
 };
 

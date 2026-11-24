@@ -346,6 +346,9 @@ namespace zypp
     template <typename BArr = std::string>
     BArr hexstringToByteArray ( std::string_view str ) {
       BArr bytes;
+      // odd length hex strings can never be byte arrays
+      if ( str.length () % 2 )
+        return {};
       for ( std::string::size_type i = 0; i < str.length(); i+=2 )
       {
         int v = hexCharToByte(str[i]);

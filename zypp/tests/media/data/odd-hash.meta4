@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metalink xmlns="urn:ietf:params:xml:ns:metalink">
+  <generator>zypp-test</generator>
+  <published>2026-11-24T00:00:00Z</published>
+
+  <file name="other.xml.gz">
+    <size>16108851</size>
+    <!-- sha-256 hash with 59 hex characters (odd length) -->
+    <hash type="sha-256">702d2a63e32b11a60ef853247f7901a71d0ec12731003a433dc17d20002</hash>
+    <url location="de" priority="1">http://ftp.halifax.rwth-aachen.de/opensuse/update/leap/15.0/oss/repodata/other.xml.gz</url>
+    <url location="us" priority="2">http://mirror.example.com/opensuse/update/leap/15.0/oss/repodata/other.xml.gz</url>
+  </file>
+</metalink>

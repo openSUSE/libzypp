@@ -167,23 +167,26 @@ public:
 
         // remember everything the proxy prints during startup, we need it if the start fails
         std::string startupOutput;
-        // read all available lines, since the process is non blocking a empty line means there
-        // is nothing to read
-        const auto &readOutput = [&]() {
+        // read all available output, optionally appending it to \a collect_r. Since the process is
+        // non blocking a empty line means there is nothing to read. The last piece might be an
+        // incomplete line, the rest of it is returned by the next read.
+        const auto &readOutput = [&]( std::string *collect_r ) {
           if ( !prog.inputFile() )
             return;
           while(1) {
+            // a read on the empty non blocking pipe fails with EAGAIN and sets the error flag
+            // of the stream, glibc refuses all further reads until it is cleared
+            clearerr( prog.inputFile() );
             std::string line = prog.receiveLine();
             if ( line.empty() )
               break;
             std::cerr << line << endl;
-            startupOutput += line;
-            if ( line.back() != '\n' )
-              startupOutput += '\n';
+            if ( collect_r )
+              *collect_r += line;
           };
         };
 
-        readOutput();
+        readOutput( &startupOutput );
 
         // Wait max 10 sec for the socket becoming available
         bool isup { TestTools::checkLocalPort( port() ) };
@@ -192,12 +195,12 @@ public:
           unsigned i = 0;
           do {
             std::this_thread::sleep_for( std::chrono::milliseconds(1000) );
-            readOutput();
+            readOutput( &startupOutput );
             isup = TestTools::checkLocalPort( port() );
           } while ( !isup && prog.running() && ++i < 10 );
         }
 
-        readOutput();
+        readOutput( &startupOutput );
 
         if ( !prog.running() ) {
           // the proxy exited by itself
@@ -251,12 +254,7 @@ public:
           }
 
           if ( fds[1].revents ) {
-            while(1) {
-              std::string line = prog.receiveLine();
-              if ( line.empty() )
-                break;
-              std::cerr << line << endl;
-            };
+            readOutput( nullptr );
 
             if ( !prog.running() ) {
               std::cerr << "Proxy server exited too early" << endl;

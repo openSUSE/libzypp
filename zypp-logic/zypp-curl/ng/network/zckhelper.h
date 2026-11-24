@@ -102,17 +102,6 @@ namespace zyppng {
      */
     static bool isZchunkFile(const zypp::Pathname &file);
 
-    /*!
-     * Prepares the file in \a target with already existing chunks in \a delta. The \a target file must
-     * already contain the zck header data of the to be downloaded file.
-     */
-    static PrepareResult prepareZck ( const zypp::Pathname &delta, const zypp::Pathname &target, const zypp::ByteCount &expectedFileSize );
-
-    /*!
-     * Checks if a given zck file is internally valid
-     */
-    static bool validateZckFile( const zypp::Pathname &file, std::string &error );
-
 
   private:
     State _state = Initial;

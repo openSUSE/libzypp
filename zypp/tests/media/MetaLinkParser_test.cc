@@ -74,3 +74,14 @@ BOOST_AUTO_TEST_CASE(parse_metalink_with_zsync_hash)
    BOOST_REQUIRE_EQUAL( lastMirr.priority, 103 );
    BOOST_REQUIRE_EQUAL( lastMirr.maxConnections, -1 );
 }
+
+BOOST_AUTO_TEST_CASE(parse_metalink_with_odd_hex_length)
+{
+  Pathname meta4file = TESTS_SRC_DIR "/media/data/odd-hash.meta4";
+  MetaLinkParser mlp4;
+  BOOST_REQUIRE_NO_THROW (mlp4.parse( meta4file ) );
+
+  // the invalid hash is ignored, the mirrors are still usable
+  BOOST_CHECK_EQUAL( mlp4.getUrls().size(), 2 );
+  BOOST_CHECK( !mlp4.getBlockList().haveFileChecksum() );
+}

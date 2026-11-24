@@ -7,6 +7,7 @@
 
 #include <zypp-core/base/Logger.h>
 #include <zypp-core/base/Exception.h>
+#include <zypp-core/base/String.h>
 #include <zypp/ZYppFactory.h>
 #include <zypp/Digest.h>
 #include <zypp/ZYpp.h>
@@ -50,4 +51,16 @@ BOOST_AUTO_TEST_CASE(checksum_test)
   chksumtest( CheckSum::sha256Type(),	"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" );
   chksumtest( CheckSum::sha384Type(),	"38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b" );
   chksumtest( CheckSum::sha512Type(),	"cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e" );
+}
+
+BOOST_AUTO_TEST_CASE(hexstring_to_bytes)
+{
+  BOOST_CHECK( Digest::hexStringToUByteArray( "0aFf" ) == UByteArray({ 0x0a, 0xff }) );
+  BOOST_CHECK( Digest::hexStringToUByteArray( "" ).empty() );
+  BOOST_CHECK( Digest::hexStringToUByteArray( "0g" ).empty() );   // invalid character
+  BOOST_CHECK( Digest::hexStringToUByteArray( "abc" ).empty() );  // odd length
+
+  // odd length in a view that is not null-terminated, must not read past its end
+  std::string_view odd( "abcd", 3 );
+  BOOST_CHECK( str::hexstringToByteArray<UByteArray>( odd ).empty() );
 }

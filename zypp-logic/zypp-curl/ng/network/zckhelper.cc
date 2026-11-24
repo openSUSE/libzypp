@@ -189,7 +189,15 @@ namespace zyppng {
               continue;
 
             zypp::AutoFREE<char> zckDigest( zck_get_chunk_digest( chunk ) );
+            // unlikely , otherwise the chunk would not be valid, but for completeness
+            if ( !zckDigest )
+              return emitFailed ( PrepareResult::Error, zypp::str::Format( "Unable to query digest for chunk: %1% at offset %2%.") % zck_get_chunk_number( chunk) % zck_get_chunk_start (chunk) );
+
             UByteArray chksumVec = zypp::Digest::hexStringToUByteArray( std::string_view( zckDigest.value() ) );
+            const auto expectedLen = zck_get_chunk_digest_size( _zchunkContext );
+            if ( expectedLen <= 0 || chksumVec.size() != static_cast<size_t>( expectedLen ) )
+              return emitFailed ( PrepareResult::Error, zypp::str::Format( "Invalid digest value %1% for chunk %2%.") % std::string_view( zckDigest.value() )  % zck_get_chunk_number( chunk) );
+
             std::string chksumName;
             std::optional<size_t> chksumCompareLen;
 

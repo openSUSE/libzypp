@@ -12,6 +12,7 @@
 #include "private/curlhelper_p.h"
 
 #include <zypp-core/Globals.h>
+#include <zypp-core/AutoDispose.h>
 
 #include <zypp-core/fs/PathInfo.h>
 #include <zypp-core/Pathname.h>
@@ -23,6 +24,13 @@
 #include <zypp-media/MediaException>
 #include <string>
 #include <glib.h>
+#include <fstream>
+#include <unistd.h>
+#include <openssl/bio.h>
+#include <openssl/crypto.h>
+#include <openssl/ssl.h>
+#include <openssl/x509.h>
+#include <openssl/x509_vfy.h>
 
 #define  TRANSFER_TIMEOUT_MAX   60 * 60
 
@@ -556,6 +564,191 @@ CURLcode setCurlRedirProtocols(CURL *curl)
 #endif
 #endif // #if CURLVERSION_AT_LEAST(7,19,4)
   return CURLE_OK;
+}
+
+namespace {
+
+  std::string x509NameToString( X509_NAME *name_r )
+  {
+    std::string ret;
+    if ( !name_r )
+      return ret;
+    zypp::AutoDispose<BIO *> bio( BIO_new( BIO_s_mem() ), BIO_free );
+    if ( !bio )
+      return ret;
+    if ( X509_NAME_print_ex( bio, name_r, 0, XN_FLAG_RFC2253 ) >= 0 ) {
+      char *data = nullptr;
+      long len = BIO_get_mem_data( bio.value(), &data );
+      if ( data && len > 0 )
+        ret.assign( data, len );
+    }
+    return ret;
+  }
+
+  /** Frees the SslVerifyInfoPtr copy owned by an SSL_CTX. */
+  void sslVerifyInfoFree( void * /*parent*/, void *ptr, CRYPTO_EX_DATA * /*ad*/, int /*idx*/, long /*argl*/, void * /*argp*/ )
+  {
+    delete static_cast<SslVerifyInfoPtr *>( ptr );
+  }
+
+  int sslCtxExIndex()
+  {
+    static const int idx = SSL_CTX_get_ex_new_index( 0, nullptr, nullptr, nullptr, &sslVerifyInfoFree );
+    return idx;
+  }
+
+  /** Only touch curl's SSL_CTX if curl uses the same libssl as we do. */
+  bool curlUsesOurOpenSSL()
+  {
+    static const bool ret = [](){
+      const curl_version_info_data *vi = curl_version_info( CURLVERSION_NOW );
+      const std::string have( ( vi && vi->ssl_version ) ? vi->ssl_version : "" );
+      const unsigned long v = OpenSSL_version_num();
+      const std::string want( "OpenSSL/" + std::to_string( (v >> 28) & 0xF ) + "." + std::to_string( (v >> 20) & 0xFF ) + "." );
+      const bool ok = zypp::str::startsWith( have, want );
+      if ( ok )
+        MIL << "TLS verify details enabled (curl: " << have << ")" << endl;
+      else
+        WAR << "TLS verify details disabled: curl TLS backend '" << have << "' does not match '" << want << "'" << endl;
+      return ok;
+    }();
+    return ret;
+  }
+
+  int sslVerifyCallback( int preverifyOk, X509_STORE_CTX *storeCtx )
+  {
+    SslVerifyInfoPtr *holder = nullptr;
+    if ( SSL *ssl = static_cast<SSL *>( X509_STORE_CTX_get_ex_data( storeCtx, SSL_get_ex_data_X509_STORE_CTX_idx() ) ) )
+      holder = static_cast<SslVerifyInfoPtr *>( SSL_CTX_get_ex_data( SSL_get_SSL_CTX( ssl ), sslCtxExIndex() ) );
+    if ( !holder || !*holder )
+      return preverifyOk;
+
+    SslVerifyInfo &info = **holder;
+    if ( !info.haveLeaf ) {
+      if ( X509 *leaf = X509_STORE_CTX_get0_cert( storeCtx ) ) {
+        info.leafSubject = x509NameToString( X509_get_subject_name( leaf ) );
+        info.leafIssuer  = x509NameToString( X509_get_issuer_name( leaf ) );
+        info.haveLeaf = true;
+      }
+    }
+    if ( !preverifyOk && info.x509Error == 0 ) {
+      info.x509Error      = X509_STORE_CTX_get_error( storeCtx );
+      info.x509ErrorDepth = X509_STORE_CTX_get_error_depth( storeCtx );
+    }
+    // Never change the verification result.
+    return info.prevVerifyCb ? info.prevVerifyCb( preverifyOk, storeCtx ) : preverifyOk;
+  }
+
+  CURLcode sslCtxCallback( CURL * /*curl*/, void *sslctx, void *userptr )
+  {
+    auto *owner = static_cast<SslVerifyInfoPtr *>( userptr );
+    const int idx = sslCtxExIndex();
+    if ( !owner || !*owner || !sslctx || idx < 0 )
+      return CURLE_OK;
+
+    SSL_CTX *ctx = static_cast<SSL_CTX *>( sslctx );
+    SslVerifyInfo &info = **owner;
+    info.reset();   // one handshake = one record; the last handshake (e.g. after a redirect) wins
+    info.prevVerifyCb = SSL_CTX_get_verify_callback( ctx );
+    if ( info.prevVerifyCb == &sslVerifyCallback )  // same SSL_CTX seen again: never chain to ourselves
+      info.prevVerifyCb = nullptr;
+
+    // The SSL_CTX owns its own shared_ptr copy, it may outlive the request in curl's connection cache.
+    if ( auto *existing = static_cast<SslVerifyInfoPtr *>( SSL_CTX_get_ex_data( ctx, idx ) ) ) {
+      *existing = *owner;
+    } else {
+      auto holder = std::make_unique<SslVerifyInfoPtr>( *owner );
+      if ( SSL_CTX_set_ex_data( ctx, idx, holder.get() ) != 1 )
+        return CURLE_OK;
+      holder.release();   // now owned by the SSL_CTX, freed by sslVerifyInfoFree
+    }
+    SSL_CTX_set_verify( ctx, SSL_CTX_get_verify_mode( ctx ), &sslVerifyCallback );
+    return CURLE_OK;
+  }
+
+  std::string readFirstLine( const std::string &path_r )
+  {
+    std::ifstream in( path_r );
+    std::string line;
+    std::getline( in, line );
+    return line;
+  }
+
+  std::string callerInfo()
+  {
+    const pid_t ppid = ::getppid();
+    const char *sudoUser = ::getenv( "SUDO_USER" );
+    return zypp::str::Format( "pid=%1% ppid=%2% ppid_comm='%3%' uid=%4% euid=%5% loginuid=%6% sudo_user='%7%'" )
+           % ::getpid() % ppid % readFirstLine( "/proc/" + zypp::str::numstring( ppid ) + "/comm" )
+           % ::getuid() % ::geteuid() % readFirstLine( "/proc/self/loginuid" ) % ( sudoUser ? sudoUser : "" );
+  }
+
+} // namespace
+
+void setupSslVerifyInfo( CURL *curl, SslVerifyInfoPtr &info_r )
+{
+  if ( !info_r )
+    info_r = std::make_shared<SslVerifyInfo>();
+  info_r->reset();
+
+  if ( !curl || !curlUsesOurOpenSSL() || sslCtxExIndex() < 0 )
+    return;
+
+  if ( curl_easy_setopt( curl, CURLOPT_SSL_CTX_FUNCTION, &sslCtxCallback ) != CURLE_OK
+       || curl_easy_setopt( curl, CURLOPT_SSL_CTX_DATA, &info_r ) != CURLE_OK ) {
+    curl_easy_setopt( curl, CURLOPT_SSL_CTX_FUNCTION, static_cast<curl_ssl_ctx_callback>( nullptr ) );
+    static bool once __attribute__ ((__unused__)) = ( [] {
+      WAR << "TLS verify details disabled: curl does not support CURLOPT_SSL_CTX_FUNCTION" << endl;
+    } (), true );
+  }
+}
+
+bool isSslVerifyFailure( CURLcode code )
+{
+#if CURLVERSION_AT_LEAST(7,62,0)
+  return code == CURLE_PEER_FAILED_VERIFICATION; // CURLE_SSL_CACERT is an alias since 7.62.0
+#else
+  return code == CURLE_PEER_FAILED_VERIFICATION || code == CURLE_SSL_CACERT;
+#endif
+}
+
+std::string sslVerifyFailedMessage( CURL *curl, const std::string &curlError_r, const SslVerifyInfo &info_r )
+{
+  std::string url;
+  char *effUrl = nullptr;
+  if ( curl && curl_easy_getinfo( curl, CURLINFO_EFFECTIVE_URL, &effUrl ) == CURLE_OK && effUrl ) {
+    try {
+      url = zypp::Url( effUrl ).asString(); // hides a password
+    } catch ( ... ) {
+      url = "<unparsable url>";
+    }
+  }
+  long verifyResult = -1;
+  if ( curl )
+    curl_easy_getinfo( curl, CURLINFO_SSL_VERIFYRESULT, &verifyResult );
+
+  std::string details;
+  std::string x509Err;
+  if ( info_r.x509Error != 0 ) {
+    const char *errStr = X509_verify_cert_error_string( info_r.x509Error );
+    x509Err = zypp::str::Format( "%1% (%2%) at depth %3%" ) % ( errStr ? errStr : "unknown" ) % info_r.x509Error % info_r.x509ErrorDepth;
+  }
+  if ( info_r.haveLeaf ) {
+    details = "Server certificate subject: " + info_r.leafSubject
+            + "\nServer certificate issuer: " + info_r.leafIssuer;
+    if ( !x509Err.empty() )
+      details += "\nCertificate verify error: " + x509Err;
+  }
+
+  ERR << "TLS certificate verification failed: url='" << url << "'"
+      << " curl_error='" << curlError_r << "'"
+      << " ssl_verify_result=" << verifyResult
+      << " subject='" << ( info_r.haveLeaf ? info_r.leafSubject : std::string("<unknown>") ) << "'"
+      << " issuer='"  << ( info_r.haveLeaf ? info_r.leafIssuer  : std::string("<unknown>") ) << "'"
+      << " x509_error='" << x509Err << "'"
+      << " caller: " << callerInfo() << endl;
+
+  return details.empty() ? curlError_r : curlError_r + "\n" + details;
 }
 
 }

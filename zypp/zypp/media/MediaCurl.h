@@ -129,6 +129,7 @@ class MediaCurl : public MediaNetworkCommonHandler, public internal::CurlPollHel
 
     mutable std::string _lastRedirect;	///< to log/report redirections
     curl_slist *_customHeaders;
+    internal::SslVerifyInfoPtr _sslVerifyInfo = std::make_shared<internal::SslVerifyInfo>(); ///< TLS verify details of the last handshake
 
     const char* curlError() const { return _curlError; };
     void setCurlError(const char* error);

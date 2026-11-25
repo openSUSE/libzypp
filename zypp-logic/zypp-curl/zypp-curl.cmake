@@ -177,6 +177,7 @@ ADD_LIBRARY( ${arg_TARGETNAME} STATIC ${zypp_curl_lib_SRCS} ${zypp_curl_lib_HEAD
 
 target_link_libraries( ${arg_TARGETNAME} PRIVATE  ${arg_FLAGS} )
 target_link_libraries( ${arg_TARGETNAME} INTERFACE ${CURL_LIBRARIES} )
+target_link_libraries( ${arg_TARGETNAME} INTERFACE ${OPENSSL_LIBRARIES} ${CRYPTO_LIBRARIES} )
 target_link_libraries( ${arg_TARGETNAME} INTERFACE ${LIBXML2_LIBRARIES} )
 
 IF( NOT DISABLE_LIBPROXY )

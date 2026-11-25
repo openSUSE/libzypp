@@ -32,6 +32,7 @@ function(zypp_add_media_target)
     ng/ProvideSpec
     ng/providefwd.h
     ng/ProvideFwd
+    ng/config/mediakeys.h
   )
 
   zypp_add_sources( zypp_media_SRCS
@@ -42,6 +43,7 @@ function(zypp_add_media_target)
     mediaexception.cc
     mount.cc
     ng/providespec.cc
+    ng/config/mediakeys.cc
   )
 
   if( arg_INSTALL_HEADERS )

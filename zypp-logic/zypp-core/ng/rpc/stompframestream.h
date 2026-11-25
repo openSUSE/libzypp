@@ -65,7 +65,7 @@ namespace zyppng {
         target = headerVal;
       } else {
         // numbers
-        auto val = zyppng::str::safe_strtonum<T> ( headerVal );
+        auto val = zyppng::str::strict_strtonum<T> ( headerVal );
         if ( !val )
           ZYPP_THROW ( zypp::PluginFrameException( "Invalid value for numerical field" ) );
         target = *val;

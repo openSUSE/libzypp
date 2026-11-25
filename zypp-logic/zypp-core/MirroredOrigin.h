@@ -304,9 +304,24 @@ namespace zypp {
     const OriginEndpoint &at( uint index ) const;
     OriginEndpoint &at( uint index );
 
+    /*!
+     * Check if all authorities are compatible with a specific mirror
+     */
+    bool areAuthoritiesCompatible(const OriginEndpoint& mirror) const;
+
   private:
     struct Private;
     RWCOW_pointer<Private> _pimpl;
+
+    /*!
+     * An authority and a mirror are not compatible if one is downloadable and the other is not
+     */
+    static bool isAuthorityCompatible(const OriginEndpoint& authority, const OriginEndpoint& mirror)
+    {
+      if (authority.scheme() == mirror.scheme())
+          return true;
+      return authority.schemeIsDownloading() && mirror.schemeIsDownloading();
+    }
   };
 
   ZYPP_API std::ostream & operator<<( std::ostream & str, const MirroredOrigin & origin );

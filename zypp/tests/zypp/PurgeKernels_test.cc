@@ -139,6 +139,48 @@ namespace  {
         }
       },
       TestSample {
+        //Unified Kernel Images and their addons require the exact kernel, they
+        //have to be removed together with it
+        TESTS_SRC_DIR"/zypp/data/PurgeKernels/uki",
+        "1-5-default",
+        Arch("x86_64"),
+        "running",
+        {
+          { "kernel-default-1-1.x86_64" },
+          { "kernel-default-uki-virt-1_1-1-1-1.x86_64" },
+          { "kernel-default-1-2.x86_64" },
+          { "kernel-default-uki-virt-1_2-2-1-2.x86_64" },
+          { "kernel-default-uki-addon-gpu-virt-1_2-2-1-2.x86_64" },
+        }
+      },
+      TestSample {
+        //A meta package (the package without the kernel in the name) that still requires the UKI or
+        //addon of an old kernel keeps that kernel, instead of being removed with it
+        TESTS_SRC_DIR"/zypp/data/PurgeKernels/uki-stale",
+        "1-5-default",
+        Arch("x86_64"),
+        "running",
+        {
+          { "kernel-default-1-2.x86_64" },
+          { "kernel-default-uki-virt-1_2-2-1-2.x86_64" },
+        }
+      },
+      TestSample {
+        //The kernel tag in the name of the UKI and addon subpackages can contain letters and more dashes
+        //(rc kernels, .g<sha> releases from Kernel:stable). Packages without the tag (meta packages, the
+        //initrd, pcrsig) are not removed with the kernel: the initrd requires kernel-1-3, so it is kept
+        TESTS_SRC_DIR"/zypp/data/PurgeKernels/uki-tags",
+        "1-5-default",
+        Arch("x86_64"),
+        "running",
+        {
+          { "kernel-default-1-1.x86_64" },
+          { "kernel-default-uki-virt-1_0-rc1-1-1-1.x86_64" },
+          { "kernel-default-1-2.x86_64" },
+          { "kernel-default-uki-addon-gpu-virt-1_2-2_g8a1b2c3-1-2.x86_64" },
+        }
+      },
+      TestSample {
         //kernel-1-1 has a non kernel package depending on it, it should not be removed
         TESTS_SRC_DIR"/zypp/data/PurgeKernels/withdeps",
         "1-5-default",

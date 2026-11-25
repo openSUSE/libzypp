@@ -158,7 +158,12 @@ namespace zypp {
     MIL << "Request to remove package: " << pi << std::endl;
 
     //list of packages that are allowed to be removed automatically.
-    const str::regex validRemovals("(kernel-syms(-.*)?|kgraft-patch(-.*)?|kernel-(.*)-livepatch(-.*)?|kernel-livepatch(-.*)?|.*-kmp(-.*)?)");
+    //Unified Kernel Images, their initrds and addons are only allowed in the subpackages named after the
+    //kernel they were built for (e.g. kernel-default-uki-virt-6_12_0-1, the tag always starts with a digit
+    //but can contain letters for rc or .g<sha> kernels): the packages without the kernel in the name are
+    //meta packages (the user's choice of UKI or addon), and if one still requires the
+    //subpackage of this kernel, the kernel has to be kept instead of silently removing the meta package.
+    const str::regex validRemovals("(kernel-syms(-.*)?|kgraft-patch(-.*)?|kernel-(.*)-livepatch(-.*)?|kernel-livepatch(-.*)?|kernel-.+-uki-.+-[0-9].*|.*-kmp(-.*)?)");
 
     if ( pi.status().isLocked() ) {
       MIL << "Package " << pi << " is locked by the user, not removing." << std::endl;
